@@ -2,6 +2,12 @@
 
 # define MINISHELL_H
 
+# include "utils_mshell.h"
+# include "structs_mshell.h"
+# include "parse_mshell.h"
+
+# include "../libft/libft.h"
+
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
@@ -11,10 +17,10 @@
 # include <sys/errno.h>
 # include <signal.h>
 # include <stdio.h> //
-# include "gnl/get_next_line.h"
+# include "../gnl/get_next_line.h"
 
 extern	char	**envp;
 
-int	ft_memcmp(void *s1, void *s2, size_t n);
+//int	ft_memcmp(void *s1, void *s2, size_t n);
 
 #endif
