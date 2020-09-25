@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/09/25 16:19:14 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/09/25 16:46:44 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	ft_echo(char *str, int flag_n)
 
 void	ft_pwd()
 {
-	char *path;
+	char path[PATH_MAX];
 
-	path = getcwd(path, PATH_MAX);
+	getcwd(path, PATH_MAX);
 	printf("%s\n", path);
 	//free(path);
 }
@@ -67,16 +67,9 @@ void	ft_cd(char *str)
 
 int main(int argc, char **argv)
 {
-	int len = ft_strlen(argv[1]) + 1;
-	char *str = malloc(len);
-	ft_bzero(str, len);
-	memcpy(str, argv[1], len);
     ft_echo(argv[1], atoi(argv[2]));
 	printf("arg0: %s\n", argv[1]);
 	ft_pwd();//SOMEHOW changes argv[1]
-	printf("main: %s\n", str);
-	printf("arg1: %s\n", argv[1]);
-	ft_cd(str);
-	free(str);
+	ft_cd(argv[1]);
     return 0;
 }
