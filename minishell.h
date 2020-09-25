@@ -9,8 +9,11 @@
 # include <sys/types.h>
 # include <dirent.h>
 # include <sys/errno.h>
+# include <signal.h>
 # include <stdio.h> //
 # include "gnl/get_next_line.h"
+
+extern	char	**envp;
 
 int	ft_memcmp(void *s1, void *s2, size_t n);
 

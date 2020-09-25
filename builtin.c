@@ -6,17 +6,24 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/09/25 16:46:44 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/09/25 18:43:06 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+char		**g_envp;
+
 #include "minishell.h"
 
-void	ft_echo(char *str, int flag_n)
+void	ft_echo(char *str, int flag_n) //"" '' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 {
 	write(1, str, ft_strlen(str));
 	if (!flag_n)
 		write(1, "\n", 1);
+}
+
+void	ft_exit(int exitCode)
+{
+	exit(exitCode);
 }
 
 void	ft_pwd()
@@ -24,52 +31,73 @@ void	ft_pwd()
 	char path[PATH_MAX];
 
 	getcwd(path, PATH_MAX);
-	printf("%s\n", path);
-	//free(path);
+	write(1, path, ft_strlen(path));
+	write(1, "\n", 1);
 }
+
 void	ft_cd(char *str)
 {
-	char *path;
-	char *newPath;
-	int len;//
 	DIR *dir;
 	struct dirent *entry;
 	
 	dir = NULL;
-	/*
-	path = getcwd(path, PATH_MAX);
-	printf("%s\n", path);
-	chdir(str);
-	newPath = getcwd(newPath, PATH_MAX);
-	printf("%s\n", newPath);
-	len = (ft_strlen(path) > ft_strlen(newPath)) ? ft_strlen(path) : ft_strlen(newPath);
-	if (!(ft_memcmp(path, newPath, len)))
-		printf("erorr: %s\n", strerror(2));
-	*/
-	printf("ftcd: %s\n", str);
 	printf("%p\n", dir);
 	dir = opendir(str);
 	printf("%p\n", dir);
 	if (!dir)
 	{
-		printf("erorr: %s\n", strerror(errno));
-		exit(1);
+		write(1, "cd: ", ft_strlen("cd: "));
+		write(1, strerror(errno), ft_strlen(strerror(errno)));
+		write(1, ": ", ft_strlen(": "));
+		write(1, str, ft_strlen(str));
+		write(1, "\n", 1);
+		return ;
 	}
-
-    while ( (entry = readdir(dir)) != NULL) {
-        printf("%s\n", entry->d_name);
-    };
-
-    closedir(dir);
+	closedir(dir);
+	ft_pwd();//
+	chdir(str);
+	ft_pwd();//
 }
+
+void	ft_env()
+{
+	char **env;
+
+	env = g_envp;
+	while((*env))
+	{
+		printf("%s\n", *env);
+		env++;
+	}
+}
+
+void	ft_export(flag_arg)
+{
+	if (!flag_arg)
+		ft_env()//???????????????????????????????????????????????????????????
+}
+
+void	ft_unset(flag_arg)
+{
+	if (!flag_arg)
+		write(1, "unset: not enough arguments", ft_strlen("unset: not enough arguments"));
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **envp)
 {
+	g_envp = envp;
     ft_echo(argv[1], atoi(argv[2]));
-	printf("arg0: %s\n", argv[1]);
-	ft_pwd();//SOMEHOW changes argv[1]
+	//ft_pwd();
+	if (argv[1][0] == 'e' && argv[1][1] == 'n' && argv[1][2] == 'v' && argv[1][3] == '\0')
+	{
+		ft_env();
+		return 0;
+	}
 	ft_cd(argv[1]);
+	ft_exit(0);
+	printf("ur exit doesnt work");
     return 0;
 }
