@@ -1,0 +1,3 @@
+    echo -n \"echo -n < Makefile ; echo \\\"
+      echo \"kek |||| >> < >> <|\"
+           echo -n "echo -n < Makefile ; echo \"" ; echo "kek | >> < >> <|"

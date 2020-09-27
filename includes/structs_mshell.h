@@ -16,6 +16,7 @@
 typedef struct	s_mshell {
 	char		*content;
 	char		**arr3d;
+	int			i;
 }				t_mshell;
 
 #endif

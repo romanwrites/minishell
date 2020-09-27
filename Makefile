@@ -6,17 +6,20 @@
 #    By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/09/27 15:14:44 by mkristie         ###   ########.fr        #
+#    Updated: 2020/09/27 16:11:47 by mkristie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 FLAGS = -O2 -Wall -Wextra -Werror
 
-INCLUDES = -Iincludes/
+INCLUDES = -Iincludes/ -Iget_next_line/ -Ilibft/
 
 LIBFT = -L./libft -lft
 LIBFT_DIR = ./libft
+
+GNL = get_next_line.c \
+		get_next_line_utils.c \
 
 PARSE_SRC = parse.c \
 			
@@ -29,7 +32,7 @@ ENGINE_SRC = engine_start.c \
 SRC = $(addprefix engine/, $(ENGINE_SRC))
 SRC += $(addprefix parser/, $(PARSE_SRC))
 SRC += $(addprefix utils/, $(UTILS_SRC))
-SRC += gnl/get_next_line.c
+SRC += $(addprefix get_next_line/, $(GNL))
 
 OBJ = $(SRC:.c=.o)
 
