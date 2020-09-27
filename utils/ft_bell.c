@@ -1,30 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   engine_start.c                                     :+:      :+:    :+:   */
+/*   ft_bell.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/25 19:59:14 by mkristie         ###   ########.fr       */
+/*   Created: 2020/09/27 14:44:44 by mkristie          #+#    #+#             */
+/*   Updated: 2020/09/27 14:45:31 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "minishell.h"
+# include <unistd.h>
 
-void	init(t_mshell	*sv)
+void        ft_bell(void)
 {
-	sv->arr3d = NULL;
-	sv->content = NULL;
-}
-
-int     main()
-{
-	t_mshell	*sv;
-
-	sv = (t_mshell *)malloc(sizeof(t_mshell));
-	ft_alloc_check(sv);
-	init(sv);
-	
-	parse_start("echo kek");
+    write(1, "\a", 1);
 }

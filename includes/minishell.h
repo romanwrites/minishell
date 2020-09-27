@@ -17,7 +17,6 @@
 # include <sys/errno.h>
 # include <signal.h>
 # include <stdio.h> //
-# include "../gnl/get_next_line.h"
 
 extern	char	**envp;
 

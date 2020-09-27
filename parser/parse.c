@@ -6,13 +6,15 @@
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:38:07 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/25 19:58:57 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/09/27 15:07:41 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "minishell.h"
 
 void		parse_start(t_mshell *sv)
 {
-
+    ft_bell();
+    write(1, "MAKE", 4);
+	(void)sv;
 }

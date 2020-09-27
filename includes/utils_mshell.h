@@ -15,5 +15,6 @@
 # define UTILS_MSHELL_H
 
 void		ft_alloc_check(void *ptr);
+void        ft_bell(void);
 
 #endif
