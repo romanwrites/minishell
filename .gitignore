@@ -2,3 +2,6 @@
 .idea/
 CMakeLists.txt
 cmake-build-debug/
+.vscode/
+a.out
+a.out.dSYM/
