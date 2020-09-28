@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/09/28 19:59:51 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/09/28 21:18:09 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,14 @@ void	ft_unset(char *arg) //revome varS
 		write(1, "unset: not enough arguments", ft_strlen("unset: not enough arguments"));
 		write(1, "\n", 1);
 	}
+	else if (ft_strchr(arg, '.') || ft_strchr(arg, '~') || ft_strchr(arg, ',') || ft_strchr(arg, '@') || ft_strchr(arg, '#') || ft_strchr(arg, '%') || ft_strchr(arg, '^') || ft_strchr(arg, '-') || ft_strchr(arg, '+') || ft_strchr(arg, '=') || ft_strchr(arg, '{') || ft_strchr(arg, '}') || ft_strchr(arg, '[') || ft_strchr(arg, ']'))
+	{
+		write(1, "unset: ", ft_strlen("unset: "));
+		write(1, arg, ft_strlen("arg"));//HEL.L -> HEL
+		write(1, ": ", ft_strlen(": "));
+		write(1, "invalid parameter name", ft_strlen("invalid parameter name"));
+		write(1, "\n", 1);
+	}
 }
 
 
@@ -227,7 +235,6 @@ int main(int argc, char **argv, char **envp)
 	g_envp = envp;
 	echo_assert_test();
 	//ft_pwd();
-	/*
 	if (argv[1][0] == 'e' && argv[1][1] == 'n' && argv[1][2] == 'v' && argv[1][3] == '\0')
 	{
 		ft_env();
@@ -235,8 +242,10 @@ int main(int argc, char **argv, char **envp)
 	}
 	if (!(strcmp(argv[1], "unset")))
 	{
-		ft_unset(0);
-		return 0;
+		if (!(argv[3]))
+			ft_unset(0);
+		else
+			ft_unset(argv[3]);
 	}
 	if (!(strcmp(argv[1], "export")))
 	{
@@ -246,8 +255,7 @@ int main(int argc, char **argv, char **envp)
 			ft_export(argv[3]);
 		return 0;
 	}
-	*/
-	ft_cd(argv[1]);
+	//ft_cd(argv[1]);
 	ft_exit(0);
 	printf("ur exit doesnt work");
     return 0;

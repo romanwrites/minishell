@@ -21,6 +21,10 @@
 
 extern	char	**envp;
 
-//int	ft_memcmp(void *s1, void *s2, size_t n);
+typedef struct  s_envar
+{
+    char *key;
+    char *value;
+}               t_envar;
 
 #endif
