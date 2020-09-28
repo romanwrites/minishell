@@ -6,8 +6,8 @@
 # include "structs_mshell.h"
 # include "parse_mshell.h"
 
-# include "libft.h"
-# include "get_next_line.h"
+# include "../libft/libft.h"
+# include "../get_next_line/get_next_line.h"
 
 # include <unistd.h>
 # include <stdlib.h>
