@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/09/28 16:02:15 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/09/28 19:59:51 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	ft_echo(char *str, int flag_n) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
 		write(1, "\n", 1);
 }
 
-void	ft_exit(int exitCode)
+void	ft_exit(int exit_code)
 {
-	exit(exitCode);
+	exit(exit_code);
 }
 
 void	ft_pwd()
@@ -41,9 +41,7 @@ void	ft_cd(char *str)
 	struct dirent *entry;
 	
 	dir = NULL;
-	printf("%p\n", dir);
 	dir = opendir(str);
-	printf("%p\n", dir);
 	if (!dir)
 	{
 		write(1, "cd: ", ft_strlen("cd: "));
@@ -72,52 +70,59 @@ void	ft_env()
 	}
 }
 
-void	freeEnv(char **envArray, int lines)
+void	free_env(char **env_array, int lines)
 {
 	while (lines >= 0)
 	{
-		free(envArray[lines]);
+		free(env_array[lines]);
 		lines--;
 	}
-	free(envArray);
+	free(env_array);
 }
 
-char	**allocMemEnv(int lines, int maxLen)
+char	**alloc_mem_env(int lines, int max_len, char *arg)
 {
-	char	**envArray;
+	char	**env_array;
 	int		i;
 
 	i = 0;
-	envArray = (char **)malloc(sizeof(char *) * lines);
-	if (!envArray)
-		return (envArray);
+
+	env_array = (char **)malloc(sizeof(char *) * lines + 1);
+	if (!env_array)
+		return (env_array);
 	while (i < lines)
 	{
-		envArray[i] = malloc(maxLen + 1);
-		if (!(envArray[i]))
+		env_array[i] = malloc(max_len + 1);
+		if (!(env_array[i]))
 		{
-			freeEnv(envArray, i);
+			free_env(env_array, i);
 			return(NULL);
 		}
 		i++;
 	}
-	return(envArray);
+	return(env_array);
 }
 
-void	fillEnv(char **envArray)
+void	fill_env(char **env_array, char *arg)
 {
 	char	**env;
 	
 	env = g_envp;
 	while((*env))
 	{
-		ft_strlcat((*envArray), (*env), ft_strlen(*env) + 1);
-		envArray++;
+		ft_strlcat((*env_array), (*env), ft_strlen(*env) + 1);
+		env_array++;
 		env++;
 	}
+	if (arg)
+	{
+		ft_strlcat((*env_array), arg, ft_strlen(arg) + 1);
+		env_array++;
+	}
+	*env_array = NULL;
 }
 
-void	sortEnv(char **envArray, int lines, int maxLen)
+void	sort_env(char **env_array, int lines, int max_len)
 {
 	char *tmp;
 	int i;
@@ -127,11 +132,11 @@ void	sortEnv(char **envArray, int lines, int maxLen)
 	{
 		while  (i < lines - 1)
 		{
-			if (ft_strncmp(envArray[i], envArray[i + 1], maxLen) > 0)
+			if (ft_strncmp(env_array[i], env_array[i + 1], max_len) > 0)
 			{
-				tmp = envArray[i];
-				envArray[i] = envArray[i + 1];
-				envArray[i + 1] = tmp;
+				tmp = env_array[i];
+				env_array[i] = env_array[i + 1];
+				env_array[i + 1] = tmp;
 			}
 			i++;
 		}
@@ -140,81 +145,62 @@ void	sortEnv(char **envArray, int lines, int maxLen)
 	}
 }
 
-void	printEnv(char **envArray)
+void	print_env(char **env_array)
 {
-	while (*envArray)
+	while (*env_array)
 	{
-		write(1, *envArray, ft_strlen(*envArray));
+		write(1, *env_array, ft_strlen(*env_array));
 		write(1, "\n", 1);
-		envArray++;
+		env_array++;
 	}
 }
-/*
-char	**reallocMemEnv(char **envArray, char *arg, int *lines)
-{
-	char	**ptrArray;
 
-	(*lines)++;
-	ptrArray = (char **)malloc(sizeof(char *) * (*lines));
-	if (!ptrArray)
-		return (ptrArray);
-	ft_memcpy(ptrArray, envArray, sizeof(char *) * (*lines));
-	ft_strcpy(ptrArray[(*lines) - 2], arg);
-	//freeEnv(envArray, *lines - 2);
-	return(ptrArray);
-}
-*/
-
-void	countLines(int *lines, int *maxLen, char *arg)
+void	count_lines(int *lines, int *max_len, char *arg)
 {
 	char	**env;
 
 	env = g_envp;
 	while((*env))
 	{
-		*maxLen = (*maxLen > ft_strlen(*env)) ? *maxLen : ft_strlen(*env);
+		*max_len = (*max_len > ft_strlen(*env)) ? *max_len : ft_strlen(*env);
 		env++;
 		(*lines)++;
 	}
+	/*
 	if (arg)
 	{
 		g_envp = realloc(g_envp, (*lines) + 1);
-		g_envp[*lines] = malloc(*maxLen);
+		g_envp[*lines] = malloc(*max_len);
 		ft_strcpy(g_envp[*lines], arg);
 		printf("\n\n%s\n", arg);
 		printf("%s\n\n", g_envp[*lines]);
 	}
+	*/
+	if (arg)
+		(*lines)++;
 }
 
-void	ft_export(char *arg) //add var
+void	ft_export(char *arg) //handle ='' & many varS using ft_split(' ')
 {
-	char	**envArray;
+	char	**env_array;
 	int		lines;
-	int		maxLen;
+	int		max_len;
 
 	lines = 0;
-	maxLen = 0;
-	envArray = NULL;
+	max_len = 0;
+	env_array = NULL;
 	
-	countLines(&lines, &maxLen, arg);
-	envArray = allocMemEnv(lines, maxLen);
-	if (envArray == NULL)
+	count_lines(&lines, &max_len, arg);
+	env_array = alloc_mem_env(lines, max_len, arg);
+	if (env_array == NULL)
 		return ;
-	fillEnv(envArray);
-	sortEnv(envArray, lines, maxLen);
-	/*
-	if (arg)
-	{
-		envArray = reallocMemEnv(envArray, arg, &lines);
-		if (envArray == NULL)
-			return ;
-	}
-	*/
-	printEnv(envArray);
-	freeEnv(envArray, lines);
+	fill_env(env_array, arg);
+	sort_env(env_array, lines, max_len);
+	print_env(env_array);
+	free_env(env_array, lines);//place at EXIT
 }
 
-void	ft_unset(char *arg) //revome var
+void	ft_unset(char *arg) //revome varS
 {
 	if (!arg)
 	{
@@ -225,12 +211,23 @@ void	ft_unset(char *arg) //revome var
 
 
 ///////////////////////////////////////////////////////////////////////////////
+void	echo_assert_test()
+{
+	printf("_________BACKSLASH________\n");
+	ft_echo("", 0);
+	ft_echo("su\p", 0); //su/p warning: unknown escape sequence '\p' [-Wunknown-escape-sequence]
+	ft_echo("su\tp", 0);
+	ft_echo("su\np", 0);
+	ft_echo("su\0p", 0); //sup
+	ft_echo("sup\n", 0);
+}
 
 int main(int argc, char **argv, char **envp)
 {
 	g_envp = envp;
-    ft_echo(argv[1], atoi(argv[2]));
+	echo_assert_test();
 	//ft_pwd();
+	/*
 	if (argv[1][0] == 'e' && argv[1][1] == 'n' && argv[1][2] == 'v' && argv[1][3] == '\0')
 	{
 		ft_env();
@@ -249,7 +246,8 @@ int main(int argc, char **argv, char **envp)
 			ft_export(argv[3]);
 		return 0;
 	}
-	//ft_cd(argv[1]);
+	*/
+	ft_cd(argv[1]);
 	ft_exit(0);
 	printf("ur exit doesnt work");
     return 0;
