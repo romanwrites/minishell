@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/09/28 12:59:47 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/09/28 16:02:15 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@ char		**g_envp;
 
 #include "includes/minishell.h"
 
-void	ft_echo(char *str, int flag_n) //"" '' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+void	ft_echo(char *str, int flag_n) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
 {
 	write(1, str, ft_strlen(str));
 	if (!flag_n)
@@ -72,27 +72,35 @@ void	ft_env()
 	}
 }
 
-char	**allocMemEnv(int *lines, int *maxLen)
+void	freeEnv(char **envArray, int lines)
 {
-	char	**env;
-	char	**envArray;
-	int		linesCopy;
-
-	envArray = NULL;
-	env = g_envp;
-	while((*env))
+	while (lines >= 0)
 	{
-		*maxLen = (*maxLen > ft_strlen(*env)) ? *maxLen : ft_strlen(*env);
-		env++;
-		(*lines)++;
+		free(envArray[lines]);
+		lines--;
 	}
-	envArray = (char **)malloc(sizeof(char *) * (*lines));
-	linesCopy = *lines;
-	while (linesCopy-- >= 0)
-		envArray[linesCopy] = malloc(*maxLen + 1);
-	//printf("maxLen=%d\n", *maxLen);
-	//printf("Lines=%d\n", lines);
-	//printf("malloced=%d\n", *maxLen * lines + lines);
+	free(envArray);
+}
+
+char	**allocMemEnv(int lines, int maxLen)
+{
+	char	**envArray;
+	int		i;
+
+	i = 0;
+	envArray = (char **)malloc(sizeof(char *) * lines);
+	if (!envArray)
+		return (envArray);
+	while (i < lines)
+	{
+		envArray[i] = malloc(maxLen + 1);
+		if (!(envArray[i]))
+		{
+			freeEnv(envArray, i);
+			return(NULL);
+		}
+		i++;
+	}
 	return(envArray);
 }
 
@@ -141,36 +149,74 @@ void	printEnv(char **envArray)
 		envArray++;
 	}
 }
-
-void	freeEnv(char **envArray)
+/*
+char	**reallocMemEnv(char **envArray, char *arg, int *lines)
 {
-	
+	char	**ptrArray;
+
+	(*lines)++;
+	ptrArray = (char **)malloc(sizeof(char *) * (*lines));
+	if (!ptrArray)
+		return (ptrArray);
+	ft_memcpy(ptrArray, envArray, sizeof(char *) * (*lines));
+	ft_strcpy(ptrArray[(*lines) - 2], arg);
+	//freeEnv(envArray, *lines - 2);
+	return(ptrArray);
+}
+*/
+
+void	countLines(int *lines, int *maxLen, char *arg)
+{
+	char	**env;
+
+	env = g_envp;
+	while((*env))
+	{
+		*maxLen = (*maxLen > ft_strlen(*env)) ? *maxLen : ft_strlen(*env);
+		env++;
+		(*lines)++;
+	}
+	if (arg)
+	{
+		g_envp = realloc(g_envp, (*lines) + 1);
+		g_envp[*lines] = malloc(*maxLen);
+		ft_strcpy(g_envp[*lines], arg);
+		printf("\n\n%s\n", arg);
+		printf("%s\n\n", g_envp[*lines]);
+	}
 }
 
-void	ft_export(flag_arg)
+void	ft_export(char *arg) //add var
 {
-	char **envArray;
+	char	**envArray;
 	int		lines;
 	int		maxLen;
 
 	lines = 0;
 	maxLen = 0;
 	envArray = NULL;
-	if (!flag_arg)
+	
+	countLines(&lines, &maxLen, arg);
+	envArray = allocMemEnv(lines, maxLen);
+	if (envArray == NULL)
+		return ;
+	fillEnv(envArray);
+	sortEnv(envArray, lines, maxLen);
+	/*
+	if (arg)
 	{
-		envArray = allocMemEnv(&lines, &maxLen);
+		envArray = reallocMemEnv(envArray, arg, &lines);
 		if (envArray == NULL)
-			return ;//??????????????????????????????????????????????????should I check every string?
-		fillEnv(envArray);
-		sortEnv(envArray, lines, maxLen);
-		printEnv(envArray);
-		freeEnv(envArray);
+			return ;
 	}
+	*/
+	printEnv(envArray);
+	freeEnv(envArray, lines);
 }
 
-void	ft_unset(flag_arg)
+void	ft_unset(char *arg) //revome var
 {
-	if (!flag_arg)
+	if (!arg)
 	{
 		write(1, "unset: not enough arguments", ft_strlen("unset: not enough arguments"));
 		write(1, "\n", 1);
@@ -197,83 +243,14 @@ int main(int argc, char **argv, char **envp)
 	}
 	if (!(strcmp(argv[1], "export")))
 	{
-		ft_export(0);
+		if (!(argv[3]))
+			ft_export(0);
+		else
+			ft_export(argv[3]);
 		return 0;
 	}
-	ft_cd(argv[1]);
+	//ft_cd(argv[1]);
 	ft_exit(0);
 	printf("ur exit doesnt work");
     return 0;
 }
-
-/*
-USER=lhelper
-PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin
-LOGNAME=ilya
-SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.7HmaIICWLH/Listeners
-HOME=/Users/ilya
-SHELL=/bin/zsh
-__CF_USER_TEXT_ENCODING=0x1F5:0x0:0x2
-TMPDIR=/var/folders/q3/xj33tmqd7fv55fb23d4gc_kh0000gn/T/
-XPC_SERVICE_NAME=0
-XPC_FLAGS=0x0
-ORIGINAL_XDG_CURRENT_DESKTOP=undefined
-TERM_PROGRAM=vscode
-TERM=xterm-256color
-TERM_PROGRAM_VERSION=1.49.1
-TERM_SESSION_ID=w0t0p0:A1A81A64-C9BD-4538-9EAF-100F85A7C57D
-MAIL=marvin@42.fr
-PWD=/Users/ilya/Desktop/school21/minishell
-ITERM_PROFILE=Default
-SHLVL=1
-COLORFGBG=7;0
-LC_TERMINAL_VERSION=3.3.9
-ITERM_SESSION_ID=w0t0p0:A1A81A64-C9BD-4538-9EAF-100F85A7C57D
-LC_CTYPE=UTF-8
-LC_TERMINAL=iTerm2
-COLORTERM=truecolor
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL=true
-OLDPWD=/Users/ilya/Desktop/school21/minishell
-LANG=en_GB.UTF-8
-VSCODE_GIT_IPC_HANDLE=/var/folders/q3/xj33tmqd7fv55fb23d4gc_kh0000gn/T/vscode-git-8dc7a77b2d.sock
-GIT_ASKPASS=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass.sh
-VSCODE_GIT_ASKPASS_NODE=/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Renderer).app/Contents/MacOS/Code Helper (Renderer)
-VSCODE_GIT_ASKPASS_MAIN=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js
-_=/usr/bin/env
-*/
-
-/*
-USER=lhelper
-PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin
-LOGNAME=ilya
-SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.7HmaIICWLH/Listeners
-HOME=/Users/ilya
-SHELL=/bin/zsh
-__CF_USER_TEXT_ENCODING=0x1F5:0x0:0x2
-TMPDIR=/var/folders/q3/xj33tmqd7fv55fb23d4gc_kh0000gn/T/
-XPC_SERVICE_NAME=0
-XPC_FLAGS=0x0
-ORIGINAL_XDG_CURRENT_DESKTOP=undefined
-TERM_PROGRAM=vscode
-TERM=xterm-256color
-TERM_PROGRAM_VERSION=1.49.1
-TERM_SESSION_ID=w0t0p0:A1A81A64-C9BD-4538-9EAF-100F85A7C57D
-MAIL=marvin@42.fr
-PWD=/Users/ilya/Desktop/school21/minishell
-ITERM_PROFILE=Default
-SHLVL=1
-COLORFGBG=7;0
-LC_TERMINAL_VERSION=3.3.9
-ITERM_SESSION_ID=w0t0p0:A1A81A64-C9BD-4538-9EAF-100F85A7C57D
-LC_CTYPE=UTF-8
-LC_TERMINAL=iTerm2
-COLORTERM=truecolor
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL=true
-OLDPWD=/Users/ilya/Desktop/school21/minishell
-LANG=en_GB.UTF-8
-VSCODE_GIT_IPC_HANDLE=/var/folders/q3/xj33tmqd7fv55fb23d4gc_kh0000gn/T/vscode-git-8dc7a77b2d.sock
-GIT_ASKPASS=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass.sh
-VSCODE_GIT_ASKPASS_NODE=/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Renderer).app/Contents/MacOS/Code Helper (Renderer)
-VSCODE_GIT_ASKPASS_MAIN=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js
-_=/Users/ilya/Desktop/school21/minishell/./a.out
-*/
