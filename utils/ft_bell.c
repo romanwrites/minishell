@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_mshell.h                                     :+:      :+:    :+:   */
+/*   ft_bell.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/25 19:56:37 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/25 20:07:26 by mkristie         ###   ########.fr       */
+/*   Created: 2020/09/27 14:44:44 by mkristie          #+#    #+#             */
+/*   Updated: 2020/09/27 14:45:31 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+# include <unistd.h>
 
-#ifndef UTILS_MSHELL_H
-# define UTILS_MSHELL_H
-
-void		ft_alloc_check(void *ptr);
-
-#endif
+void        ft_bell(void)
+{
+    write(1, "\a", 1);
+}

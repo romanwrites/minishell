@@ -58,6 +58,9 @@ void		*btree_search_item(t_btree *root, void *data_ref, \
                        			 int (*cmpf)(void *, void *));
 int			btree_level_count(t_btree *root);
 
+
+
+
 /*
 ** Stdlib
 */
