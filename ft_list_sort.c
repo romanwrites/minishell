@@ -1,9 +1,16 @@
 #include "libft/libft.h"
 #include "includes/minishell.h"
 
-int compare_int(int a, int b)
+size_t		max_len(size_t len_a, size_t len_b)
 {
-	return (a - b);
+	if (len_a > len_b)
+		return(len_a);
+	return(len_b);
+}
+
+int		compare_key(t_envar *a, t_envar *b)
+{
+	return(ft_strncmp(a->key, b->key, max_len(ft_strlen(a->key), ft_strlen(b->key))));
 }
 
 int		first_swap(t_list **iter1, t_list **iter2)
@@ -81,39 +88,19 @@ int main()
 {
 	t_list *list;
 
-	list = ft_lstnew((void *)3);
-	ft_lstadd_back(&list, ft_lstnew((void *)2));
-	ft_lstadd_back(&list, ft_lstnew((void *)1));
-	printf("%d\n", (int)list->content);
-	printf("%d\n", (int)list->next->content);
-	printf("%d\n", (int)list->next->next->content);
+	t_envar first = {"xyz", "999"};
+	t_envar second = {"def", "555"};
+	t_envar last = {"abc", "000"};
+	list = ft_lstnew((void *)&first);
+	ft_lstadd_back(&list, ft_lstnew((void *)&second));
+	ft_lstadd_back(&list, ft_lstnew((void *)&last));
+	printf("%s\n", ((t_envar *)list->content)->key);
+	printf("%s\n", ((t_envar *)list->next->content)->key);
+	printf("%s\n", ((t_envar *)list->next->next->content)->key);
 	//ft_list_sort(&list, strcmp);
-	ft_list_sort(&list, compare_int);
-	printf("%d\n", (int)list->content);
-	printf("%d\n", (int)list->next->content);
-	printf("%d\n", (int)list->next->next->content);
+	ft_list_sort(&list, compare_key);
+	printf("%s\n", ((t_envar *)list->content)->key);
+	printf("%s\n", ((t_envar *)list->next->content)->key);
+	printf("%s\n", ((t_envar *)list->next->next->content)->key);
 	return 0;
 }
-
-/*
-int main()
-{
-	t_list *list;
-	int a = 3;
-	int b = 2;
-	int c = 1;
-	
-	list = ft_lstnew(&a);
-	ft_lstadd_back(&list, ft_lstnew(&b));
-	ft_lstadd_back(&list, ft_lstnew(&c));
-	printf("%d\n", *(int *)list->content);
-	printf("%d\n", *(int *)list->next->content);
-	printf("%d\n", *(int *)list->next->next->content);
-	//ft_list_sort(&list, strcmp);
-	ft_list_sort(&list, compare_int);
-	printf("%d\n", *(int *)list->content);
-	printf("%d\n", *(int *)list->next->content);
-	printf("%d\n", *(int *)list->next->next->content);
-	return 0;
-}
-*/

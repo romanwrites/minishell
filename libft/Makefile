@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+         #
+#    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/30 06:32:36 by mkristie          #+#    #+#              #
-#    Updated: 2020/08/30 18:07:43 by mkristie         ###   ########.fr        #
+#    Updated: 2020/09/29 17:38:23 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,6 +76,16 @@ SRCS = ft_atoi.c \
 	  ft_my_lstiter.c \
 	  ft_my_lstlast.c \
 	  ft_my_lstnew.c \
+	  ft_lstnew.c \
+	  ft_lstsize.c \
+	  ft_lstlast.c \
+	  ft_lstadd_back.c \
+	  ft_lstadd_front.c \
+	  ft_lstdelone.c \
+	  ft_lstclear.c \
+	  ft_lstiter.c \
+	  ft_lstmap.c \
+	  ft_lstrev.c \
 
 SRCSBONUS = ft_lstnew.c \
 	  ft_lstsize.c \

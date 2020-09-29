@@ -27,4 +27,19 @@ typedef struct  s_envar
     char *value;
 }               t_envar;
 
+char	**alloc_mem_env(int lines, int max_len, char *arg);
+void	count_lines(int *lines, int *max_len, char *arg);
+void	fill_env(char **env_array, char *arg);
+void	free_env(char **env_array, int lines);
+void	ft_cd(char *str);
+void	ft_echo(char *str, int flag_n);
+void	ft_env();
+void	ft_exit(int exit_code);
+void	ft_export(char *arg);
+void	ft_pwd();
+void	ft_unset(char *arg);
+void	print_env(char **env_array);
+void	sort_env(char **env_array, int lines, int max_len);
+
+
 #endif
