@@ -18,5 +18,6 @@ void		ft_alloc_check(void *ptr);
 void        ft_bell(void);
 void		exit_error_message(char *str);
 void		print_2d_array(char **arr2d);
+void		ft_trim_2d(char ***arr_2d);
 
 #endif
