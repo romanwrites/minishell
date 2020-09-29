@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_mshell.h                                     :+:      :+:    :+:   */
+/*   exit_error_message.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/25 19:56:37 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/30 00:23:19 by mkristie         ###   ########.fr       */
+/*   Created: 2020/09/29 22:23:06 by mkristie          #+#    #+#             */
+/*   Updated: 2020/09/29 22:24:21 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 
-#ifndef UTILS_MSHELL_H
-# define UTILS_MSHELL_H
-
-void		ft_alloc_check(void *ptr);
-void        ft_bell(void);
-void		exit_error_message(char *str);
-void		print_2d_array(char **arr2d);
-
-#endif
+void		exit_error_message(char *str) // maybe set exit_code somewhere here also
+{
+	ft_putstr_fd(str, 2);
+	exit(2);
+}

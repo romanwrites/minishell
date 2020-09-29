@@ -6,23 +6,20 @@
 /*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:38:07 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/29 21:47:57 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/09/29 22:44:28 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-_Bool		find_next_double_q_mark(t_mshell *sv, char c)
+_Bool		find_next_double_q_mark(t_mshell *sv, char c, int j)
 {
-	int		j;
-
-	j = 0;
 	while (sv->content[j])
 	{
-		if ((c == 34 && sv->content[j] == 34 && sv->content[j - 1] != 92)
+		if ((c == 34 && sv->content[j] == 34 && sv->content[j - 1] != 92) \
 			|| (c == 39 && sv->content[j] == 39))
 		{
-			sv->i = j;
+			sv->i = j + 1;
 			return (1);
 		}
 		j++;
@@ -33,52 +30,125 @@ _Bool		find_next_double_q_mark(t_mshell *sv, char c)
 int			count_tokens(t_mshell *sv)
 {
 	sv->i = 0;
-	_Bool	double_quot_mark_flag = 0;
-	_Bool	solo_quot_mark_flag = 0;
+	_Bool	double_quote_flag = 0;
+	_Bool	single_quote_flag = 0;
 	int		tokens = 0;
 
 	while (sv->content[sv->i])
 	{
-		if (sv->content[sv->i] == 34 && !double_quot_mark_flag)
+		if (sv->content[sv->i] == 34 && sv->content[sv->i - 1] != 92 && !double_quote_flag)
 		{
-			double_quot_mark_flag = 1;
-			if (find_next_double_q_mark(sv, sv->content[sv->i]))
+			double_quote_flag = 1;
+			tokens += 1;
+			sv->i++;
+			if (find_next_double_q_mark(sv, sv->content[sv->i - 1], sv->i))
 			{
 				tokens += 1;
-				double_quot_mark_flag = 0;
+				double_quote_flag = 0;
 				continue ;
 			}
+			exit_error_message("Error!\nfunction: count_tokens\nmessage: [Double Quotes are open]");
 		}
-		if (sv->content[sv->i] == 39 && !solo_quot_mark_flag)
+		if (sv->content[sv->i] == 39 && !single_quote_flag)
 		{
-			solo_quot_mark_flag = 1;
-			if (find_next_double_q_mark(sv, sv->content[sv->i]))
+			single_quote_flag = 1;
+			tokens += 1;
+			sv->i++;
+			if (find_next_double_q_mark(sv, sv->content[sv->i - 1], sv->i))
 			{
 				tokens += 1;
-				solo_quot_mark_flag = 0;
+				single_quote_flag = 0;
 				continue ;
 			}
+			exit_error_message("Error!\nfunction: count_tokens\nmessage: [Single Quotes are open]");
 		}
 		sv->i++;
 	}
+	if (!tokens && sv->content[0])
+		tokens++;
 	return (tokens);
 }
 
-void		split_sh(t_mshell *sv)
+
+void		alloc_token_str(t_mshell *sv, char **str, int start, int finish)
+{
+	char 	*tmp;
+	char 	*new_line;
+
+	tmp = ft_calloc(finish - start + 1, 1);
+	ft_alloc_check(tmp);
+
+	new_line = tmp;
+	while (start < finish)
+	{
+		*tmp++ = sv->content[start++];
+	}
+	*tmp = 0;
+	*(str) = new_line;
+}
+
+void		alloc_token_quotes(t_mshell *sv, char **str, int *pos)
+{
+	int		j = *pos;
+
+	if ((sv->content[j] == 34 && (j == 0 || sv->content[j - 1] != 92)) \
+		|| sv->content[*pos] == 39)
+	{
+		j++;
+		if (find_next_double_q_mark(sv, sv->content[j - 1], j))
+		{
+			alloc_token_str(sv, str, *pos, sv->i);
+			*pos = sv->i;
+			return ;
+		}
+	}
+	else
+	{
+		while (sv->content[j] && !((sv->content[j] == 34 && sv->content[j - 1] != 92) \
+				|| (sv->content[j] == 39)))
+			j++;
+		alloc_token_str(sv, str, *pos, j);
+		*pos = j;
+		return ;
+	}
+	exit_error_message("ERROR alloc_token_quotes()"); // don't go here
+}
+
+char		**split_sh(t_mshell *sv)
 {
 	int		tokens = count_tokens(sv);
+	int		j = 0;
+	char	**quotes_2d = (char **)ft_calloc(tokens + 1, sizeof(char *));
+	ft_alloc_check(quotes_2d);
 
+	int		*pos = malloc(sizeof(int));
+	ft_alloc_check(pos);
+
+	*pos = 0;
+	while (j < tokens)
+	{
+		alloc_token_quotes(sv, &(quotes_2d[j]), pos);
+		j++;
+	}
+	quotes_2d[j] = NULL;
+	return (quotes_2d);
+}
 
 void		parse_start(t_mshell *sv)
 {
 	char	*tmp;
+	char	**quotes2d;
+
+	static int case_num;
+	case_num++;
 
 	tmp = sv->content;
 	sv->content = ft_strtrim(tmp, " \t");
 	ft_alloc_check(sv->content);
 	free(tmp);
 	tmp = NULL;
-	printf("%s\n", sv->content);
-	split_sh(sv);
-
+	printf("case: %d, str: %s\nafter split by quotes:\n", case_num, sv->content);
+	quotes2d = split_sh(sv);
+	print_2d_array(quotes2d);
+	ft_putchar('\n');
 }
