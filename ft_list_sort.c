@@ -84,23 +84,23 @@ void		ft_list_sort(t_list **begin_list, int (*cmp)())
 	}
 }
 
-int main()
-{
-	t_list *list;
-
-	t_envar first = {"xyz", "999"};
-	t_envar second = {"def", "555"};
-	t_envar last = {"abc", "000"};
-	list = ft_lstnew((void *)&first);
-	ft_lstadd_back(&list, ft_lstnew((void *)&second));
-	ft_lstadd_back(&list, ft_lstnew((void *)&last));
-	printf("%s\n", ((t_envar *)list->content)->key);
-	printf("%s\n", ((t_envar *)list->next->content)->key);
-	printf("%s\n", ((t_envar *)list->next->next->content)->key);
-	//ft_list_sort(&list, strcmp);
-	ft_list_sort(&list, compare_key);
-	printf("%s\n", ((t_envar *)list->content)->key);
-	printf("%s\n", ((t_envar *)list->next->content)->key);
-	printf("%s\n", ((t_envar *)list->next->next->content)->key);
-	return 0;
-}
+//int main()
+//{
+//	t_list *list;
+//
+//	t_envar first = {"xyz", "999"};
+//	t_envar second = {"def", "555"};
+//	t_envar last = {"abc", "000"};
+//	list = ft_lstnew((void *)&first);
+//	ft_lstadd_back(&list, ft_lstnew((void *)&second));
+//	ft_lstadd_back(&list, ft_lstnew((void *)&last));
+//	printf("%s\n", ((t_envar *)list->content)->key);
+//	printf("%s\n", ((t_envar *)list->next->content)->key);
+//	printf("%s\n", ((t_envar *)list->next->next->content)->key);
+//	//ft_list_sort(&list, strcmp);
+//	ft_list_sort(&list, compare_key);
+//	printf("%s\n", ((t_envar *)list->content)->key);
+//	printf("%s\n", ((t_envar *)list->next->content)->key);
+//	printf("%s\n", ((t_envar *)list->next->next->content)->key);
+//	return 0;
+//}
