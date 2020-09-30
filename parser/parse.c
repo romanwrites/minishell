@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+typedef struct	s_dllst {
+	void		*previous;
+	void		*next;
+	void		*content;
+}				t_dllst;
+
 void		parse_start(t_mshell *sv)
 {
 	char	*tmp;
@@ -25,7 +31,10 @@ void		parse_start(t_mshell *sv)
 
 //	split_sh(sv);  Make one function to split elegantly
 
-
+	printf("sizeof(void *): %zu\n", sizeof(void *));
+	printf("sizeof(char *): %zu\n", sizeof(char *));
+	printf("sizeof(char **): %zu\n", sizeof(char **));
+	printf("sizeof(char ***): %zu\n", sizeof(char ***));
 
 	// STEP 0: trim
 	sv->content = ft_strtrim(tmp, " \t");

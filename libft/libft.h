@@ -25,17 +25,17 @@ typedef struct		s_list
 ** My double linked list
 */
 
-typedef struct				s_linked_list {
+typedef struct				s_dlst {
 	void					*content;
 	size_t					len;
-	struct s_linked_list	*next;
-	struct s_linked_list	*previous;
-}							t_linked_list;
+	struct s_dlst			*next;
+	struct s_dlst			*previous;
+}							t_dlst;
 
-t_linked_list		*ft_my_lstnew(void *content, t_linked_list **prev);
-void				ft_my_lstadd_back(t_linked_list **lst, t_linked_list *new);
-t_linked_list		*ft_my_lstlast(t_linked_list *lst);
-void				ft_my_lstiter(t_linked_list *lst, void (*f)(void *));
+t_dlst						*ft_dlstnew(void *content, t_dlst **prev);
+void						ft_dlstadd_back(t_dlst **lst, t_dlst *new);
+t_dlst						*ft_dlstlast(t_dlst *lst);
+void						ft_dlstiter(t_dlst *lst, void (*f)(void *));
 
 /*
 ** Binary trees
@@ -144,9 +144,9 @@ void				ft_strcpy(char *dst, const char *src);
 size_t				ft_two_d_counter(char ***s);
 char				*ft_replace_char(const char *str, char *remove, \
 														char *paste);
-char			*ft_replace(const char *str, const char *rmv, const char *pst);
-void			ft_lstrev(t_list **lst);
-// int		ft_strcmp(const char *s1, const char *s2);
-// void	ft_putstr(const char *s);
+char				*ft_replace(const char *str, const char *rmv, const char *pst);
+void				ft_lstrev(t_list **lst);
+// int				ft_strcmp(const char *s1, const char *s2);
+// void				ft_putstr(const char *s);
 
 #endif

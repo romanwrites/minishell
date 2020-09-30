@@ -72,10 +72,10 @@ SRCS = ft_atoi.c \
 	  ft_replace.c \
 	  ft_strcmp.c \
 	  ft_putstr.c \
-	  ft_my_lstadd_back.c \
-	  ft_my_lstiter.c \
-	  ft_my_lstlast.c \
-	  ft_my_lstnew.c \
+	  ft_dlstadd_back.c \
+	  ft_dlstiter.c \
+	  ft_dlstlast.c \
+	  ft_dlstnew.c \
 	  ft_lstnew.c \
 	  ft_lstsize.c \
 	  ft_lstlast.c \

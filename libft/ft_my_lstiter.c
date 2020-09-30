@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_my_lstiter.c                                    :+:      :+:    :+:   */
+/*   ft_dlstiter.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -17,7 +17,7 @@
 ** ’f’ to the content of each element.
 */
 
-void	ft_my_lstiter(t_linked_list *lst, void (*f)(void *))
+void	ft_dlstiter(t_dlst *lst, void (*f)(void *))
 {
 	if (!lst || !f)
 		return ;

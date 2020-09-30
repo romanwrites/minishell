@@ -14,6 +14,7 @@
 
 void		exit_error_message(char *str) // maybe set exit_code somewhere here also
 {
-	ft_putstr_fd(str, 2);
+	ft_putstr_fd(str, 2); //2 fd?
+
 	exit(2);
 }

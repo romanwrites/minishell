@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_my_lstadd_back.c                                :+:      :+:    :+:   */
+/*   ft_dlstadd_back.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,9 +16,9 @@
 ** Adds the element ’new’ at the end of the list.
 */
 
-void	ft_my_lstadd_back(t_linked_list **lst, t_linked_list *new)
+void	ft_dlstadd_back(t_dlst **lst, t_dlst *new)
 {
-	t_linked_list	*tmp;
+	t_dlst	*tmp;
 
 	if (!lst || !new)
 		return ;
@@ -27,7 +27,7 @@ void	ft_my_lstadd_back(t_linked_list **lst, t_linked_list *new)
 		*lst = new;
 		return ;
 	}
-	tmp = ft_my_lstlast(*lst);
+	tmp = ft_dlstlast(*lst);
 	tmp->next = new;
 	new->previous = tmp;
 }
