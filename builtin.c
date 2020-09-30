@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/09/30 10:50:43 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/09/30 13:54:44 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,37 +218,32 @@ void	ft_unset(char *arg) //revome varS
 
 t_list	*env_to_list()
 {
-	int		flag;
 	char	**env;
 	char	*value;
 	t_list	*list;
-	t_envar	kv;
+	t_envar	kv[256];//WHY NOT 32??
+	int i;
 
 	env = g_envp;
-	flag = 0;
+	list = NULL;
+	i = 0;
 	while (*env)
 	{
 		value = ft_strchr(*env, '=');
 		value++;
-		kv.key = malloc(ft_strlen(*env) - ft_strlen(value));
-		if (!kv.key)
+		kv[i].key = malloc(ft_strlen(*env) - ft_strlen(value));
+		if (!kv[i].key)
 			return (NULL);
-		ft_strlcpy(kv.key, *env, ft_strlen(*env) - ft_strlen(value));
-		kv.value = ft_strdup(value);
-		if (!kv.value)
+		ft_strlcpy(kv[i].key, *env, ft_strlen(*env) - ft_strlen(value));
+		kv[i].value = ft_strdup(value);
+		if (!kv[i].value)
 			return (NULL);
-		if (flag == 0)
-		{
-			list = ft_lstnew((void *)&kv);
-			flag++;
-			printf("LIST: %s=%s\n", ((t_envar *)list->content)->key, ((t_envar *)list->content)->value);
-		}
+		if (!list)
+			list = ft_lstnew((void *)&(kv[i]));
 		else
-		{	
-			ft_lstadd_back(&list, ft_lstnew((void *)&kv));
-			printf("LAST: %s=%s\n", ((t_envar *)list->content)->key, ((t_envar *)list->content)->value);
-		}
+			ft_lstadd_back(&list, ft_lstnew((void *)&(kv[i])));
 		env++;
+		i++;
 		//printf("LIST: %s=%s\n", ((t_envar *)list->content)->key, ((t_envar *)list->content)->value);
 	}
 	return(list);

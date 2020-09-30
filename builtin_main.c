@@ -16,16 +16,21 @@ void	echo_assert_test()
 int main(int argc, char **argv, char **envp)
 {
 	t_list *list;
+	t_list *tmp;
 
 	g_envp = envp;
 	//echo_assert_test();
 	//ft_pwd();
 	list = env_to_list();
-	ft_list_sort(&list, compare_key);
+	//ft_list_sort(&list, compare_key);
 	if (argc == 1)
 	{
-		printf("\n%s=%s\n", ((t_envar *)list->content)->key, ((t_envar *)list->content)->value);
-		//printf("%s=%s\n", ((t_envar *)list->next->content)->key, ((t_envar *)list->next->content)->value);
+		//printf("\n");
+		while (list)
+		{
+			printf("%s=%s\n", ((t_envar *)list->content)->key, ((t_envar *)list->content)->value);
+			list = list->next;
+		}
 		return 0;
 	}
 	if (argv[1][0] == 'e' && argv[1][1] == 'n' && argv[1][2] == 'v' && argv[1][3] == '\0')

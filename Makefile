@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+         #
+#    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/09/27 16:11:47 by mkristie         ###   ########.fr        #
+#    Updated: 2020/09/30 11:02:39 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-FLAGS = -O2 -Wall -Wextra -Werror
+FLAGS = -O2 #-Wall -Wextra -Werror
 
 INCLUDES = -Iincludes/ -Iget_next_line/ -Ilibft/
 
