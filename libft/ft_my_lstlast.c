@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_my_lstlast.c                                    :+:      :+:    :+:   */
+/*   ft_dlstlast.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,7 +16,7 @@
 ** Returns the last element of the list.
 */
 
-t_linked_list		*ft_my_lstlast(t_linked_list *lst)
+t_dlst		*ft_dlstlast(t_dlst *lst)
 {
 	if (!lst)
 		return (NULL);

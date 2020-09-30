@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_my_lstnew.c                                     :+:      :+:    :+:   */
+/*   ft_dlstnew.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -18,11 +18,11 @@
 ** The variable ’next’ is initialized to NULL
 */
 
-t_linked_list		*ft_my_lstnew(void *content, t_linked_list **prev)
+t_dlst		*ft_dlstnew(void *content, t_dlst **prev)
 {
-	t_linked_list	*new;
+	t_dlst	*new;
 
-	if (!(new = malloc(sizeof(t_linked_list))))
+	if (!(new = malloc(sizeof(t_dlst))))
 		return (NULL);
 	new->content = content;
 	if (prev)

@@ -1,20 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_error_message.c                               :+:      :+:    :+:   */
+/*   count_2d_lines.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/29 22:23:06 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/29 22:24:21 by mkristie         ###   ########.fr       */
+/*   Created: 2020/09/30 20:36:34 by mkristie          #+#    #+#             */
+/*   Updated: 2020/09/30 20:36:43 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		exit_error_message(char *str) // maybe set exit_code somewhere here also
+int			count_2d_lines(char **arr2d)
 {
-	ft_putstr_fd(str, 2); //2 fd?
+	int		i;
 
-	exit(2);
+	i = 0;
+	while (arr2d[i])
+	{
+		i++;
+	}
+	return (i);
 }
