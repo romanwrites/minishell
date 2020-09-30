@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_by_semicolons.c                              :+:      :+:    :+:   */
+/*   split_by_char.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -32,15 +32,15 @@ _Bool		is_backslash_pressed(t_parse *state_check)
 	return (0);
 }
 
-void		set_quotes_state(t_mshell *sv, t_parse *state_check, int j)
+void		set_quotes_state(t_mshell *sv, t_parse *state_check, int j, char *str)
 {
-	if (sv->content[j] == 34 && !state_check->is_double_quote_open)
+	if (str[j] == 34 && !state_check->is_double_quote_open)
 		state_check->is_double_quote_open = 1;
-	else if (sv->content[j] == 34 && state_check->is_double_quote_open && j > 0 && sv->content[j - 1] != 92)
+	else if (str[j] == 34 && state_check->is_double_quote_open && j > 0 && str[j - 1] != 92)
 		state_check->is_double_quote_open = 0;
-	else if (sv->content[j] == 39 && !state_check->is_single_quote_open)
+	else if (str[j] == 39 && !state_check->is_single_quote_open)
 		state_check->is_single_quote_open = 1;
-	else if (sv->content[j] == 39 && state_check->is_single_quote_open)
+	else if (str[j] == 39 && state_check->is_single_quote_open)
 		state_check->is_single_quote_open = 0;
 }
 
@@ -51,30 +51,30 @@ _Bool		is_any_quote_open(t_parse *state_check)
 	return (0);
 }
 
-void		set_new_lines_over_semicolons(t_mshell *sv)
+void		set_new_lines_over_char(t_mshell *sv, char c, char *str)
 {
 	int		j = 0;
 
-	while (sv->content[j])
+	while (str[j])
 	{
-		set_backslash_state(sv->state, sv->content[j], j);
-		set_quotes_state(sv, sv->state, j);
-		if (sv->content[j] == ';' && !is_any_quote_open(sv->state) && !is_backslash_pressed(sv->state))
+		set_backslash_state(sv->state, str[j], j);
+		set_quotes_state(sv, sv->state, j, str);
+		if (str[j] == c && !is_any_quote_open(sv->state) && !is_backslash_pressed(sv->state))
 		{
-			if (sv->content[j + 1] == ';')
+			if (str[j + 1] == c)
 			{
 				exit_error_message("bash: syntax error near unexpected token `;;'"); // set 258
 				return ; //debug
 			}
 
-			sv->content[j] = '\n';
+			str[j] = '\n';
 		}
-		if (j > 0 && sv->content[j] == ';' && sv->content[j - 1] == '\n')
+		if (j > 0 && str[j] == c && str[j - 1] == '\n')
 		{
 			exit_error_message("bash: syntax error near unexpected token `;;'"); //edit error message with prompt and set 258
 			return ; //debug
 		}
-		if (j == 0 && sv->content[j] == ';')
+		if (j == 0 && str[j] == c)
 		{
 			exit_error_message("bash: syntax error near unexpected token `;'"); //258
 			return ; //debug
@@ -83,12 +83,12 @@ void		set_new_lines_over_semicolons(t_mshell *sv)
 	}
 }
 
-char		**split_by_semicolons(t_mshell *sv)
+char		**split_by_char(t_mshell *sv, char c, char *str)
 {
 	char	**semicolon2d;
 
-	set_new_lines_over_semicolons(sv);
-	semicolon2d = ft_split(sv->content, '\n');
+	set_new_lines_over_char(sv, c, str);
+	semicolon2d = ft_split(str, '\n');
 	ft_alloc_check(semicolon2d);
 	return (semicolon2d);
 }
