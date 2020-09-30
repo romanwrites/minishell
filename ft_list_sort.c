@@ -87,20 +87,49 @@ void		ft_list_sort(t_list **begin_list, int (*cmp)())
 //int main()
 //{
 //	t_list *list;
+//	t_list *tmp;
 //
 //	t_envar first = {"xyz", "999"};
 //	t_envar second = {"def", "555"};
+//	t_envar fourth = {"tuv", "123"};
+//	t_envar third = {"ghi", "111"};
+//	t_envar fifth = {"klm", "555"};
+//	t_envar sixth = {"qrs", "333"};
+//	t_envar seventh = {"nop", "777"};
 //	t_envar last = {"abc", "000"};
 //	list = ft_lstnew((void *)&first);
 //	ft_lstadd_back(&list, ft_lstnew((void *)&second));
 //	ft_lstadd_back(&list, ft_lstnew((void *)&last));
-//	printf("%s\n", ((t_envar *)list->content)->key);
-//	printf("%s\n", ((t_envar *)list->next->content)->key);
-//	printf("%s\n", ((t_envar *)list->next->next->content)->key);
-//	//ft_list_sort(&list, strcmp);
+//	ft_lstadd_back(&list, ft_lstnew((void *)&third));
+//	ft_lstadd_back(&list, ft_lstnew((void *)&fourth));
+//	ft_lstadd_back(&list, ft_lstnew((void *)&fifth));
+//	ft_lstadd_back(&list, ft_lstnew((void *)&sixth));
+//	ft_lstadd_back(&list, ft_lstnew((void *)&seventh));
+//	tmp = list;
+//	while(list)
+//	{
+//		if (ft_strncmp(((t_envar *)list->content)->value, "''", ft_strlen(((t_envar *)list->content)->value)))
+//		{
+//			write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
+//			write(1, "=", 1);
+//			write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
+//			write(1, "\n", 1);
+//		}
+//		list = list->next;
+//	}
+//	list = tmp;
 //	ft_list_sort(&list, compare_key);
-//	printf("%s\n", ((t_envar *)list->content)->key);
-//	printf("%s\n", ((t_envar *)list->next->content)->key);
-//	printf("%s\n", ((t_envar *)list->next->next->content)->key);
+//	printf("\n---------------SORTED-----------\n");
+//	while(list)
+//	{
+//		if (ft_strncmp(((t_envar *)list->content)->value, "''", ft_strlen(((t_envar *)list->content)->value)))
+//		{
+//			write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
+//			write(1, "=", 1);
+//			write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
+//			write(1, "\n", 1);
+//		}
+//		list = list->next;
+//	}
 //	return 0;
 //}
