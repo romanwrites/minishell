@@ -1,6 +1,5 @@
 #include "includes/minishell.h"
 
-char	**g_envp;
 t_list	*g_list;
 
 void	echo_assert_test()
@@ -19,11 +18,9 @@ int main(int argc, char **argv, char **envp)
 	t_list *list;
 	t_list *tmp;
 
-	g_envp = envp;
 	//echo_assert_test();
 	//ft_pwd();
-	g_list = env_to_list();
-	//ft_list_sort(&list, compare_key);
+	g_list = env_to_list(envp);
 	if (argv[1][0] == 'e' && argv[1][1] == 'n' && argv[1][2] == 'v' && argv[1][3] == '\0')
 	{
 		ft_env();
@@ -38,10 +35,10 @@ int main(int argc, char **argv, char **envp)
 	}
 	if (!(strcmp(argv[1], "export")))
 	{
-		if (!(argv[3]))
+		if (!(argv[2]))
 			ft_export(0);
 		else
-			ft_export(argv[3]);
+			ft_export(argv[2]);
 		return 0;
 	}
 	//ft_cd(argv[1]);

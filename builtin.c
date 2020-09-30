@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/09/30 14:16:24 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/09/30 16:07:46 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	ft_env()
 		list = list->next;
 	}
 }
-
+/*
 void	free_env(char **env_array, int lines)
 {
 	while (lines >= 0)
@@ -167,30 +167,21 @@ void	count_lines(int *lines, int *max_len, char *arg)
 		env++;
 		(*lines)++;
 	}
-	/*
-	if (arg)
-	{
-		g_envp = realloc(g_envp, (*lines) + 1);
-		g_envp[*lines] = malloc(*max_len);
-		ft_strcpy(g_envp[*lines], arg);
-		printf("\n\n%s\n", arg);
-		printf("%s\n\n", g_envp[*lines]);
-	}
-	*/
 	if (arg)
 		(*lines)++;
 }
+*/
 
 void	ft_export(char *arg) //handle ='' & many varS using ft_split(' ')
 {
 	//char	**env_array;
 	//int		lines;
 	//int		max_len;
-//
+
 	//lines = 0;
 	//max_len = 0;
 	//env_array = NULL;
-	//
+
 	//count_lines(&lines, &max_len, arg);
 	//env_array = alloc_mem_env(lines, max_len, arg);
 	//if (env_array == NULL)
@@ -201,8 +192,34 @@ void	ft_export(char *arg) //handle ='' & many varS using ft_split(' ')
 	//free_env(env_array, lines);//place at EXIT
 
 	t_list	*list;
+	t_envar kv[256];
+	int		i;
+	char	**pair;
+	char	*value;
 	
 	list = g_list;
+	pair = ft_split(arg, ' ');
+	i = 0;
+	while(*pair)
+	{
+		value = ft_strchr(*pair, '=');
+		if (value == NULL)
+			kv[i].value = ft_strdup("''");
+		else
+			kv[i].value = ft_strdup(++value);//???
+		if (!kv[i].value)
+			return ;//what to do if malloc fails
+		kv[i].key = malloc(ft_strlen(*pair) - ft_strlen(kv[i].value));
+		if (!kv[i].key)
+			return ;//what to do if malloc fails
+		ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair) - ft_strlen(value));
+		if (!list)
+			list = ft_lstnew((void *)&(kv[i]));
+		else
+			ft_lstadd_back(&list, ft_lstnew((void *)&(kv[i])));
+		pair++;
+		i++;
+	}
 	ft_list_sort(&list, compare_key);
 	while(list)
 	{
@@ -231,7 +248,7 @@ void	ft_unset(char *arg) //revome varS
 	}
 }
 
-t_list	*env_to_list()
+t_list	*env_to_list(char **envp)
 {
 	char	**env;
 	char	*value;
@@ -239,7 +256,7 @@ t_list	*env_to_list()
 	t_envar	kv[256];//WHY NOT 32??
 	int i;
 
-	env = g_envp;
+	env = envp;
 	list = NULL;
 	i = 0;
 	while (*env)
