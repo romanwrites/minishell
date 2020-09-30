@@ -18,6 +18,12 @@ void	init(t_mshell	*sv)
 	sv->arr3d = NULL;
 	sv->content = NULL;
 	sv->i = 0;
+	sv->state = (t_parse *)malloc(sizeof(t_parse) * 1); // free after parse
+	ft_alloc_check(sv->state);
+	sv->state->is_double_quote_open = 0;
+	sv->state->is_single_quote_open = 0;
+	sv->state->backslash = 0;
+	sv->state->backslash_time = 0;
 }
 
 int     main(int ac, char **av, char **envp)
