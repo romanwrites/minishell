@@ -6,14 +6,15 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/09/30 17:56:18 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/09/30 20:50:54 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
 t_list	*g_list;
-
+t_list	*g_lst;
+char	**g_env;
 
 void	ft_echo(char *str, int flag_n) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
 {
@@ -63,7 +64,7 @@ void	ft_env()
 {
 	t_list *list;
 
-	list = g_list;
+	list = g_lst;
 	while(list)
 	{
 		if (ft_strncmp(((t_envar *)list->content)->value, "''", ft_strlen(((t_envar *)list->content)->value)))
@@ -76,136 +77,19 @@ void	ft_env()
 		list = list->next;
 	}
 }
-/*
-void	free_env(char **env_array, int lines)
+
+void	ft_export(char *arg)
 {
-	while (lines >= 0)
-	{
-		free(env_array[lines]);
-		lines--;
-	}
-	free(env_array);
-}
-
-char	**alloc_mem_env(int lines, int max_len, char *arg)
-{
-	char	**env_array;
-	int		i;
-
-	i = 0;
-
-	env_array = (char **)malloc(sizeof(char *) * lines + 1);
-	if (!env_array)
-		return (env_array);
-	while (i < lines)
-	{
-		env_array[i] = malloc(max_len + 1);
-		if (!(env_array[i]))
-		{
-			free_env(env_array, i);
-			return(NULL);
-		}
-		i++;
-	}
-	return(env_array);
-}
-
-void	fill_env(char **env_array, char *arg)
-{
-	char	**env;
-	
-	env = g_envp;
-	while((*env))
-	{
-		ft_strlcat((*env_array), (*env), ft_strlen(*env) + 1);
-		env_array++;
-		env++;
-	}
-	if (arg)
-	{
-		ft_strlcat((*env_array), arg, ft_strlen(arg) + 1);
-		env_array++;
-	}
-	*env_array = NULL;
-}
-
-void	sort_env(char **env_array, int lines, int max_len)
-{
-	char *tmp;
-	int i;
-
-	i = 0;
-	while(lines > 1)
-	{
-		while  (i < lines - 1)
-		{
-			if (ft_strncmp(env_array[i], env_array[i + 1], max_len) > 0)
-			{
-				tmp = env_array[i];
-				env_array[i] = env_array[i + 1];
-				env_array[i + 1] = tmp;
-			}
-			i++;
-		}
-		i = 0;
-		lines--;
-	}
-}
-
-void	print_env(char **env_array)
-{
-	while (*env_array)
-	{
-		write(1, *env_array, ft_strlen(*env_array));
-		write(1, "\n", 1);
-		env_array++;
-	}
-}
-
-void	count_lines(int *lines, int *max_len, char *arg)
-{
-	char	**env;
-
-	env = g_envp;
-	while((*env))
-	{
-		*max_len = (*max_len > ft_strlen(*env)) ? *max_len : ft_strlen(*env);
-		env++;
-		(*lines)++;
-	}
-	if (arg)
-		(*lines)++;
-}
-*/
-
-void	ft_export(char *arg) //handle ='' & many varS using ft_split(' ')
-{
-	//char	**env_array;
-	//int		lines;
-	//int		max_len;
-
-	//lines = 0;
-	//max_len = 0;
-	//env_array = NULL;
-
-	//count_lines(&lines, &max_len, arg);
-	//env_array = alloc_mem_env(lines, max_len, arg);
-	//if (env_array == NULL)
-	//	return ;
-	//fill_env(env_array, arg);
-	//sort_env(env_array, lines, max_len);
-	//print_env(env_array);
-	//free_env(env_array, lines);//place at EXIT
-
 	t_list	*list;
 	t_envar kv[256];
 	int		i;
 	char	**pair;
 	char	*value;
+	char	**env;
 	int		value_flag;
-	int		key_flag;
 	
-	list = g_list;
+	env = g_env;
+	list = env_to_list(env);
 	pair = ft_split(arg, ' ');
 	i = 0;
 	value_flag = 0;
@@ -244,7 +128,7 @@ void	ft_export(char *arg) //handle ='' & many varS using ft_split(' ')
 		value_flag = 0;
 	}
 	ft_list_sort(&list, compare_key);
-	while(list)
+	while(list->next)
 	{
 		write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
 		write(1, "=", 1);

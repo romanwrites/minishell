@@ -19,7 +19,8 @@
 # include <signal.h>
 # include <stdio.h> //
 
-extern  t_list  *g_list;
+extern  t_list  *g_lst;//for ENV
+extern  char    **g_env;
 
 typedef struct  s_envar
 {

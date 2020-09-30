@@ -1,7 +1,5 @@
 #include "includes/minishell.h"
 
-t_list	*g_list;
-
 void	echo_assert_test()
 {
 	printf("_________BACKSLASH________\n");
@@ -20,7 +18,17 @@ int main(int argc, char **argv, char **envp)
 
 	//echo_assert_test();
 	//ft_pwd();
-	g_list = env_to_list(envp);
+	printf("+++++++++++++++++BEGIN+++++++++++++++++\n");
+	g_env = envp;
+	g_lst = env_to_list(envp);
+	printf("\n---------------EXPORT0----------------\n");
+	ft_export(0);
+	printf("\n---------------ENV0----------------\n");
+	ft_env();
+	printf("\n---------------EXPORT1----------------\n");
+	ft_export(0);
+	printf("\n---------------ENV1----------------\n");
+	ft_env();
 	if (argv[1][0] == 'e' && argv[1][1] == 'n' && argv[1][2] == 'v' && argv[1][3] == '\0')
 	{
 		ft_env();
@@ -35,11 +43,12 @@ int main(int argc, char **argv, char **envp)
 	}
 	if (!(strcmp(argv[1], "export")))
 	{
+		printf("\n---------------EXPORT2----------------\n");
 		if (argc < 3)
 			ft_export(0);
 		else
 			ft_export(argv[2]);
-		printf("\n---------------ENV----------------\n");
+		printf("\n---------------ENV2----------------\n");
 		ft_env();
 		return 0;
 	}
