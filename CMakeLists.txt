@@ -101,4 +101,8 @@ add_executable(minishell
         utils/ft_alloc_check.c
         builtin.c
         ft_list_sort.c
-        utils/exit_error_message.c utils/print_2d_array.c parser/split_by_quotes.c parser/split_by_semicolons.c utils/ft_trim_2d.c)
+        utils/exit_error_message.c
+        utils/print_2d_array.c
+        parser/split_by_quotes.c
+        parser/split_by_semicolons.c
+        utils/ft_trim_2d.c)

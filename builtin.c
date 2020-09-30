@@ -12,6 +12,9 @@
 
 #include "includes/minishell.h"
 
+t_list	*g_list;
+
+
 void	ft_echo(char *str, int flag_n) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
 {
 	write(1, str, ft_strlen(str));
