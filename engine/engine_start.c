@@ -18,6 +18,12 @@ void	init(t_mshell	*sv)
 	sv->arr3d = NULL;
 	sv->content = NULL;
 	sv->i = 0;
+	sv->state = (t_parse *)malloc(sizeof(t_parse) * 1); // free after parse
+	ft_alloc_check(sv->state);
+	sv->state->is_double_quote_open = 0;
+	sv->state->is_single_quote_open = 0;
+	sv->state->backslash = 0;
+	sv->state->backslash_time = 0;
 }
 
 int     main(int ac, char **av, char **envp)
@@ -32,15 +38,6 @@ int     main(int ac, char **av, char **envp)
 	ft_alloc_check(sv);
 	init(sv);
 
-//	sv->content = ft_strdup("echo -n \"echo -n < Makefile ; echo \\\""); // "echo -n\"
-//	ft_alloc_check(sv->content);
-//	parse_start(sv);
-//	free(sv->content);
-//
-//	sv->content = ft_strdup("echo \"kek |||| >> < >> <|\""); // "echo -n\"
-//	ft_alloc_check(sv->content);
-//	parse_start(sv);
-//	free(sv->content);
 	int fd = open("parse_tests.txt", O_RDONLY);
 	while (get_next_line(fd, &sv->content))
 	{
@@ -49,6 +46,10 @@ int     main(int ac, char **av, char **envp)
 		free(sv->content);
 		sv->content = NULL;
 	}
-
-
+	parse_start(sv);
+	free(sv->content);
+	sv->content = NULL;
+	free(sv);
+	sv = NULL;
+	sleep(30);
 }

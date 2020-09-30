@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_mshell.h                                     :+:      :+:    :+:   */
+/*   print_2d_array.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/25 17:39:05 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/25 19:58:49 by mkristie         ###   ########.fr       */
+/*   Created: 2020/09/30 00:20:50 by mkristie          #+#    #+#             */
+/*   Updated: 2020/09/30 00:23:15 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSE_MSHELL_H
-# define PARSE_MSHELL_H
+#include "minishell.h"
 
-void		parse_start(t_mshell *sv);
-char		**split_by_quotes(t_mshell *sv);
-char		**split_by_semicolons(t_mshell *sv);
+void		print_2d_array(char **arr2d)
+{
+	int		i;
 
-#endif
+	i = 0;
+	if (arr2d)
+	{
+		while(arr2d[i])
+		{
+			ft_putendl_fd(arr2d[i], 1);
+			i++;
+		}
+		ft_putendl_fd("(null)", 1);
+	}
+}

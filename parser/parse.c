@@ -3,65 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:38:07 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/27 15:07:41 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/09/29 22:44:28 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-_Bool		find_next_double_q_mark(t_mshell *sv)
-{
-	int		j;
-
-	j = 0;
-	while (sv->content[j])
-	{
-		if (sv->content[j] == '"' && sv->content[j - 1] != '\\')
-		{
-			sv->i = j;
-			return (1);
-		}
-		j++;
-	}
-	return (0);
-}
-
-void		split_sh(t_mshell *sv)
-{
-	sv->i = 0;
-	_Bool d_q_mark_flag = 0;
-	int tokens = 0;
-
-	while (sv->content[sv->i])
-	{
-		if (sv->content[sv->i] == '"' && !d_q_mark_flag)
-		{
-			d_q_mark_flag = 1;
-			if (find_next_double_q_mark(sv))
-			{
-				tokens += 1;
-				d_q_mark_flag = 0;
-				continue ;
-			}
-		}
-
-		sv->i++;
-	}
-}
-
 void		parse_start(t_mshell *sv)
 {
 	char	*tmp;
+	char	**quotes2d;
+	char	**semicolons2d;
+
+	static int case_num;
+	case_num++;
 
 	tmp = sv->content;
+
+//	split_sh(sv);  Make one function to split elegantly
+
+
+
+	// STEP 0: trim
 	sv->content = ft_strtrim(tmp, " \t");
 	ft_alloc_check(sv->content);
 	free(tmp);
 	tmp = NULL;
-	printf("%s\n", sv->content);
-	split_sh(sv);
+	printf("\ncase: %d, str: %s\nafter split by semicolons:\n", case_num, sv->content);
 
+	// STEP 1.0: split by semicolons
+	semicolons2d = split_by_semicolons(sv);
+	print_2d_array(semicolons2d);
+
+//	// STEP 1: split by quotes
+//	printf("case: %d, str: %s\nafter split by quotes:\n", case_num, sv->content);
+//	quotes2d = split_by_quotes(sv);
+//	print_2d_array(quotes2d);
+//	ft_putchar('\n');
+//
+//	// STEP 2: trim
+//	ft_trim_2d(&quotes2d);
+//	print_2d_array(quotes2d);
+//	ft_putchar('\n');
+//
+//	// STEP 3: split by semicolons
+//
+//	ft_free2d(quotes2d);
 }

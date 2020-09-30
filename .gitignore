@@ -1,6 +1,5 @@
 .DS_Store
 .idea/
-CMakeLists.txt
 cmake-build-debug/
 .vscode/
 a.out
