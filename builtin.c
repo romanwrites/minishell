@@ -6,11 +6,9 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/09/29 13:16:43 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/09/30 10:50:43 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-char		**g_envp;
 
 #include "includes/minishell.h"
 
@@ -23,6 +21,7 @@ void	ft_echo(char *str, int flag_n) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
 
 void	ft_exit(int exit_code)
 {
+	//ft_lstclear()
 	exit(exit_code);
 }
 
@@ -215,4 +214,48 @@ void	ft_unset(char *arg) //revome varS
 		write(1, "invalid parameter name", ft_strlen("invalid parameter name"));
 		write(1, "\n", 1);
 	}
+}
+
+t_list	*env_to_list()
+{
+	int		flag;
+	char	**env;
+	char	*value;
+	t_list	*list;
+	t_envar	kv;
+
+	env = g_envp;
+	flag = 0;
+	while (*env)
+	{
+		value = ft_strchr(*env, '=');
+		value++;
+		kv.key = malloc(ft_strlen(*env) - ft_strlen(value));
+		if (!kv.key)
+			return (NULL);
+		ft_strlcpy(kv.key, *env, ft_strlen(*env) - ft_strlen(value));
+		kv.value = ft_strdup(value);
+		if (!kv.value)
+			return (NULL);
+		if (flag == 0)
+		{
+			list = ft_lstnew((void *)&kv);
+			flag++;
+			printf("LIST: %s=%s\n", ((t_envar *)list->content)->key, ((t_envar *)list->content)->value);
+		}
+		else
+		{	
+			ft_lstadd_back(&list, ft_lstnew((void *)&kv));
+			printf("LAST: %s=%s\n", ((t_envar *)list->content)->key, ((t_envar *)list->content)->value);
+		}
+		env++;
+		//printf("LIST: %s=%s\n", ((t_envar *)list->content)->key, ((t_envar *)list->content)->value);
+	}
+	return(list);
+}
+
+void	free_content(t_envar *content) //should be pointed be del() in ft_lstclear()
+{
+	free(content->key);
+	free(content->value);
 }

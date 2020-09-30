@@ -6,13 +6,13 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/30 06:32:36 by mkristie          #+#    #+#              #
-#    Updated: 2020/09/29 17:38:23 by lhelper          ###   ########.fr        #
+#    Updated: 2020/09/30 10:46:51 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 LIBFT = libft.h
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -g
 
 SRCS = ft_atoi.c \
 	  ft_bzero.c \

@@ -83,7 +83,7 @@ void		ft_list_sort(t_list **begin_list, int (*cmp)())
 		i--;
 	}
 }
-
+/*
 int main()
 {
 	t_list *list;
@@ -104,3 +104,4 @@ int main()
 	printf("%s\n", ((t_envar *)list->next->next->content)->key);
 	return 0;
 }
+*/
