@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/09/30 16:07:46 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/09/30 16:36:47 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,29 +196,41 @@ void	ft_export(char *arg) //handle ='' & many varS using ft_split(' ')
 	int		i;
 	char	**pair;
 	char	*value;
+	int		value_flag;
 	
 	list = g_list;
 	pair = ft_split(arg, ' ');
 	i = 0;
+	value_flag = 0;
 	while(*pair)
 	{
 		value = ft_strchr(*pair, '=');
-		if (value == NULL)
+		if (value == NULL || value + 1 == '\0')
+		{
 			kv[i].value = ft_strdup("''");
+			value_flag = 1;
+		}
 		else
 			kv[i].value = ft_strdup(++value);//???
 		if (!kv[i].value)
 			return ;//what to do if malloc fails
-		kv[i].key = malloc(ft_strlen(*pair) - ft_strlen(kv[i].value));
+		if (!value_flag)
+			kv[i].key = malloc(ft_strlen(*pair) - ft_strlen(kv[i].value));
+		else
+			kv[i].key = malloc(ft_strlen(*pair) + 1);
 		if (!kv[i].key)
 			return ;//what to do if malloc fails
-		ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair) - ft_strlen(value));
+		if (!value_flag)
+			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair) - ft_strlen(kv[i].value));
+		else
+			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair) + 1);
 		if (!list)
 			list = ft_lstnew((void *)&(kv[i]));
 		else
 			ft_lstadd_back(&list, ft_lstnew((void *)&(kv[i])));
 		pair++;
 		i++;
+		value_flag = 0;
 	}
 	ft_list_sort(&list, compare_key);
 	while(list)
