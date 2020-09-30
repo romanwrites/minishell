@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/09/30 13:54:44 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/09/30 14:16:24 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,16 @@ void	ft_cd(char *str)
 
 void	ft_env()
 {
-	char **env;
+	t_list *list;
 
-	env = g_envp;
-	while((*env))
+	list = g_list;
+	while(list)
 	{
-		write(1, *env, ft_strlen(*env));
+		write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
+		write(1, "=", 1);
+		write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
 		write(1, "\n", 1);
-		env++;
+		list = list->next;
 	}
 }
 
@@ -181,22 +183,35 @@ void	count_lines(int *lines, int *max_len, char *arg)
 
 void	ft_export(char *arg) //handle ='' & many varS using ft_split(' ')
 {
-	char	**env_array;
-	int		lines;
-	int		max_len;
+	//char	**env_array;
+	//int		lines;
+	//int		max_len;
+//
+	//lines = 0;
+	//max_len = 0;
+	//env_array = NULL;
+	//
+	//count_lines(&lines, &max_len, arg);
+	//env_array = alloc_mem_env(lines, max_len, arg);
+	//if (env_array == NULL)
+	//	return ;
+	//fill_env(env_array, arg);
+	//sort_env(env_array, lines, max_len);
+	//print_env(env_array);
+	//free_env(env_array, lines);//place at EXIT
 
-	lines = 0;
-	max_len = 0;
-	env_array = NULL;
+	t_list	*list;
 	
-	count_lines(&lines, &max_len, arg);
-	env_array = alloc_mem_env(lines, max_len, arg);
-	if (env_array == NULL)
-		return ;
-	fill_env(env_array, arg);
-	sort_env(env_array, lines, max_len);
-	print_env(env_array);
-	free_env(env_array, lines);//place at EXIT
+	list = g_list;
+	ft_list_sort(&list, compare_key);
+	while(list)
+	{
+		write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
+		write(1, "=", 1);
+		write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
+		write(1, "\n", 1);
+		list = list->next;
+	}
 }
 
 void	ft_unset(char *arg) //revome varS

@@ -20,6 +20,7 @@
 # include <stdio.h> //
 
 extern	char	**g_envp;
+extern  t_list  *g_list;
 
 typedef struct  s_envar
 {
