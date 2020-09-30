@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/09/30 16:36:47 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/09/30 17:56:18 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,13 @@ void	ft_env()
 	list = g_list;
 	while(list)
 	{
-		write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
-		write(1, "=", 1);
-		write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
-		write(1, "\n", 1);
+		if (ft_strncmp(((t_envar *)list->content)->value, "''", ft_strlen(((t_envar *)list->content)->value)))
+		{
+			write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
+			write(1, "=", 1);
+			write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
+			write(1, "\n", 1);
+		}
 		list = list->next;
 	}
 }
@@ -197,18 +200,21 @@ void	ft_export(char *arg) //handle ='' & many varS using ft_split(' ')
 	char	**pair;
 	char	*value;
 	int		value_flag;
+	int		key_flag;
 	
 	list = g_list;
 	pair = ft_split(arg, ' ');
 	i = 0;
 	value_flag = 0;
-	while(*pair)
+	while(pair && *pair)
 	{
 		value = ft_strchr(*pair, '=');
-		if (value == NULL || value + 1 == '\0')
+		if (value == NULL || *(value + 1) == '\0')
 		{
 			kv[i].value = ft_strdup("''");
 			value_flag = 1;
+			if (value && *(value + 1) == '\0')
+				value_flag = 2;//to remove '=' from key
 		}
 		else
 			kv[i].value = ft_strdup(++value);//???
@@ -222,8 +228,10 @@ void	ft_export(char *arg) //handle ='' & many varS using ft_split(' ')
 			return ;//what to do if malloc fails
 		if (!value_flag)
 			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair) - ft_strlen(kv[i].value));
-		else
+		else if (value_flag == 1)
 			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair) + 1);
+		else
+			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair));
 		if (!list)
 			list = ft_lstnew((void *)&(kv[i]));
 		else

@@ -35,10 +35,12 @@ int main(int argc, char **argv, char **envp)
 	}
 	if (!(strcmp(argv[1], "export")))
 	{
-		if (!(argv[2]))
+		if (argc < 3)
 			ft_export(0);
 		else
 			ft_export(argv[2]);
+		printf("\n---------------ENV----------------\n");
+		ft_env();
 		return 0;
 	}
 	//ft_cd(argv[1]);
