@@ -6,13 +6,12 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/09/30 20:50:54 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/01 12:12:11 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-t_list	*g_list;
 t_list	*g_lst;
 char	**g_env;
 
@@ -128,7 +127,7 @@ void	ft_export(char *arg)
 		value_flag = 0;
 	}
 	ft_list_sort(&list, compare_key);
-	while(list->next)
+	while(list && !arg)
 	{
 		write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
 		write(1, "=", 1);

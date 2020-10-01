@@ -21,14 +21,14 @@ int main(int argc, char **argv, char **envp)
 	printf("+++++++++++++++++BEGIN+++++++++++++++++\n");
 	g_env = envp;
 	g_lst = env_to_list(envp);
-	printf("\n---------------EXPORT0----------------\n");
-	ft_export(0);
-	printf("\n---------------ENV0----------------\n");
-	ft_env();
-	printf("\n---------------EXPORT1----------------\n");
-	ft_export(0);
-	printf("\n---------------ENV1----------------\n");
-	ft_env();
+	//printf("\n---------------EXPORT0----------------\n");
+	//ft_export(0);
+	//printf("\n---------------ENV0----------------\n");
+	//ft_env();
+	//printf("\n---------------EXPORT1----------------\n");
+	//ft_export(0);
+	//printf("\n---------------ENV1----------------\n");
+	//ft_env();
 	if (argv[1][0] == 'e' && argv[1][1] == 'n' && argv[1][2] == 'v' && argv[1][3] == '\0')
 	{
 		ft_env();
@@ -48,6 +48,8 @@ int main(int argc, char **argv, char **envp)
 			ft_export(0);
 		else
 			ft_export(argv[2]);
+		printf("\n---------------EXPORT3----------------\n");
+			ft_export("LOL=666");
 		printf("\n---------------ENV2----------------\n");
 		ft_env();
 		return 0;
