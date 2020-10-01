@@ -18,28 +18,13 @@ int main(int argc, char **argv, char **envp)
 
 	//echo_assert_test();
 	//ft_pwd();
-	printf("+++++++++++++++++BEGIN+++++++++++++++++\n");
+	printf("\n+++++++++++++++++BEGIN+++++++++++++++++\n");
 	g_env = envp;
 	g_exp = NULL;
-	//printf("\n---------------EXPORT0----------------\n");
-	//ft_export(0);
-	//printf("\n---------------ENV0----------------\n");
-	//ft_env();
-	//printf("\n---------------EXPORT1----------------\n");
-	//ft_export(0);
-	//printf("\n---------------ENV1----------------\n");
-	//ft_env();
 	if (argv[1][0] == 'e' && argv[1][1] == 'n' && argv[1][2] == 'v' && argv[1][3] == '\0')
 	{
 		ft_env();
 		return 0;
-	}
-	if (!(strcmp(argv[1], "unset")))
-	{
-		if (!(argv[3]))
-			ft_unset(0);
-		else
-			ft_unset(argv[3]);
 	}
 	if (!(strcmp(argv[1], "export")))
 	{
@@ -48,12 +33,16 @@ int main(int argc, char **argv, char **envp)
 		//	ft_export(0);
 		//else
 		//	ft_export(argv[2]);
-		printf("\n---------------EXPORT3----------------\n");
-			ft_export("LEL=111");
-		printf("\n---------------EXPORT3----------------\n");
+		printf("\n---------------EXPORT1----------------\n");
+			ft_export("LEL=111 LOL=000");
+		printf("\n---------------EXPORT2----------------\n");
 			ft_export("LAL=666");
-		printf("\n---------------ENV2----------------\n");
+		//printf("\n---------------UNSET0----------------\n");
+		//	ft_unset("LAL LEL");
+		printf("\n---------------ENV----------------\n");
 		ft_env();
+		printf("\n---------------EXPORT0----------------\n");
+			ft_export(NULL);
 		return 0;
 	}
 	//ft_cd(argv[1]);

@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/01 17:07:04 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/01 18:54:15 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,9 @@ void	ft_export(char *arg)
 
 void	ft_unset(char *arg) //revome varS
 {
+	char **keys;
+	t_list *tmp;
+
 	if (!arg)
 	{
 		write(1, "unset: not enough arguments", ft_strlen("unset: not enough arguments"));
@@ -208,6 +211,18 @@ void	ft_unset(char *arg) //revome varS
 	}
 	else
 	{
+		keys = ft_split(arg, ' ');
+		while (keys && *keys)
+		{
+			tmp = g_exp;
+			while (tmp)
+			{
+				if(!ft_strncmp(((t_envar *)tmp->content)->key, *keys, ft_strlen(*keys)))
+					ft_lstdelmid(tmp, free_content);
+				tmp = tmp->next;
+			}
+			keys++;
+		}
 		
 	}
 	
