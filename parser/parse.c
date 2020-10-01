@@ -12,9 +12,15 @@
 
 #include "minishell.h"
 
-void		split_by_pipes(t_mshell *sv, char *str)
+void        check_common(char *str)
 {
-
+     if (str)
+     {
+         if (str[0] == ';' || str[1] == '|' || str[ft_strlen(str)] == '|' || str[ft_strlen(str)] == ';')
+         {
+             exit_error_message("Bad syntax. check_common()");
+         }
+     }
 }
 
 void		parse_start(t_mshell *sv)
@@ -22,49 +28,51 @@ void		parse_start(t_mshell *sv)
 	char	*tmp;
 	char	**quotes2d;
 	char	**semicolons2d;
-
 	static int case_num;
 	case_num++;
 
-	tmp = sv->content;
-
 //	split_sh(sv);  Make one function to split elegantly
 
-	printf("sizeof(void *): %zu\n", sizeof(void *));
-	printf("sizeof(char *): %zu\n", sizeof(char *));
-	printf("sizeof(char **): %zu\n", sizeof(char **));
-	printf("sizeof(char ***): %zu\n", sizeof(char ***));
-
 	// STEP 0: trim
-	char	*input_str = ft_strtrim(tmp, " \t");
+	char	*input_str = ft_strtrim(sv->content, " \t");
 	ft_alloc_check(input_str);
-	free(tmp);
-	tmp = NULL;
-	printf("\ncase: %d, str: %s\nafter split by semicolons:\n", case_num, input_str);
-
+	printf("\ncase: %d, str: [%s]\nafter split by semicolons:\n", case_num, input_str);
+    check_common(input_str);
 	// STEP 1.0: split by semicolons
 	semicolons2d = split_by_char(sv, ';', input_str);
 	ft_trim_2d(&semicolons2d);
 
 	print_2d_array(semicolons2d);
+    printf("\nDONE\n\nnext split by pipes:\n\n");
 
 	int lines_count = count_2d_lines(semicolons2d);
 
-	t_dlst	*dlst;
-	void	*tmp_ptr;
+	t_dlist	*dlst;
+    t_dlist	*dlst_head;
+	void	*tmp_ptr2d;
 	int j = 0;
-//	dlst = (t_dlst *)malloc(sizeof(t_dlst) * lines_count + 1);
-//while
+
 	dlst = ft_dlstnew(NULL, NULL);
 	ft_alloc_check(dlst);
+
+    dlst_head = dlst;
 	while (semicolons2d[j])
 	{
-		tmp_ptr = (void *)split_by_char(sv, '|', semicolons2d[j]);
-		ft_alloc_check(tmp_ptr);
-		dlst->content = (void *)ft_dlstnew(tmp_ptr, NULL);
-		print_2d_array((char **)dlst->content);
+		tmp_ptr2d = (void *)split_by_char(sv, '|', semicolons2d[j]);
+		ft_alloc_check(tmp_ptr2d);
+		dlst->content = (void *)ft_dlstnew(tmp_ptr2d, NULL);
+        tmp_ptr2d = NULL;
+        char **ptr = (char **)((t_dlist *)dlst->content)->content;
+        ft_trim_2d(&ptr); // do need to pass as address?
+
+		print_2d_array((char **)((t_dlist *)dlst->content)->content);
+		dlst->next = ft_dlstnew(NULL, NULL);
+		dlst = dlst->next;
 		j++;
 	}
+	ft_free2d(semicolons2d);
+	semicolons2d = NULL;
+
 //	char	**pipes1 = split_by_char(sv, '|', semicolons2d[j]);
 //	print_2d_array(pipes1);
 

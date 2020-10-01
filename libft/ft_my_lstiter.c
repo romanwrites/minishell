@@ -17,7 +17,7 @@
 ** ’f’ to the content of each element.
 */
 
-void	ft_dlstiter(t_dlst *lst, void (*f)(void *))
+void	ft_dlstiter(t_dlist *lst, void (*f)(void *))
 {
 	if (!lst || !f)
 		return ;

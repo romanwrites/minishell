@@ -16,9 +16,9 @@
 ** Adds the element ’new’ at the end of the list.
 */
 
-void	ft_dlstadd_back(t_dlst **lst, t_dlst *new)
+void	ft_dlstadd_back(t_dlist **lst, t_dlist *new)
 {
-	t_dlst	*tmp;
+	t_dlist	*tmp;
 
 	if (!lst || !new)
 		return ;

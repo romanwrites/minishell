@@ -25,17 +25,17 @@ typedef struct		s_list
 ** My double linked list
 */
 
-typedef struct				s_dlst {
+typedef struct				s_dlist {
 	void					*content;
 	size_t					len;
-	struct s_dlst			*next;
-	struct s_dlst			*previous;
-}							t_dlst;
+	struct s_dlist			*next;
+	struct s_dlist			*previous;
+}							t_dlist;
 
-t_dlst						*ft_dlstnew(void *content, t_dlst **prev);
-void						ft_dlstadd_back(t_dlst **lst, t_dlst *new);
-t_dlst						*ft_dlstlast(t_dlst *lst);
-void						ft_dlstiter(t_dlst *lst, void (*f)(void *));
+t_dlist						*ft_dlstnew(void *content, t_dlist **prev);
+void						ft_dlstadd_back(t_dlist **lst, t_dlist *new);
+t_dlist						*ft_dlstlast(t_dlist *lst);
+void						ft_dlstiter(t_dlist *lst, void (*f)(void *));
 
 /*
 ** Binary trees

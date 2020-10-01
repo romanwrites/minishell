@@ -18,11 +18,11 @@
 ** The variable ’next’ is initialized to NULL
 */
 
-t_dlst		*ft_dlstnew(void *content, t_dlst **prev)
+t_dlist		*ft_dlstnew(void *content, t_dlist **prev)
 {
-	t_dlst	*new;
+	t_dlist	*new;
 
-	if (!(new = malloc(sizeof(t_dlst))))
+	if (!(new = malloc(sizeof(t_dlist))))
 		return (NULL);
 	new->content = content;
 	if (prev)

@@ -47,7 +47,8 @@ int     main(int ac, char **av, char **envp)
 		sv->content = NULL;
 	}
 	parse_start(sv);
-	free(sv->content);
+	if (sv->content)
+	    free(sv->content);
 	sv->content = NULL;
 	free(sv);
 	sv = NULL;
