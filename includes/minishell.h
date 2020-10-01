@@ -19,7 +19,7 @@
 # include <signal.h>
 # include <stdio.h> //
 
-extern  t_list  *g_lst;//for ENV
+extern  t_list  *g_exp;//added by export env vars
 extern  char    **g_env;
 
 typedef struct  s_envar
@@ -33,7 +33,7 @@ int		compare_key(t_envar *a, t_envar *b);
 void	count_lines(int *lines, int *max_len, char *arg);
 t_list	*env_to_list(char **envp);
 void	fill_env(char **env_array, char *arg);
-void	free_content(t_envar *content); //should be pointed be del() in ft_lstclear()
+void	free_content(void *to_free); //should be pointed be del() in ft_lstclear()
 void	free_env(char **env_array, int lines);
 void	ft_cd(char *str);
 void	ft_echo(char *str, int flag_n);

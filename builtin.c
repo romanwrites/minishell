@@ -6,13 +6,13 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/01 12:12:11 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/01 15:51:45 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-t_list	*g_lst;
+t_list	*g_exp;
 char	**g_env;
 
 void	ft_echo(char *str, int flag_n) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -62,9 +62,12 @@ void	ft_cd(char *str)
 void	ft_env()
 {
 	t_list *list;
+	t_list *exp;
 
-	list = g_lst;
-	while(list)
+	//list = g_lst;
+	exp = g_exp;
+	list = env_to_list(g_env);
+	while(list->next)
 	{
 		if (ft_strncmp(((t_envar *)list->content)->value, "''", ft_strlen(((t_envar *)list->content)->value)))
 		{
@@ -75,6 +78,53 @@ void	ft_env()
 		}
 		list = list->next;
 	}
+	while(exp)//add export vars
+	{
+		if (ft_strncmp(((t_envar *)exp->content)->value, "''", ft_strlen(((t_envar *)exp->content)->value)))
+		{
+			write(1, ((t_envar *)exp->content)->key, ft_strlen(((t_envar *)exp->content)->key));
+			write(1, "=", 1);
+			write(1, ((t_envar *)exp->content)->value, ft_strlen(((t_envar *)exp->content)->value));
+			write(1, "\n", 1);
+		}
+		exp = exp->next;
+	}
+	if (ft_strncmp(((t_envar *)list->content)->value, "''", ft_strlen(((t_envar *)list->content)->value)))
+		{
+			write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
+			write(1, "=", 1);
+			write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
+			write(1, "\n", 1);
+		}
+	ft_lstclear(&list, free_content);
+}
+
+t_list	*ft_merge_lists(t_list *dst, t_list *src)
+{
+	t_list *t_dst;
+	t_list *t_src;
+
+	if(src == NULL)
+		return(dst);
+	t_dst = dst;
+	t_src = src;
+	while (t_src)
+	{
+		ft_lstadd_back(&t_dst, ft_lstnew(t_src->content));
+		//printf("%s\n", ((char *)((t_envar *)t_src->content)->key));
+		t_src = t_src->next;
+	}
+	return(t_dst);
+}
+
+void	free_kv(t_envar *kv, int i)
+{
+	while(i-- > 0)
+	{
+		printf("\n\n\n%s\n", kv[i].key);
+		free(kv[i].key);
+		free(kv[i].value);
+	}
 }
 
 void	ft_export(char *arg)
@@ -84,11 +134,9 @@ void	ft_export(char *arg)
 	int		i;
 	char	**pair;
 	char	*value;
-	char	**env;
 	int		value_flag;
 	
-	env = g_env;
-	list = env_to_list(env);
+	list = env_to_list(g_env);
 	pair = ft_split(arg, ' ');
 	i = 0;
 	value_flag = 0;
@@ -118,16 +166,17 @@ void	ft_export(char *arg)
 			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair) + 1);
 		else
 			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair));
-		if (!list)
-			list = ft_lstnew((void *)&(kv[i]));
+		if (!g_exp)
+			g_exp = ft_lstnew((void *)&(kv[i]));
 		else
-			ft_lstadd_back(&list, ft_lstnew((void *)&(kv[i])));
+			ft_lstadd_back(&g_exp, ft_lstnew((void *)&(kv[i])));
 		pair++;
 		i++;
 		value_flag = 0;
 	}
+	list = ft_merge_lists(list, g_exp);
 	ft_list_sort(&list, compare_key);
-	while(list && !arg)
+	while(list)// && !arg)
 	{
 		write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
 		write(1, "=", 1);
@@ -135,6 +184,8 @@ void	ft_export(char *arg)
 		write(1, "\n", 1);
 		list = list->next;
 	}
+	ft_lstclear(&list, free_content);
+	free_kv(kv, i);
 }
 
 void	ft_unset(char *arg) //revome varS
@@ -182,13 +233,15 @@ t_list	*env_to_list(char **envp)
 			ft_lstadd_back(&list, ft_lstnew((void *)&(kv[i])));
 		env++;
 		i++;
-		//printf("LIST: %s=%s\n", ((t_envar *)list->content)->key, ((t_envar *)list->content)->value);
 	}
 	return(list);
 }
 
-void	free_content(t_envar *content) //should be pointed be del() in ft_lstclear()
+void	free_content(void *to_free) //should be pointed be del() in ft_lstclear()
 {
+	t_envar *content;
+
+	content = to_free;
 	free(content->key);
 	free(content->value);
 }

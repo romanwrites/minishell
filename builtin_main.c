@@ -20,7 +20,7 @@ int main(int argc, char **argv, char **envp)
 	//ft_pwd();
 	printf("+++++++++++++++++BEGIN+++++++++++++++++\n");
 	g_env = envp;
-	g_lst = env_to_list(envp);
+	g_exp = NULL;
 	//printf("\n---------------EXPORT0----------------\n");
 	//ft_export(0);
 	//printf("\n---------------ENV0----------------\n");
@@ -43,11 +43,15 @@ int main(int argc, char **argv, char **envp)
 	}
 	if (!(strcmp(argv[1], "export")))
 	{
-		printf("\n---------------EXPORT2----------------\n");
-		if (argc < 3)
-			ft_export(0);
-		else
-			ft_export(argv[2]);
+		//printf("\n---------------EXPORT2----------------\n");
+		//if (argc < 3)
+		//	ft_export(0);
+		//else
+		//	ft_export(argv[2]);
+		printf("\n---------------EXPORT3----------------\n");
+			ft_export("LOL=666");
+		printf("\n---------------EXPORT3----------------\n");
+			ft_export("LOL=666");
 		printf("\n---------------EXPORT3----------------\n");
 			ft_export("LOL=666");
 		printf("\n---------------ENV2----------------\n");
