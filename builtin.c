@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/01 15:51:45 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/01 17:01:38 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	free_kv(t_envar *kv, int i)
 {
 	while(i-- > 0)
 	{
-		printf("\n\n\n%s\n", kv[i].key);
+		//printf("\n\n\n%s\n", kv[i].key);
 		free(kv[i].key);
 		free(kv[i].value);
 	}
@@ -167,16 +167,16 @@ void	ft_export(char *arg)
 		else
 			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair));
 		if (!g_exp)
-			g_exp = ft_lstnew((void *)&(kv[i]));
+			g_exp = ft_lstnew_kv((void *)&(kv[i]));
 		else
-			ft_lstadd_back(&g_exp, ft_lstnew((void *)&(kv[i])));
+			ft_lstadd_back(&g_exp, ft_lstnew_kv((void *)&(kv[i])));
 		pair++;
 		i++;
 		value_flag = 0;
 	}
 	list = ft_merge_lists(list, g_exp);
 	ft_list_sort(&list, compare_key);
-	while(list)// && !arg)
+	while(list && !arg)
 	{
 		write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
 		write(1, "=", 1);

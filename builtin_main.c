@@ -49,11 +49,9 @@ int main(int argc, char **argv, char **envp)
 		//else
 		//	ft_export(argv[2]);
 		printf("\n---------------EXPORT3----------------\n");
-			ft_export("LOL=666");
+			ft_export("LEL=111");
 		printf("\n---------------EXPORT3----------------\n");
-			ft_export("LOL=666");
-		printf("\n---------------EXPORT3----------------\n");
-			ft_export("LOL=666");
+			ft_export("LAL=666");
 		printf("\n---------------ENV2----------------\n");
 		ft_env();
 		return 0;

@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/30 06:32:36 by mkristie          #+#    #+#              #
-#    Updated: 2020/09/30 10:46:51 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/01 16:40:20 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,10 +72,6 @@ SRCS = ft_atoi.c \
 	  ft_replace.c \
 	  ft_strcmp.c \
 	  ft_putstr.c \
-	  ft_dlstadd_back.c \
-	  ft_dlstiter.c \
-	  ft_dlstlast.c \
-	  ft_dlstnew.c \
 	  ft_lstnew.c \
 	  ft_lstsize.c \
 	  ft_lstlast.c \
@@ -86,6 +82,11 @@ SRCS = ft_atoi.c \
 	  ft_lstiter.c \
 	  ft_lstmap.c \
 	  ft_lstrev.c \
+	  ft_lstnew_kv.c\
+#	  ft_dlstadd_back.c\
+	  ft_dlstiter.c \
+	  ft_dlstlast.c \
+	  ft_dlstnew.c \
 
 SRCSBONUS = ft_lstnew.c \
 	  ft_lstsize.c \
