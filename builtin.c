@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/01 17:01:38 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/01 17:07:04 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,12 +176,15 @@ void	ft_export(char *arg)
 	}
 	list = ft_merge_lists(list, g_exp);
 	ft_list_sort(&list, compare_key);
-	while(list && !arg)
+	while(list)
 	{
-		write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
-		write(1, "=", 1);
-		write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
-		write(1, "\n", 1);
+		if (!arg)
+		{
+			write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
+			write(1, "=", 1);
+			write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
+			write(1, "\n", 1);
+		}
 		list = list->next;
 	}
 	ft_lstclear(&list, free_content);
@@ -203,6 +206,11 @@ void	ft_unset(char *arg) //revome varS
 		write(1, "invalid parameter name", ft_strlen("invalid parameter name"));
 		write(1, "\n", 1);
 	}
+	else
+	{
+		
+	}
+	
 }
 
 t_list	*env_to_list(char **envp)
