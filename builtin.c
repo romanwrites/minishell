@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/01 18:54:15 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/04 19:04:45 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,10 +191,13 @@ void	ft_export(char *arg)
 	free_kv(kv, i);
 }
 
-void	ft_unset(char *arg) //revome varS
+void	ft_unset(char *arg)
 {
 	char **keys;
+	int		first;
 	t_list *tmp;
+	t_list *ptr_prev;
+	t_list *ptr_next;
 
 	if (!arg)
 	{
@@ -215,17 +218,32 @@ void	ft_unset(char *arg) //revome varS
 		while (keys && *keys)
 		{
 			tmp = g_exp;
+			first = 1;
 			while (tmp)
 			{
-				if(!ft_strncmp(((t_envar *)tmp->content)->key, *keys, ft_strlen(*keys)))
-					ft_lstdelmid(tmp, free_content);
-				tmp = tmp->next;
+				if(!ft_strncmp(((t_envar *)tmp->content)->key, *keys, ft_strlen(*keys)) && !first)
+				{
+					ptr_next = tmp->next;
+					ft_lstdelone(tmp, free_content);
+					ptr_prev->next = ptr_next;
+					tmp = ptr_prev;	
+				}
+				else if (!ft_strncmp(((t_envar *)tmp->content)->key, *keys, ft_strlen(*keys)) && first)
+				{
+					ptr_prev = tmp;
+					ptr_next = tmp->next;
+					ft_lstdelone(tmp, free_content);
+					tmp = ptr_next;
+					g_exp = g_exp->next;//COULD BE A LEAK!!!
+				}
+				ptr_prev = tmp;
+				if (!first)
+					tmp = tmp->next;
+				first = 0;
 			}
 			keys++;
-		}
-		
+		}	
 	}
-	
 }
 
 t_list	*env_to_list(char **envp)

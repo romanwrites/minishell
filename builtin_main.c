@@ -37,8 +37,8 @@ int main(int argc, char **argv, char **envp)
 			ft_export("LEL=111 LOL=000");
 		printf("\n---------------EXPORT2----------------\n");
 			ft_export("LAL=666");
-		//printf("\n---------------UNSET0----------------\n");
-		//	ft_unset("LAL LEL");
+		printf("\n---------------UNSET0----------------\n");
+			ft_unset(" LEL LAL LOL ");
 		printf("\n---------------ENV----------------\n");
 		ft_env();
 		printf("\n---------------EXPORT0----------------\n");
