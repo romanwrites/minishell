@@ -23,14 +23,84 @@ void        check_common(char *str)
      }
 }
 
+_Bool		is_valid_syntax(char pre, char cur, char next)
+{
+	if (cur == '|' && (pre == '|' || next == '|' || pre == '<' ||  pre == '>' ||  next == '<' || next == '>' || !pre || !next))
+		return (0);
+	else if (cur == '>' && (pre == '|' || next == '|' || pre == '<' || next == '<' || !pre || !next))
+		return (0);
+	else if (cur == '<' && (pre == '|' || next == '|' || pre == '>' || next == '>' || !pre || !next))
+		return (0);
+	return (1);
+}
+
+_Bool		is_redir_or_pipe(char c)
+{
+	if (c == '|' || c == '>' || c == '<')
+		return (1);
+	return (0);
+}
+
+char		**split_command(t_mshell *sv, char *str)
+{
+	int 	i;
+	char	*tmp;
+	char	**split_by_command;
+
+	i = 0;
+	tmp = NULL;
+	while (str[i])
+	{
+		set_backslash_state(sv->state, str[i], i);
+		set_quotes_state(sv, sv->state, i, str);
+		if (is_any_quote_open(sv->state))
+		{
+			i++;
+			continue ;
+		}
+		if ((str[i] == ' ' || str[i] == '\t') && !is_backslash_pressed(sv->state))
+			str[i] = '\n';
+		else if (i > 0 && (str[i] == '|' || str[i] == '<' || str[i] == '>') && \
+				(is_valid_syntax(str[i - 1], str[i], str[i + 1])) && \
+				(str[i - 1] != '\n'))
+		{
+			tmp = str;
+			str = malloc(ft_strlen(str) + 2);
+			ft_alloc_check(str);
+			ft_memcpy(str, tmp, i);
+			str[i] = '\n';
+			ft_memcpy(str + i + 1, tmp + i, ft_strlen(tmp) - i);
+			free(tmp);
+			tmp = NULL;
+			i++;
+		}
+		else if (str[i] == '|' || str[i] == '<' || str[i] == '>')
+			exit_error_message("bad syntax");
+		else if (i > 0 && str[i] != ' ' && str[i] != 34 && str[i] != 39 && is_redir_or_pipe(str[i - 1]))
+		{
+			tmp = str;
+			str = malloc(ft_strlen(str) + 2);
+			ft_alloc_check(str);
+			ft_memcpy(str, tmp, i);
+			str[i] = '\n';
+			ft_memcpy(str + i + 1, tmp + i, ft_strlen(tmp) - i);
+			free(tmp);
+			tmp = NULL;
+			i++;
+		}
+		i++;
+	}
+	split_by_command = ft_split(str, '\n');
+	ft_alloc_check(split_by_command);
+	return (split_by_command);
+}
+
 void		parse_start(t_mshell *sv)
 {
 	char	*tmp;
-	char	**quotes2d;
 	char	**semicolons2d;
 	static int case_num;
 	case_num++;
-
 //	split_sh(sv);  Make one function to split elegantly
 
 	// STEP 0: trim
@@ -45,8 +115,6 @@ void		parse_start(t_mshell *sv)
 	print_2d_array(semicolons2d);
     printf("\nDONE\n\nnext split by pipes:\n\n");
 
-	int lines_count = count_2d_lines(semicolons2d);
-
 	t_dlist	*dlst;
     t_dlist	*dlst_head;
 	void	*tmp_ptr2d;
@@ -58,13 +126,13 @@ void		parse_start(t_mshell *sv)
     dlst_head = dlst;
 	while (semicolons2d[j])
 	{
-		tmp_ptr2d = (void *)split_by_char(sv, '|', semicolons2d[j]);
-		ft_alloc_check(tmp_ptr2d);
+		state_bzero(sv->state);
+		tmp_ptr2d = (void *)split_command(sv, semicolons2d[j]);
+//		ft_alloc_check(tmp_ptr2d);
 		dlst->content = (void *)ft_dlstnew(tmp_ptr2d, NULL);
         tmp_ptr2d = NULL;
         char **ptr = (char **)((t_dlist *)dlst->content)->content;
-        ft_trim_2d(&ptr); // do need to pass as address?
-
+        ft_trim_2d(&ptr);
 		print_2d_array((char **)((t_dlist *)dlst->content)->content);
 		dlst->next = ft_dlstnew(NULL, NULL);
 		dlst = dlst->next;

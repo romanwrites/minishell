@@ -5,6 +5,7 @@
 # include "utils_mshell.h"
 # include "structs_mshell.h"
 # include "parse_mshell.h"
+# include "engine_mshell.h"
 
 # include "../libft/libft.h"
 # include "../get_next_line/get_next_line.h"

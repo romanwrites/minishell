@@ -32,7 +32,7 @@ _Bool		is_backslash_pressed(t_parse *state_check)
 	return (0);
 }
 
-void		set_quotes_state(t_mshell *sv, t_parse *state_check, int j, char *str)
+void		set_quotes_state(t_mshell *sv, t_parse *state_check, int j, const char *str)
 {
 	if (str[j] == 34 && !state_check->is_double_quote_open)
 		state_check->is_double_quote_open = 1;
