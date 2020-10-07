@@ -41,14 +41,27 @@ _Bool		is_redir_or_pipe(char c)
 	return (0);
 }
 
+void		set_nl_cpy(char **str, int i)
+{
+	char 	*tmp;
+	char	*new;
+
+	tmp = *(str);
+	new = malloc(ft_strlen(tmp) + 2);
+	ft_alloc_check(new);
+	ft_memcpy(new, tmp, i);
+	new[i] = '\n';
+	ft_memcpy(new + i + 1, tmp + i, ft_strlen(tmp) - i + 2);
+	free(tmp);
+	*(str) = new;
+}
+
 char		**split_command(t_mshell *sv, char *str)
 {
 	int 	i;
-	char	*tmp;
 	char	**split_by_command;
 
 	i = 0;
-	tmp = NULL;
 	while (str[i])
 	{
 		set_backslash_state(sv->state, str[i], i);
@@ -64,28 +77,14 @@ char		**split_command(t_mshell *sv, char *str)
 				(is_valid_syntax(str[i - 1], str[i], str[i + 1])) && \
 				(str[i - 1] != '\n'))
 		{
-			tmp = str;
-			str = malloc(ft_strlen(str) + 2);
-			ft_alloc_check(str);
-			ft_memcpy(str, tmp, i);
-			str[i] = '\n';
-			ft_memcpy(str + i + 1, tmp + i, ft_strlen(tmp) - i);
-			free(tmp);
-			tmp = NULL;
+			set_nl_cpy(&str, i);
 			i++;
 		}
 		else if (str[i] == '|' || str[i] == '<' || str[i] == '>')
 			exit_error_message("bad syntax");
 		else if (i > 0 && str[i] != ' ' && str[i] != 34 && str[i] != 39 && is_redir_or_pipe(str[i - 1]))
 		{
-			tmp = str;
-			str = malloc(ft_strlen(str) + 2);
-			ft_alloc_check(str);
-			ft_memcpy(str, tmp, i);
-			str[i] = '\n';
-			ft_memcpy(str + i + 1, tmp + i, ft_strlen(tmp) - i);
-			free(tmp);
-			tmp = NULL;
+			set_nl_cpy(&str, i);
 			i++;
 		}
 		i++;
