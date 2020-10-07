@@ -106,4 +106,4 @@ add_executable(minishell
         parser/split_by_quotes.c
         parser/split_by_char.c
         utils/ft_trim_2d.c
-        utils/count_2d_lines.c includes/engine_mshell.h)
+        utils/count_2d_lines.c includes/engine_mshell.h parser/split_by_commands.c)
