@@ -13,7 +13,7 @@
 #ifndef PARSE_MSHELL_H
 # define PARSE_MSHELL_H
 
-void		parse_start(t_mshell *sv);
+void		parse_input(t_mshell *sv);
 char		**split_by_quotes(t_mshell *sv);
 char		**split_by_char(t_mshell *sv, char c, char *str);
 int			count_2d_lines(char **arr2d);
