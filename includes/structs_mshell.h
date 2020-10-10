@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs_mshell.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:48:38 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/10 17:53:22 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/10 18:32:14 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,11 @@ typedef struct	s_mshell {
 	t_dlist		*dlst_head;
 	void        *envp_mshell;
 }				t_mshell;
+
+typedef struct  s_envar
+{
+    char *key;
+    char *value;
+}               t_envar;
 
 #endif

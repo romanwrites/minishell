@@ -53,7 +53,7 @@ int main(int argc, char **argv, char **envp)
 		printf("\n---------------UNSET0----------------\n");
 			ft_unset(" LEL LAL LOL ");
 		printf("\n---------------ENV----------------\n");
-		ft_env();
+		//ft_env();
 		printf("\n---------------EXPORT0----------------\n");
 			ft_export(NULL);
 		return 0;

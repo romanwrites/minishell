@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:38:07 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/29 22:44:28 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/10 18:47:56 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char		*analise_command(char **arr_2d)
 		//? try command
 		i++;
 	}
-
+	return NULL;
 }
 
 void		create_commands_list(t_mshell *sv)

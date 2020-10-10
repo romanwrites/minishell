@@ -6,12 +6,12 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/09/30 11:02:39 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/10 18:44:29 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-FLAGS = -O2 #-Wall -Wextra -Werror
+FLAGS = -O2 -g#-Wall -Wextra -Werror
 
 INCLUDES = -Iincludes/ -Iget_next_line/ -Ilibft/
 
@@ -22,17 +22,28 @@ GNL = get_next_line.c \
 		get_next_line_utils.c \
 
 PARSE_SRC = parse.c \
+			split_by_char.c \
+			split_by_commands.c 
 			
 			
 UTILS_SRC = ft_alloc_check.c \
-			ft_bell.c
+			ft_bell.c \
+			compare_kv.c \
+			get_envar.c \
+			count_2d_lines.c \
+			exit_error_message.c \
+			ft_trim_2d.c \
+			print_2d_array.c 
 
 ENGINE_SRC = engine_start.c \
+
+BUILTIN = builtin.c\
 
 SRC = $(addprefix engine/, $(ENGINE_SRC))
 SRC += $(addprefix parser/, $(PARSE_SRC))
 SRC += $(addprefix utils/, $(UTILS_SRC))
 SRC += $(addprefix get_next_line/, $(GNL))
+SRC += $(addprefix builtin/, $(BUILTIN))
 
 OBJ = $(SRC:.c=.o)
 

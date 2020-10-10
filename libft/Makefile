@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/30 06:32:36 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/01 18:42:32 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/10 18:43:04 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,9 +82,10 @@ SRCS = ft_atoi.c \
 	  ft_lstiter.c \
 	  ft_lstmap.c \
 	  ft_lstrev.c \
-	  ft_lstnew_kv.c\
+	  ft_lstnew_kv.c \
 	  ft_lstdelmid.c \
-#	  ft_dlstadd_back.c\
+	  ft_list_sort.c \
+	  ft_dlstadd_back.c \
 	  ft_dlstiter.c \
 	  ft_dlstlast.c \
 	  ft_dlstnew.c \

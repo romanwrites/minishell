@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   engine_start.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/25 19:59:14 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/10 18:57:28 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int     main(int ac, char **av, char **envp)
 	sv->envp_mshell = (void *)envp;
 
 	int fd = open("parse_tests.txt", O_RDONLY);
-	while (get_next_line(fd, &sv->content))
+	while (get_next_line(0, &sv->content))
 	{
 		ft_alloc_check(sv->content);
 		parse_input(sv);

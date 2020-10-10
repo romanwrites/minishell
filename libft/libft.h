@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 06:25:28 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/01 18:46:19 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/10 18:50:14 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 								void (*del)(void *));
+void				ft_list_sort(t_list **begin_list, int (*cmp)());
 
 /*
 ** My funcs
@@ -148,7 +149,9 @@ char				*ft_replace_char(const char *str, char *remove, \
 														char *paste);
 char				*ft_replace(const char *str, const char *rmv, const char *pst);
 void				ft_lstrev(t_list **lst);
-// int				ft_strcmp(const char *s1, const char *s2);
-// void				ft_putstr(const char *s);
+int					ft_strcmp(const char *s1, const char *s2);
+void				ft_putstr(const char *s);
+
+size_t		max_len(size_t len_a, size_t len_b);
 
 #endif
