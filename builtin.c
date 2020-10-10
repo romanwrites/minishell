@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/10 16:29:45 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/10 18:04:38 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,13 @@ void	ft_env()
 	list = env_to_list(g_env);
 	while(list->next)
 	{
-		if (ft_strncmp(((t_envar *)list->content)->value, "''", ft_strlen(((t_envar *)list->content)->value)))
-		{
+		//if (ft_strncmp(((t_envar *)list->content)->value, "''", ft_strlen(((t_envar *)list->content)->value)))
+		//{
 			write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
 			write(1, "=", 1);
 			write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
 			write(1, "\n", 1);
-		}
+		//}
 		list = list->next;
 	}
 	while(exp)//adds export vars
