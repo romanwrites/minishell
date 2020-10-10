@@ -36,11 +36,11 @@ int     main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	(void)envp;
 
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
 	init(sv);
+	sv->envp_mshell = (void *)envp;
 
 	int fd = open("parse_tests.txt", O_RDONLY);
 	while (get_next_line(fd, &sv->content))

@@ -12,6 +12,7 @@
 
 #ifndef ENGINE_MSHELL_H
 # define ENGINE_MSHELL_H
+#include "structs_mshell.h"
 
 void	state_bzero(t_parse *state);
 

@@ -53,6 +53,21 @@ void		create_commands_list(t_mshell *sv)
 	}
 }
 
+_Bool   is_bad_syntax(char c)
+{
+    int     i;
+    char    tab[] = ";|><";
+
+    i = 0;
+    while(tab[i])
+    {
+        if (tab[i] == c)
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
 void		parse_input(t_mshell *sv)
 {
 	char	*tmp;
@@ -75,18 +90,22 @@ void		parse_input(t_mshell *sv)
 
 	void	*tmp_ptr2d;
 	int j = 0;
-
+//    get_envar(sv->envp_mshell, "PATH"
 	dlst = ft_dlstnew(NULL, NULL);
 	ft_alloc_check(dlst);
     sv->dlst_head = dlst;
 	while (semicolons2d[j])
 	{
+	    if (is_bad_syntax(semicolons2d[j][0]))
+	        exit_error_message("bad syntax");
 		state_bzero(sv->state);
 		tmp_ptr2d = (void *)split_command(sv, semicolons2d[j]);
 		dlst->content = (void *)ft_dlstnew(tmp_ptr2d, NULL);
         tmp_ptr2d = NULL;
         char **ptr = (char **)((t_dlist *)dlst->content)->content;
         ft_trim_2d(&ptr);
+        if (count_2d_lines(ptr) == 1 && is_bad_syntax(ptr[0][ft_strlen(ptr[0]) - 1]))
+            exit_error_message("bad syntax");
 		print_2d_array((char **)((t_dlist *)dlst->content)->content); //debug print
 		dlst->next = ft_dlstnew(NULL, NULL);
 		dlst = dlst->next;
@@ -95,5 +114,4 @@ void		parse_input(t_mshell *sv)
 //	create_commands_list(sv);
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
-
 }

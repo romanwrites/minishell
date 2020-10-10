@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs_mshell.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:48:38 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/10 10:45:16 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/10 17:53:22 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct	s_mshell {
 	int			i;
 	t_parse		*state;
 	t_dlist		*dlst_head;
+	void        *envp_mshell;
 }				t_mshell;
 
 #endif

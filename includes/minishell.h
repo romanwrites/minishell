@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
+/*   Updated: 2020/10/10 17:53:20 by mkristie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 
 # define MINISHELL_H
@@ -5,6 +17,7 @@
 # include "utils_mshell.h"
 # include "structs_mshell.h"
 # include "parse_mshell.h"
+# include "engine_mshell.h"
 
 # include "../libft/libft.h"
 # include "../get_next_line/get_next_line.h"

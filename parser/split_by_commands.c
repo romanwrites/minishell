@@ -47,7 +47,7 @@ void		set_nl_cpy(char **str, int i)
 
 char		**split_command(t_mshell *sv, char *str)
 {
-	int 	i;
+	size_t 	i;
 	char	**split_by_command;
 
 	i = 0;
@@ -65,17 +65,15 @@ char		**split_command(t_mshell *sv, char *str)
 		else if (i > 0 && (str[i] == '|' || str[i] == '<' || str[i] == '>') && \
 				(is_valid_syntax(str[i - 1], str[i], str[i + 1])) && \
 				(str[i - 1] != '\n'))
-		{
+        {
 			set_nl_cpy(&str, i);
 			i++;
 		}
-		else if (str[i] == '|' || str[i] == '<' || str[i] == '>')
-			exit_error_message("bad syntax");
 		else if (i > 0 && str[i] != ' ' && str[i] != 34 && str[i] != 39 && is_redir_or_pipe(str[i - 1]))
-		{
-			set_nl_cpy(&str, i);
-			i++;
-		}
+        {
+            set_nl_cpy(&str, i);
+            i++;
+        }
 		i++;
 	}
 	split_by_command = ft_split(str, '\n');
