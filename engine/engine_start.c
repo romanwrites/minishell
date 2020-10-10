@@ -13,17 +13,21 @@
 #include "minishell.h"
 #include <fcntl.h>
 
+void	state_bzero(t_parse *state)
+{
+	state->is_double_quote_open = 0;
+	state->is_single_quote_open = 0;
+	state->backslash = 0;
+	state->backslash_time = 0;
+}
+
 void	init(t_mshell	*sv)
 {
-	sv->arr3d = NULL;
 	sv->content = NULL;
 	sv->i = 0;
 	sv->state = (t_parse *)malloc(sizeof(t_parse) * 1); // free after parse
 	ft_alloc_check(sv->state);
-	sv->state->is_double_quote_open = 0;
-	sv->state->is_single_quote_open = 0;
-	sv->state->backslash = 0;
-	sv->state->backslash_time = 0;
+	state_bzero(sv->state);
 }
 
 int     main(int ac, char **av, char **envp)
@@ -42,11 +46,11 @@ int     main(int ac, char **av, char **envp)
 	while (get_next_line(fd, &sv->content))
 	{
 		ft_alloc_check(sv->content);
-		parse_start(sv);
+		parse_input(sv);
 		free(sv->content);
 		sv->content = NULL;
 	}
-	parse_start(sv);
+	parse_input(sv);
 	if (sv->content)
 	    free(sv->content);
 	sv->content = NULL;

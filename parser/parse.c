@@ -23,72 +23,77 @@ void        check_common(char *str)
      }
 }
 
-void		parse_start(t_mshell *sv)
+char		*analise_command(char **arr_2d)
+{
+	int 	i;
+	char 	*str;
+
+	i = 0;
+	while (arr_2d[i])
+	{
+		//? try command
+		i++;
+	}
+
+}
+
+void		create_commands_list(t_mshell *sv)
+{
+	t_dlist *dlst;
+	t_dlist	*commands;
+	char *str;
+
+	dlst = sv->dlst_head;
+	commands = ft_dlstnew(NULL, NULL);
+	ft_alloc_check(commands);
+	while (dlst)
+	{
+		str = analise_command((char **)((t_dlist *)dlst->content)->content);
+		dlst = dlst->next;
+	}
+}
+
+void		parse_input(t_mshell *sv)
 {
 	char	*tmp;
-	char	**quotes2d;
 	char	**semicolons2d;
 	static int case_num;
 	case_num++;
-
 //	split_sh(sv);  Make one function to split elegantly
 
-	// STEP 0: trim
 	char	*input_str = ft_strtrim(sv->content, " \t");
 	ft_alloc_check(input_str);
 	printf("\ncase: %d, str: [%s]\nafter split by semicolons:\n", case_num, input_str);
     check_common(input_str);
-	// STEP 1.0: split by semicolons
 	semicolons2d = split_by_char(sv, ';', input_str);
 	ft_trim_2d(&semicolons2d);
 
 	print_2d_array(semicolons2d);
     printf("\nDONE\n\nnext split by pipes:\n\n");
 
-	int lines_count = count_2d_lines(semicolons2d);
-
 	t_dlist	*dlst;
-    t_dlist	*dlst_head;
+
 	void	*tmp_ptr2d;
 	int j = 0;
 
 	dlst = ft_dlstnew(NULL, NULL);
 	ft_alloc_check(dlst);
-
-    dlst_head = dlst;
+    sv->dlst_head = dlst;
 	while (semicolons2d[j])
 	{
-		tmp_ptr2d = (void *)split_by_char(sv, '|', semicolons2d[j]);
-		ft_alloc_check(tmp_ptr2d);
+		state_bzero(sv->state);
+		tmp_ptr2d = (void *)split_command(sv, semicolons2d[j]);
 		dlst->content = (void *)ft_dlstnew(tmp_ptr2d, NULL);
         tmp_ptr2d = NULL;
         char **ptr = (char **)((t_dlist *)dlst->content)->content;
-        ft_trim_2d(&ptr); // do need to pass as address?
-
-		print_2d_array((char **)((t_dlist *)dlst->content)->content);
+        ft_trim_2d(&ptr);
+		print_2d_array((char **)((t_dlist *)dlst->content)->content); //debug print
 		dlst->next = ft_dlstnew(NULL, NULL);
 		dlst = dlst->next;
 		j++;
 	}
+//	create_commands_list(sv);
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
 
-//	char	**pipes1 = split_by_char(sv, '|', semicolons2d[j]);
-//	print_2d_array(pipes1);
-
-
-//	// STEP 1: split by quotes
-//	printf("case: %d, str: %s\nafter split by quotes:\n", case_num, sv->content);
-//	quotes2d = split_by_quotes(sv);
-//	print_2d_array(quotes2d);
-//	ft_putchar('\n');
-//
-//	// STEP 2: trim
-//	ft_trim_2d(&quotes2d);
-//	print_2d_array(quotes2d);
-//	ft_putchar('\n');
-//
-//	// STEP 3: split by semicolons
-//
-//	ft_free2d(quotes2d);
 }
