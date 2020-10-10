@@ -1,4 +1,15 @@
-#include "libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_list_sort.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/10 10:29:42 by lhelper           #+#    #+#             */
+/*   Updated: 2020/10/10 10:49:31 by lhelper          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "includes/minishell.h"
 
 size_t		max_len(size_t len_a, size_t len_b)
@@ -50,7 +61,7 @@ void		ft_list_sort(t_list **begin_list, int (*cmp)())
 		iter0 = iter0->next;
 		i++;
 	}
-	while (i > 1)
+	while (i-- > 1)
 	{
 		iter0 = NULL;
 		iter1 = *begin_list;
@@ -80,56 +91,5 @@ void		ft_list_sort(t_list **begin_list, int (*cmp)())
 				*begin_list = iter0;
 			swp = 0;
 		}
-		i--;
 	}
 }
-
-//int main()
-//{
-//	t_list *list;
-//	t_list *tmp;
-//
-//	t_envar first = {"xyz", "999"};
-//	t_envar second = {"def", "555"};
-//	t_envar fourth = {"tuv", "123"};
-//	t_envar third = {"ghi", "111"};
-//	t_envar fifth = {"klm", "555"};
-//	t_envar sixth = {"qrs", "333"};
-//	t_envar seventh = {"nop", "777"};
-//	t_envar last = {"abc", "000"};
-//	list = ft_lstnew((void *)&first);
-//	ft_lstadd_back(&list, ft_lstnew((void *)&second));
-//	ft_lstadd_back(&list, ft_lstnew((void *)&last));
-//	ft_lstadd_back(&list, ft_lstnew((void *)&third));
-//	ft_lstadd_back(&list, ft_lstnew((void *)&fourth));
-//	ft_lstadd_back(&list, ft_lstnew((void *)&fifth));
-//	ft_lstadd_back(&list, ft_lstnew((void *)&sixth));
-//	ft_lstadd_back(&list, ft_lstnew((void *)&seventh));
-//	tmp = list;
-//	while(list)
-//	{
-//		if (ft_strncmp(((t_envar *)list->content)->value, "''", ft_strlen(((t_envar *)list->content)->value)))
-//		{
-//			write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
-//			write(1, "=", 1);
-//			write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
-//			write(1, "\n", 1);
-//		}
-//		list = list->next;
-//	}
-//	list = tmp;
-//	ft_list_sort(&list, compare_key);
-//	printf("\n---------------SORTED-----------\n");
-//	while(list)
-//	{
-//		if (ft_strncmp(((t_envar *)list->content)->value, "''", ft_strlen(((t_envar *)list->content)->value)))
-//		{
-//			write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
-//			write(1, "=", 1);
-//			write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
-//			write(1, "\n", 1);
-//		}
-//		list = list->next;
-//	}
-//	return 0;
-//}

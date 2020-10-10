@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   structs_mshell.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:48:38 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/25 19:57:52 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/10 10:45:16 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_MSHELL_H
 #define STRUCTS_MSHELL_H
 
-#include "libft.h"
+#include "../libft/libft.h"
 #include "minishell.h"
 
 typedef struct	s_parse {

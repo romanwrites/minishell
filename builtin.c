@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/04 19:04:45 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/10 16:29:45 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,7 @@ void	ft_cd(char *str)
 		return ;
 	}
 	closedir(dir);
-	ft_pwd();//
 	chdir(str);
-	ft_pwd();//
 }
 
 void	ft_env()
@@ -78,7 +76,7 @@ void	ft_env()
 		}
 		list = list->next;
 	}
-	while(exp)//add export vars
+	while(exp)//adds export vars
 	{
 		if (ft_strncmp(((t_envar *)exp->content)->value, "''", ft_strlen(((t_envar *)exp->content)->value)))
 		{
@@ -111,7 +109,6 @@ t_list	*ft_merge_lists(t_list *dst, t_list *src)
 	while (t_src)
 	{
 		ft_lstadd_back(&t_dst, ft_lstnew(t_src->content));
-		//printf("%s\n", ((char *)((t_envar *)t_src->content)->key));
 		t_src = t_src->next;
 	}
 	return(t_dst);
@@ -121,7 +118,6 @@ void	free_kv(t_envar *kv, int i)
 {
 	while(i-- > 0)
 	{
-		//printf("\n\n\n%s\n", kv[i].key);
 		free(kv[i].key);
 		free(kv[i].value);
 	}
@@ -176,13 +172,16 @@ void	ft_export(char *arg)
 	}
 	list = ft_merge_lists(list, g_exp);
 	ft_list_sort(&list, compare_key);
-	while(list)
+	while(list->next)
 	{
 		if (!arg)
 		{
+			write(1, "declare -x ", ft_strlen("declare -x "));
 			write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
 			write(1, "=", 1);
+			write(1, "\"", 1);
 			write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
+			write(1, "\"", 1);
 			write(1, "\n", 1);
 		}
 		list = list->next;

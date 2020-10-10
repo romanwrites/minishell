@@ -5,7 +5,6 @@
 # include "utils_mshell.h"
 # include "structs_mshell.h"
 # include "parse_mshell.h"
-# include "engine_mshell.h"
 
 # include "../libft/libft.h"
 # include "../get_next_line/get_next_line.h"
@@ -44,9 +43,10 @@ void	ft_export(char *arg);
 void	ft_list_sort(t_list **begin_list, int (*cmp)());
 void	ft_pwd();
 void	ft_unset(char *arg);
-char	*get_path(char **envp);
+char    *get_envar(char **envp, char *var);
 void	print_env(char **env_array);
 void	sort_env(char **env_array, int lines, int max_len);
 
+extern pid_t    g_pid;
 
 #endif
