@@ -18,7 +18,6 @@ int main(int argc, char **argv, char **envp)
 
 	//echo_assert_test();
 	//ft_pwd();
-	printf("\n+++++++++++++++++BEGIN+++++++++++++++++\n");
 	g_env = envp;
 	g_exp = NULL;
 	if (argv[1][0] == 'e' && argv[1][1] == 'n' && argv[1][2] == 'v' && argv[1][3] == '\0')
@@ -44,6 +43,10 @@ int main(int argc, char **argv, char **envp)
 		printf("\n---------------EXPORT0----------------\n");
 			ft_export(NULL);
 		return 0;
+	}
+	if (!(strcmp(argv[1], "path")))
+	{
+		printf("%s\n", get_path(g_env));
 	}
 	//ft_cd(argv[1]);
 	ft_exit(0);
