@@ -22,7 +22,7 @@ void        check_common(char *str)
          }
      }
 }
-
+//
 char		*analise_command(char **arr_2d)
 {
 	int 	i;
