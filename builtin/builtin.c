@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/11 19:39:04 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/11 20:01:22 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,24 @@ void	free_kv(t_envar *kv, int i)
 	}
 }
 
+int		find_key_replace_val(t_list **lst, char *key, char *value)
+{
+	t_list *tmp;
+
+	tmp = *lst;
+	while (tmp)
+	{
+		if(!ft_strcmp(((t_envar *)tmp->content)->key, key))
+		{
+			free(((t_envar *)tmp->content)->value);
+			((t_envar *)tmp->content)->value = ft_strdup(value);
+			return 1;
+		}
+		tmp = tmp->next;
+	}
+	return 0;
+}
+
 void	ft_export(char *arg)
 {
 	t_list	*list;
@@ -169,7 +187,7 @@ void	ft_export(char *arg)
 		}
 		if (!g_exp)
 			g_exp = ft_lstnew_kv((void *)&(kv[i]));
-		else
+		else if (!find_key_replace_val(&g_exp, kv[i].key, kv[i].value))
 			ft_lstadd_back(&g_exp, ft_lstnew_kv((void *)&(kv[i])));
 		pair++;
 		i++;
