@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/11 20:28:22 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/11 22:42:02 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ void	init(t_mshell	*sv)
 	sv->state = (t_parse *)malloc(sizeof(t_parse) * 1); // free after parse
 	ft_alloc_check(sv->state);
 	state_bzero(sv->state);
+}
+
+void ignore()
+{
+	write(0, "\b\b  \b\b", 6);
 }
 
 void new_line()
@@ -69,7 +74,7 @@ int     main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	signal(SIGQUIT, SIG_IGN);//write (1, "\b", 1);
+	signal(SIGQUIT, ignore);//write (1, "\b", 1);
 	signal(SIGINT, new_line);
 
 	g_env = envp;
