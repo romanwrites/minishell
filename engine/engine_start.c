@@ -32,7 +32,8 @@ void	init(t_mshell	*sv)
 
 void new_line()
 {
-	write(1, "\nzaebash-3.2$ ", ft_strlen("\nzaebash-3.2$ "));
+	write(0, "\b\b  \b\b", 6);
+	write(0, "\nzaebash-3.2$ ", ft_strlen("\nzaebash-3.2$ "));
 }
 
 void ft_test(char *str)
@@ -78,11 +79,11 @@ int     main(int ac, char **av, char **envp)
 	sv->envp_mshell = (void *)envp;
 
 	int fd = open("parse_tests.txt", O_RDONLY);
-	write(1, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
+	write(0, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
 	while (get_next_line(0, &sv->content))
 	{
 		ft_test(sv->content);//
-		write(1, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
+		write(0, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
 		//ft_alloc_check(sv->content);
 		//parse_input(sv);
 		//t_dlst *tmp = sv->dlst_head
@@ -92,7 +93,7 @@ int     main(int ac, char **av, char **envp)
 		free(sv->content);
 		sv->content = NULL;
 	}
-	write(1, "exit\n", ft_strlen("exit\n"));
+	write(0, "exit\n", ft_strlen("exit\n"));
 	return (0);
 	//parse_input(sv);
 	//if (sv->content)
