@@ -31,7 +31,6 @@ char		*analise_command(char **arr_2d)
 	i = 0;
 	while (arr_2d[i])
 	{
-		//? try command
 		i++;
 	}
 	return NULL;
