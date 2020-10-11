@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:38:07 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/10 18:47:56 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/11 17:38:54 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,13 @@ void		parse_input(t_mshell *sv)
 
 	char	*input_str = ft_strtrim(sv->content, " \t");
 	ft_alloc_check(input_str);
-	printf("\ncase: %d, str: [%s]\nafter split by semicolons:\n", case_num, input_str);
+	//printf("\ncase: %d, str: [%s]\nafter split by semicolons:\n", case_num, input_str);
     check_common(input_str);
 	semicolons2d = split_by_char(sv, ';', input_str);
 	ft_trim_2d(&semicolons2d);
 
-	print_2d_array(semicolons2d);
-    printf("\nDONE\n\nnext split by pipes:\n\n");
+	//print_2d_array(semicolons2d);
+    //printf("\nDONE\n\nnext split by pipes:\n\n");
 
 	t_dlist	*dlst;
 
@@ -105,7 +105,7 @@ void		parse_input(t_mshell *sv)
         ft_trim_2d(&ptr);
         if (count_2d_lines(ptr) == 1 && is_bad_syntax(ptr[0][ft_strlen(ptr[0]) - 1]))
             exit_error_message("bad syntax");
-		print_2d_array((char **)((t_dlist *)dlst->content)->content); //debug print
+		//print_2d_array((char **)((t_dlist *)dlst->content)->content); //debug print
 		dlst->next = ft_dlstnew(NULL, NULL);
 		dlst = dlst->next;
 		j++;

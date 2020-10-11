@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/11 17:16:29 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/11 18:20:39 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int     main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);//write (1, "\b", 1);
 	signal(SIGINT, new_line);
 
 	g_env = envp;
@@ -86,8 +86,12 @@ int     main(int ac, char **av, char **envp)
 		ft_test(sv->content);//
 		//ft_alloc_check(sv->content);
 		//parse_input(sv);
-		//free(sv->content);
-		//sv->content = NULL;
+		//t_dlst *tmp = sv->dlst_head
+		//char **ptr = (char **)(sv->dlst_head)->content;
+		//tmp = tmp->next;
+		//print_2d_array(ptr);
+		free(sv->content);
+		sv->content = NULL;
 	}
 	write(1, "exit\n", ft_strlen("exit\n"));
 	return (0);

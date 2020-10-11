@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/11 17:31:26 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/11 19:39:04 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_pwd()
 void	ft_cd(char *str)
 {
 	DIR *dir;
-	struct dirent *entry;
+	//struct dirent *entry; ???
 	
 	dir = NULL;
 	dir = opendir(str);
@@ -79,7 +79,7 @@ void	ft_env()
 	}
 	while(exp)//adds export vars
 	{
-		if (ft_strncmp(((t_envar *)exp->content)->value, "''", ft_strlen(((t_envar *)exp->content)->value)))
+		if (ft_strncmp(((t_envar *)exp->content)->value, "\n", ft_strlen(((t_envar *)exp->content)->value)) || *(((t_envar *)exp->content)->value) == '\0')
 		{
 			write(1, ((t_envar *)exp->content)->key, ft_strlen(((t_envar *)exp->content)->key));
 			write(1, "=", 1);
@@ -124,6 +124,79 @@ void	free_kv(t_envar *kv, int i)
 	}
 }
 
+void	ft_export(char *arg)
+{
+	t_list	*list;
+	t_envar kv[256];
+	int		i;
+	char	**pair;
+	char	*value;
+	
+	list = env_to_list(g_env);
+	pair = ft_split(arg, ' ');
+	i = 0;
+	while(pair && *pair)
+	{
+		value = ft_strchr(*pair, '=');
+		if (!value)
+		{
+			kv[i].value = ft_strdup("\n");//WHEN THERE IS NO '='
+			if (!kv[i].value)
+				return ;//what to do if malloc fails
+			kv[i].key = ft_strdup(*pair);
+			if (!kv[i].key)
+				return ;//what to do if malloc fails
+		}
+		else if (*(value + 1) == '\0')
+		{
+			kv[i].value = ft_strdup("");
+			if (!kv[i].value)
+				return ;//what to do if malloc fails
+			kv[i].key = malloc(ft_strlen(*pair) - 1);
+			if (!kv[i].key)
+				return ;//what to do if malloc fails
+			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair));
+		}
+		else
+		{
+			kv[i].value = ft_strdup(++value);//???
+			if (!kv[i].value)
+				return ;//what to do if malloc fails
+			kv[i].key = malloc(ft_strlen(*pair) - ft_strlen(kv[i].value));
+			if (!kv[i].key)
+				return ;//what to do if malloc fails
+			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair) - ft_strlen(kv[i].value));
+		}
+		if (!g_exp)
+			g_exp = ft_lstnew_kv((void *)&(kv[i]));
+		else
+			ft_lstadd_back(&g_exp, ft_lstnew_kv((void *)&(kv[i])));
+		pair++;
+		i++;
+	}
+	list = ft_merge_lists(list, g_exp);
+	ft_list_sort(&list, compare_key);
+	while(list->next)
+	{
+		if (!arg)
+		{
+			write(1, "declare -x ", ft_strlen("declare -x "));
+			write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
+			if (*(((t_envar *)list->content)->value) != '\n')
+			{
+				write(1, "=", 1);
+				write(1, "\"", 1);
+				write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
+				write(1, "\"", 1);
+			}
+			write(1, "\n", 1);
+		}
+		list = list->next;
+	}
+	ft_lstclear(&list, free_content);
+	free_kv(kv, i);
+}
+/*
 void	ft_export(char *arg)
 {
 	t_list	*list;
@@ -190,7 +263,7 @@ void	ft_export(char *arg)
 	ft_lstclear(&list, free_content);
 	free_kv(kv, i);
 }
-
+*/
 void	ft_unset(char *arg)
 {
 	char **keys;
