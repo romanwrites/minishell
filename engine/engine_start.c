@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/10 18:57:28 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/11 14:41:13 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,19 @@ void	init(t_mshell	*sv)
 	state_bzero(sv->state);
 }
 
+void new_line()
+{
+	write(1, "\nzaebash-3.2$ ", ft_strlen("\nzaebash-3.2$ "));
+}
+
 int     main(int ac, char **av, char **envp)
 {
 	t_mshell	*sv;
 
 	(void)ac;
 	(void)av;
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, new_line);
 
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
@@ -43,18 +50,22 @@ int     main(int ac, char **av, char **envp)
 	sv->envp_mshell = (void *)envp;
 
 	int fd = open("parse_tests.txt", O_RDONLY);
+	write(1, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
 	while (get_next_line(0, &sv->content))
 	{
-		ft_alloc_check(sv->content);
-		parse_input(sv);
-		free(sv->content);
-		sv->content = NULL;
+		write(1, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
+		//ft_alloc_check(sv->content);
+		//parse_input(sv);
+		//free(sv->content);
+		//sv->content = NULL;
 	}
-	parse_input(sv);
-	if (sv->content)
-	    free(sv->content);
-	sv->content = NULL;
-	free(sv);
-	sv = NULL;
-	sleep(30);
+	write(1, "exit\n", ft_strlen("exit\n"));
+	return (0);
+	//parse_input(sv);
+	//if (sv->content)
+	//    free(sv->content);
+	//sv->content = NULL;
+	//free(sv);
+	//sv = NULL;
+	//sleep(30);
 }
