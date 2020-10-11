@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/10 18:33:09 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/11 17:31:26 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	ft_echo(char *str, int flag_n) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
 
 void	ft_exit(int exit_code)
 {
+	write(1, "exit", ft_strlen("exit"));
 	//ft_lstclear()
 	exit(exit_code);
 }
@@ -141,7 +142,7 @@ void	ft_export(char *arg)
 		value = ft_strchr(*pair, '=');
 		if (value == NULL || *(value + 1) == '\0')
 		{
-			kv[i].value = ft_strdup("''");
+			kv[i].value = ft_strdup("");
 			value_flag = 1;
 			if (value && *(value + 1) == '\0')
 				value_flag = 2;//to remove '=' from key

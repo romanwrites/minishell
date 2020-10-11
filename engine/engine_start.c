@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/11 14:41:13 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/11 17:16:29 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,34 @@ void new_line()
 	write(1, "\nzaebash-3.2$ ", ft_strlen("\nzaebash-3.2$ "));
 }
 
+void ft_test(char *str)
+{
+	if (*str == '\0')
+		return ;
+	char **cmd = ft_split(str, ' ');
+	if (!(strcmp(cmd[0], "export")))
+		ft_export(cmd[1]);
+	else if (!(strcmp(cmd[0], "env")))
+		ft_env();
+	else if (!(strcmp(cmd[0], "pwd")))
+		ft_pwd();
+	else if (!(strcmp(cmd[0], "echo")))
+	{
+		if (cmd[1])
+			ft_echo(cmd[1], 0);
+	}
+	else if (!(strcmp(cmd[0], "exit")))
+		ft_exit(0);
+	else if (!(strcmp(cmd[0], "cd")))
+	{
+		if (cmd[1])
+			ft_cd(cmd[1]);
+	}
+	else if (!(strcmp(cmd[0], "unset")))
+		ft_unset(cmd[1]);
+	write(1, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
+}
+
 int     main(int ac, char **av, char **envp)
 {
 	t_mshell	*sv;
@@ -44,6 +72,7 @@ int     main(int ac, char **av, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, new_line);
 
+	g_env = envp;
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
 	init(sv);
@@ -54,6 +83,7 @@ int     main(int ac, char **av, char **envp)
 	while (get_next_line(0, &sv->content))
 	{
 		write(1, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
+		ft_test(sv->content);//
 		//ft_alloc_check(sv->content);
 		//parse_input(sv);
 		//free(sv->content);
@@ -63,7 +93,7 @@ int     main(int ac, char **av, char **envp)
 	return (0);
 	//parse_input(sv);
 	//if (sv->content)
-	//    free(sv->content);
+	//   free(sv->content);
 	//sv->content = NULL;
 	//free(sv);
 	//sv = NULL;
