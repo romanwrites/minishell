@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/11 18:20:39 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/11 20:28:22 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void ft_test(char *str)
 	}
 	else if (!(strcmp(cmd[0], "unset")))
 		ft_unset(cmd[1]);
-	write(1, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
 }
 
 int     main(int ac, char **av, char **envp)
@@ -82,8 +81,8 @@ int     main(int ac, char **av, char **envp)
 	write(1, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
 	while (get_next_line(0, &sv->content))
 	{
-		write(1, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
 		ft_test(sv->content);//
+		write(1, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
 		//ft_alloc_check(sv->content);
 		//parse_input(sv);
 		//t_dlst *tmp = sv->dlst_head
