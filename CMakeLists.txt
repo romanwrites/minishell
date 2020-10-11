@@ -8,104 +8,29 @@ include_directories(includes)
 include_directories(libft)
 include_directories(utils)
 
+file(GLOB
+        ENGINE "engine/*.c")
+
+file(GLOB
+        PARSER "parser/*.c")
+
+file(GLOB
+        UTILS "utils/*.c")
+
+file(GLOB
+        BUILTIN "builtin/*.c")
+
+file(GLOB
+        LIBFT "libft/*.c")
+
 add_executable(minishell
-        engine/engine_start.c
         get_next_line/get_next_line.c
         get_next_line/get_next_line.h
         get_next_line/get_next_line_utils.c
-        includes/minishell.h
-        includes/parse_mshell.h
-        includes/structs_mshell.h
-        includes/utils_mshell.h
-        libft/btree_apply_infix.c
-        libft/btree_apply_prefix.c
-        libft/btree_apply_suffix.c
-        libft/btree_create_node.c
-        libft/btree_insert_data.c
-        libft/btree_level_count.c
-        libft/btree_search_item.c
-        libft/ft_atoi.c
-        libft/ft_bzero.c
-        libft/ft_calloc.c
-        libft/ft_free2d.c
-        libft/ft_free_and_clear.c
-        libft/ft_intlen_u.c
-        libft/ft_isalnum.c
-        libft/ft_isalpha.c
-        libft/ft_isascii.c
-        libft/ft_isblank.c
-        libft/ft_iscntrl.c
-        libft/ft_isdigit.c
-        libft/ft_isgraph.c
-        libft/ft_islower.c
-        libft/ft_isprint.c
-        libft/ft_isspace.c
-        libft/ft_isupper.c
-        libft/ft_isxdigit.c
-        libft/ft_itoa.c
-        libft/ft_itoa_base.c
-        libft/ft_itoa_base_u.c
-        libft/ft_itoa_u.c
-        libft/ft_lstadd_back.c
-        libft/ft_lstadd_front.c
-        libft/ft_lstclear.c
-        libft/ft_lstdelone.c
-        libft/ft_lstiter.c
-        libft/ft_lstlast.c
-        libft/ft_lstmap.c
-        libft/ft_lstnew.c
-        libft/ft_lstrev.c
-        libft/ft_lstsize.c
-        libft/ft_memccpy.c
-        libft/ft_memchr.c
-        libft/ft_memcmp.c
-        libft/ft_memcpy.c
-        libft/ft_memmove.c
-        libft/ft_memset.c
-        libft/ft_my_lstadd_back.c
-        libft/ft_my_lstiter.c
-        libft/ft_my_lstlast.c
-        libft/ft_my_lstnew.c
-        libft/ft_putchar.c
-        libft/ft_putchar_fd.c
-        libft/ft_putendl_fd.c
-        libft/ft_putnbr_fd.c
-        libft/ft_putstr.c
-        libft/ft_putstr_fd.c
-        libft/ft_replace.c
-        libft/ft_replace_char.c
-        libft/ft_split.c
-        libft/ft_strchr.c
-        libft/ft_strcmp.c
-        libft/ft_strcpy.c
-        libft/ft_strdup.c
-        libft/ft_strdup_free.c
-        libft/ft_strequ.c
-        libft/ft_strjoin.c
-        libft/ft_strjoin_free.c
-        libft/ft_strjoin_free_s1.c
-        libft/ft_strlcat.c
-        libft/ft_strlcpy.c
-        libft/ft_strlen.c
-        libft/ft_strmapi.c
-        libft/ft_strncmp.c
-        libft/ft_strnstr.c
-        libft/ft_strrchr.c
-        libft/ft_strtrim.c
-        libft/ft_substr.c
-        libft/ft_tolower.c
-        libft/ft_toupper.c
-        libft/ft_two_d_counter.c
-        libft/libft.h
-        parser/parse.c
-        utils/ft_alloc_check.c
-#        builtin.c
-        ft_list_sort.c
-        utils/exit_error_message.c
-        utils/print_2d_array.c
-        parser/split_by_char.c
-        utils/ft_trim_2d.c
-        utils/count_2d_lines.c
+        ${LIBFT}
+        ${ENGINE}
+        ${PARSER}
+        ${UTILS}
+        ${BUILTIN}
         includes/engine_mshell.h
-        parser/split_by_commands.c
-        get_envar.c)
+        )
