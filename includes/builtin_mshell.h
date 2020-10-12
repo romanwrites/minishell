@@ -4,14 +4,9 @@
 # include "minishell.h"
 
 extern  t_list  *g_exp;//added by export env vars
-extern  char    **g_env;
-extern pid_t    g_pid;
-
-//typedef struct  s_envar
-//{
-//    char *key;
-//    char *value;
-//}               t_envar;
+extern  char	**g_env;
+extern	pid_t	g_pid;
+extern	char	*input;
 
 char	**alloc_mem_env(int lines, int max_len, char *arg);
 int		compare_key(t_envar *a, t_envar *b);

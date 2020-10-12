@@ -6,12 +6,16 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/11 22:42:02 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/12 15:56:40 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <fcntl.h>
+
+t_list	*g_exp;
+char	**g_env;
+char	*input;
+pid_t	pid;
 
 void	state_bzero(t_parse *state)
 {
@@ -98,7 +102,8 @@ int     main(int ac, char **av, char **envp)
 		free(sv->content);
 		sv->content = NULL;
 	}
-	write(0, "exit\n", ft_strlen("exit\n"));
+	if (*(sv->content) == '\0')
+		write(0, "exit\n", ft_strlen("exit\n"));
 	return (0);
 	//parse_input(sv);
 	//if (sv->content)

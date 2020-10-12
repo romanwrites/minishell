@@ -6,14 +6,11 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/11 20:01:22 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/12 15:39:36 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_list	*g_exp;
-char	**g_env;
 
 void	ft_echo(char *str, int flag_n) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
 {
@@ -24,7 +21,6 @@ void	ft_echo(char *str, int flag_n) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
 
 void	ft_exit(int exit_code)
 {
-	write(1, "exit", ft_strlen("exit"));
 	//ft_lstclear()
 	exit(exit_code);
 }
@@ -214,74 +210,7 @@ void	ft_export(char *arg)
 	ft_lstclear(&list, free_content);
 	free_kv(kv, i);
 }
-/*
-void	ft_export(char *arg)
-{
-	t_list	*list;
-	t_envar kv[256];
-	int		i;
-	char	**pair;
-	char	*value;
-	int		value_flag;
-	
-	list = env_to_list(g_env);
-	pair = ft_split(arg, ' ');
-	i = 0;
-	value_flag = 0;
-	while(pair && *pair)
-	{
-		value = ft_strchr(*pair, '=');
-		if (value == NULL || *(value + 1) == '\0')
-		{
-			kv[i].value = ft_strdup("");
-			value_flag = 1;
-			if (value && *(value + 1) == '\0')
-				value_flag = 2;//to remove '=' from key
-		}
-		else
-			kv[i].value = ft_strdup(++value);//???
-		if (!kv[i].value)
-			return ;//what to do if malloc fails
-		if (!value_flag)
-			kv[i].key = malloc(ft_strlen(*pair) - ft_strlen(kv[i].value));
-		else
-			kv[i].key = malloc(ft_strlen(*pair) + 1);
-		if (!kv[i].key)
-			return ;//what to do if malloc fails
-		if (!value_flag)
-			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair) - ft_strlen(kv[i].value));
-		else if (value_flag == 1)
-			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair) + 1);
-		else
-			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair));
-		if (!g_exp)
-			g_exp = ft_lstnew_kv((void *)&(kv[i]));
-		else
-			ft_lstadd_back(&g_exp, ft_lstnew_kv((void *)&(kv[i])));
-		pair++;
-		i++;
-		value_flag = 0;
-	}
-	list = ft_merge_lists(list, g_exp);
-	ft_list_sort(&list, compare_key);
-	while(list->next)
-	{
-		if (!arg)
-		{
-			write(1, "declare -x ", ft_strlen("declare -x "));
-			write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
-			write(1, "=", 1);
-			write(1, "\"", 1);
-			write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
-			write(1, "\"", 1);
-			write(1, "\n", 1);
-		}
-		list = list->next;
-	}
-	ft_lstclear(&list, free_content);
-	free_kv(kv, i);
-}
-*/
+
 void	ft_unset(char *arg)
 {
 	char **keys;
