@@ -77,17 +77,17 @@ void		parse_input(t_mshell *sv)
 
 	char	*input_str = ft_strtrim(sv->content, " \t");
 	ft_alloc_check(input_str);
-	printf("\ncase: %d, str: [%s]\nafter split by semicolons:\n", case_num, input_str);
+//	printf("\ncase: %d, str: [%s]\nafter split by semicolons:\n", case_num, input_str);
     check_common(input_str);
 	semicolons2d = split_by_char(sv, ';', input_str);
 	ft_trim_2d(&semicolons2d);
 
-	print_2d_array(semicolons2d);
-    printf("\nDONE\n\nnext split by pipes:\n\n");
+//	print_2d_array(semicolons2d);
+//    printf("\nDONE\n\nnext split by pipes:\n\n");
 
 	t_dlist	*dlst;
 
-	void	*tmp_ptr2d;
+	char	**tmp_ptr2d;
 	int j = 0;
 //    get_envar(sv->envp_mshell, "PATH"
 	dlst = ft_dlstnew(NULL, NULL);
@@ -98,19 +98,20 @@ void		parse_input(t_mshell *sv)
 	    if (is_bad_syntax(semicolons2d[j][0]))
 	        exit_error_message("bad syntax");
 		state_bzero(sv->state);
-		tmp_ptr2d = (void *)split_command(sv, semicolons2d[j]);
-		dlst->content = (void *)ft_dlstnew(tmp_ptr2d, NULL);
-        tmp_ptr2d = NULL;
-        char **ptr = (char **)((t_dlist *)dlst->content)->content;
+		tmp_ptr2d = split_command(sv, semicolons2d[j]);
+		dlst->content = (void *)tmp_ptr2d;
+		tmp_ptr2d = NULL;
+        char **ptr = (char **)dlst->content;
         ft_trim_2d(&ptr);
         if (count_2d_lines(ptr) == 1 && is_bad_syntax(ptr[0][ft_strlen(ptr[0]) - 1]))
             exit_error_message("bad syntax");
-		print_2d_array((char **)((t_dlist *)dlst->content)->content); //debug print
+//		print_2d_array((char **)dlst->content); //debug print
 		dlst->next = ft_dlstnew(NULL, NULL);
+		ft_alloc_check(dlst->next);
 		dlst = dlst->next;
 		j++;
 	}
-//	create_commands_list(sv);
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
+	dlst = NULL;
 }

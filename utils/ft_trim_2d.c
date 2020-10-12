@@ -25,6 +25,7 @@ void		ft_trim_2d(char ***arr_2d)
 	{
 		tmp = tmp_2d[i];
 		tmp_2d[i] = ft_strtrim(tmp, " \t");
+		ft_alloc_check(tmp_2d[i]);
 		free(tmp);
 		tmp = NULL;
 		i++;
