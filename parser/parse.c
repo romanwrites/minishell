@@ -71,31 +71,53 @@ int			get_env_from_str(const char *str)
 {
 	int		i;
 
-	i = 0;
+	i = 1;
 	while (str[i])
 	{
-		if (str[i] == '/')
+		if (str[i] == '/' || str[i] == '$')
 			break ;
 		i++;
 	}
 	return (i);
 }
 
+void        append_line(char **ptr, char **append_this)
+{
+    char    *tmp_ptr;
+    char    *new_line;
+    char    *tmp_append;
+
+    tmp_ptr = *(ptr);
+    new_line = ft_strjoin(tmp_ptr, *(append_this));
+    ft_alloc_check(new_line);
+    free(tmp_ptr);
+    tmp_ptr = NULL;
+    *(ptr) = new_line;
+    tmp_append = *(append_this);
+    free(tmp_append);
+    *(append_this) = NULL;
+    new_line = NULL;
+}
+
 void		handle_env(t_mshell *sv, char **str)
 {
 	char	*ptr;
 	char	*new_str;
-	int		i;
-	int		j;
+	size_t		i;
+    size_t		j;
 	_Bool	is_alloc;
-	char	*get_env;
+	char	*env_value;
 	char	*tmp_env_val;
 	char	*tmp_append;
+	char    *value_to_check;
+	char    *append_this;
 
 	i = 0;
 	j = 0;
 	is_alloc = 0;
-	get_env = NULL;
+    env_value = NULL;
+	new_str = ft_strdup("");
+	ft_alloc_check(new_str);
 	if (str)
 	{
 		ptr = *str;
@@ -103,26 +125,29 @@ void		handle_env(t_mshell *sv, char **str)
 		{
 			if (ptr[i] == '$')
 			{
-				j = get_env_from_str(ptr + i);
-				if (j > 1)
-				{
-					if (!is_alloc)
-					{
-						new_str = ft_substr(ptr, 0, i);
-						is_alloc = 1;
-					}
-
-					get_env = get_envar(sv->envp_mshell, tmp_env_val + 1);
-					tmp_append = new_str;
-					new_str = ft_strjoin(tmp_append, get_env);
-					free(tmp_append);
-					free(tmp_env_val);
-					tmp_append = NULL;
-					tmp_env_val = NULL;
-				}
-			}
+			    if (i > ft_strlen(new_str) + 1)
+                {
+			        append_this = ft_substr(ptr, ft_strlen(new_str), i - (ft_strlen(new_str) + 1));
+                    append_line(&new_str, &append_this);
+                }
+                j = get_env_from_str(ptr + i);
+                if (j == 2)
+                    value_to_check = ft_strdup("");
+                else
+                    value_to_check = ft_substr(ptr, i + 1, j - 1);
+                ft_alloc_check(value_to_check);
+                env_value = get_envar(sv->envp_mshell, value_to_check);
+                if (!env_value)
+                    append_this = ft_strdup("");
+                else
+                    append_this = env_value;
+                append_line(&new_str, &append_this);
+                i += j - 1;
+            }
 			i++;
 		}
+		free(*(str));
+		*(str) = new_str;
 	}
 }
 
@@ -143,6 +168,7 @@ void		parse_env(t_mshell *sv)
 				handle_env(sv, &ptr[i]);
 			i++;
 		}
+		print_2d_array(ptr);
 		dlst = dlst->next;
 	}
 }
