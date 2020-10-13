@@ -6,39 +6,42 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 10:00:34 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/13 16:05:53 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/13 22:36:45 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+//#include "minishell.h"
+#include "../includes/minishell.h"
 
-char *get_envar(char **envp, char *var)
+char *get_envar(char *var)
 {
-    char **env;
-    t_list *list;
+    t_list *env;
+    t_list *exp;
     char *value;
     char *ret;
 
-    env = envp;
-    list = g_exp;
+    env = g_env;
+    exp = g_exp;
     ret = NULL;
-    while (*env)
+    while (env)
     {
-        if (!ft_strncmp(*env, var, ft_strlen(var)))
+        if (!ft_strncmp(((t_envar *)(env->content))->key, var, ft_strlen(var)))
         {
-            value = ft_strchr(*env, '=');
-            if (value)
-            {
-                value++;
-                ret = ft_strdup(value);
-            }
+            value = ((t_envar *)(env->content))->value;
+            ret = ft_strdup(value);
             return (ret);
         }
-        env++;
+        env = env->next;
     }
-    while(list)
+    while(exp)
     {
-        list = list->next;
+        if (!ft_strncmp(((t_envar *)(exp->content))->key, var, ft_strlen(var)))
+        {
+        	value = ((t_envar *)(env->content))->value;
+            ret = ft_strdup(value);
+            return (ret);
+        }
+        exp = exp->next;
     }
     return (NULL);
 }

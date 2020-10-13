@@ -21,7 +21,7 @@ void	ft_exit(int exit_code);
 void	ft_export(char *arg);
 void	ft_pwd();
 void	ft_unset(char *arg);
-char    *get_envar(char **envp, char *var);
+char    *get_envar(char *var);
 void	print_env(char **env_array);
 void	sort_env(char **env_array, int lines, int max_len);
 

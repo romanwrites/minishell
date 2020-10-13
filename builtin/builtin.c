@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/13 20:23:32 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/13 20:39:44 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ void	ft_pwd()
 void	ft_cd(char *str)
 {
 	DIR *dir;
-	//struct dirent *entry; ???
-	
+
 	dir = NULL;
 	dir = opendir(str);
 	if (!dir)
@@ -60,24 +59,28 @@ void free_nothing(void *to_free)
 	return;
 }
 
+void	free_content(void *to_free) //should be pointed be del() in ft_lstclear()
+{
+	t_envar *content;
+
+	content = to_free;
+	free(content->key);
+	free(content->value);
+}
+
 void	ft_env()
 {
 	t_list *env;
 	t_list *exp;
 
-	//list = g_lst;
 	env = g_env;
 	exp = g_exp;
-	//list = env_to_list(g_env);
 	while(env->next)
 	{
-		//if (ft_strncmp(((t_envar *)list->content)->value, "''", ft_strlen(((t_envar *)list->content)->value)))
-		//{
-			write(1, ((t_envar *)env->content)->key, ft_strlen(((t_envar *)env->content)->key));
-			write(1, "=", 1);
-			write(1, ((t_envar *)env->content)->value, ft_strlen(((t_envar *)env->content)->value));
-			write(1, "\n", 1);
-		//}
+		write(1, ((t_envar *)env->content)->key, ft_strlen(((t_envar *)env->content)->key));
+		write(1, "=", 1);
+		write(1, ((t_envar *)env->content)->value, ft_strlen(((t_envar *)env->content)->value));
+		write(1, "\n", 1);
 		env = env->next;
 	}
 	while(exp)//adds export vars
@@ -98,7 +101,6 @@ void	ft_env()
 			write(1, ((t_envar *)env->content)->value, ft_strlen(((t_envar *)env->content)->value));
 			write(1, "\n", 1);
 		}
-	//ft_lstclear(&env, free_nothing);
 }
 
 t_list	*ft_merge_lists(t_list *dst, t_list *src)
@@ -119,15 +121,6 @@ t_list	*ft_merge_lists(t_list *dst, t_list *src)
 		t_src = t_src->next;
 	}
 	return(t_dst);
-}
-
-void	free_kv(t_envar *kv, int i)
-{
-	while(i-- > 0)
-	{
-		free(kv[i].key);
-		free(kv[i].value);
-	}
 }
 
 int		find_key_replace_val(t_list **lst, char *key, char *value)
@@ -297,19 +290,10 @@ t_list	*env_to_list(char **envp)
 		if (!kv->value)
 			return (NULL);
 		if (!list)
-			list = ft_lstnew((void *)kv);//malloc(sizeof(t_envar))
+			list = ft_lstnew((void *)kv);
 		else
 			ft_lstadd_back(&list, ft_lstnew((void *)kv));
 		env++;
 	}
 	return(list);
-}
-
-void	free_content(void *to_free) //should be pointed be del() in ft_lstclear()
-{
-	t_envar *content;
-
-	content = to_free;
-	free(content->key);
-	free(content->value);
 }

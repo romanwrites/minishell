@@ -64,11 +64,11 @@ int main(int argc, char **argv, char **envp)
 			ft_export(NULL);
 		return 0;
 	}
-	//if (!(strcmp(argv[1], "path")))
-	//{
-	//	printf("%s\n", get_envar(g_env, "PATH"));
-	//}
-	ft_cd(argv[1]);
+	if (!(strcmp(argv[1], "path")))
+	{
+		printf("%s\n", get_envar("PATH"));
+	}
+	//ft_cd(argv[1]);
 	//ft_pwd();
 	ft_exit(0);
 	printf("ur exit doesnt work");
