@@ -67,6 +67,86 @@ _Bool   is_bad_syntax(char c)
     return (0);
 }
 
+int			get_env_from_str(const char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '/')
+			break ;
+		i++;
+	}
+	return (i);
+}
+
+void		handle_env(t_mshell *sv, char **str)
+{
+	char	*ptr;
+	char	*new_str;
+	int		i;
+	int		j;
+	_Bool	is_alloc;
+	char	*get_env;
+	char	*tmp_env_val;
+	char	*tmp_append;
+
+	i = 0;
+	j = 0;
+	is_alloc = 0;
+	get_env = NULL;
+	if (str)
+	{
+		ptr = *str;
+		while (ptr[i])
+		{
+			if (ptr[i] == '$')
+			{
+				j = get_env_from_str(ptr + i);
+				if (j > 1)
+				{
+					if (!is_alloc)
+					{
+						new_str = ft_substr(ptr, 0, i);
+						is_alloc = 1;
+					}
+
+					get_env = get_envar(sv->envp_mshell, tmp_env_val + 1);
+					tmp_append = new_str;
+					new_str = ft_strjoin(tmp_append, get_env);
+					free(tmp_append);
+					free(tmp_env_val);
+					tmp_append = NULL;
+					tmp_env_val = NULL;
+				}
+			}
+			i++;
+		}
+	}
+}
+
+void		parse_env(t_mshell *sv)
+{
+	t_dlist *dlst;
+	char	**ptr;
+	int 	i;
+
+	i = 0;
+	dlst = sv->dlst_head;
+	while (dlst)
+	{
+		ptr = (char **)dlst->content;
+		while (ptr && ptr[i])
+		{
+			if (ft_strchr(ptr[i], (int)'$'))
+				handle_env(sv, &ptr[i]);
+			i++;
+		}
+		dlst = dlst->next;
+	}
+}
+
 void		parse_input(t_mshell *sv)
 {
 	char	*tmp;
@@ -114,4 +194,5 @@ void		parse_input(t_mshell *sv)
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
 	dlst = NULL;
+	parse_env(sv);
 }
