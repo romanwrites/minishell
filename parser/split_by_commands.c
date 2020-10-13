@@ -53,7 +53,7 @@ char		**split_command(t_mshell *sv, char *str)
 	i = 0;
 	while (str[i])
 	{
-		set_backslash_state(sv->state, str[i], i);
+		set_backslash_state(sv->state, str[i]);
 		set_quotes_state(sv, sv->state, i, str);
 		if (is_any_quote_open(sv->state))
 		{

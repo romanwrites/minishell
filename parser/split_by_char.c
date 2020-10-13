@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void		set_backslash_state(t_parse *state_check, char c, int j)
+void		set_backslash_state(t_parse *state_check, char c)
 {
 	if (c == 92 && !state_check->backslash)
 	{
@@ -57,7 +57,7 @@ void		set_new_lines_over_char(t_mshell *sv, char c, char *str)
 
 	while (str[j])
 	{
-		set_backslash_state(sv->state, str[j], j);
+		set_backslash_state(sv->state, str[j]);
 		set_quotes_state(sv, sv->state, j, str);
 		if (str[j] == c && !is_any_quote_open(sv->state) && !is_backslash_pressed(sv->state))
 		{
