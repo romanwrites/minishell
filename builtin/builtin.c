@@ -6,11 +6,12 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/12 15:39:36 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/13 20:23:32 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+//#include "minishell.h"
+#include "../includes/minishell.h"
 
 void	ft_echo(char *str, int flag_n) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
 {
@@ -54,24 +55,30 @@ void	ft_cd(char *str)
 	chdir(str);
 }
 
+void free_nothing(void *to_free)
+{
+	return;
+}
+
 void	ft_env()
 {
-	t_list *list;
+	t_list *env;
 	t_list *exp;
 
 	//list = g_lst;
+	env = g_env;
 	exp = g_exp;
-	list = env_to_list(g_env);
-	while(list->next)
+	//list = env_to_list(g_env);
+	while(env->next)
 	{
 		//if (ft_strncmp(((t_envar *)list->content)->value, "''", ft_strlen(((t_envar *)list->content)->value)))
 		//{
-			write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
+			write(1, ((t_envar *)env->content)->key, ft_strlen(((t_envar *)env->content)->key));
 			write(1, "=", 1);
-			write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
+			write(1, ((t_envar *)env->content)->value, ft_strlen(((t_envar *)env->content)->value));
 			write(1, "\n", 1);
 		//}
-		list = list->next;
+		env = env->next;
 	}
 	while(exp)//adds export vars
 	{
@@ -84,14 +91,14 @@ void	ft_env()
 		}
 		exp = exp->next;
 	}
-	if (ft_strncmp(((t_envar *)list->content)->value, "''", ft_strlen(((t_envar *)list->content)->value)))
+	if (ft_strncmp(((t_envar *)env->content)->value, "''", ft_strlen(((t_envar *)env->content)->value)))
 		{
-			write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
+			write(1, ((t_envar *)env->content)->key, ft_strlen(((t_envar *)env->content)->key));
 			write(1, "=", 1);
-			write(1, ((t_envar *)list->content)->value, ft_strlen(((t_envar *)list->content)->value));
+			write(1, ((t_envar *)env->content)->value, ft_strlen(((t_envar *)env->content)->value));
 			write(1, "\n", 1);
 		}
-	ft_lstclear(&list, free_content);
+	//ft_lstclear(&env, free_nothing);
 }
 
 t_list	*ft_merge_lists(t_list *dst, t_list *src)
@@ -105,7 +112,10 @@ t_list	*ft_merge_lists(t_list *dst, t_list *src)
 	t_src = src;
 	while (t_src)
 	{
-		ft_lstadd_back(&t_dst, ft_lstnew(t_src->content));
+		if (!t_dst)
+			t_dst = ft_lstnew(t_src->content);
+		else
+			ft_lstadd_back(&t_dst, ft_lstnew(t_src->content));
 		t_src = t_src->next;
 	}
 	return(t_dst);
@@ -141,53 +151,52 @@ int		find_key_replace_val(t_list **lst, char *key, char *value)
 void	ft_export(char *arg)
 {
 	t_list	*list;
-	t_envar kv[256];
-	int		i;
+	t_envar *kv;
 	char	**pair;
 	char	*value;
 	
-	list = env_to_list(g_env);
+	list = NULL;
 	pair = ft_split(arg, ' ');
-	i = 0;
 	while(pair && *pair)
 	{
+		kv = malloc(sizeof(t_envar));
 		value = ft_strchr(*pair, '=');
 		if (!value)
 		{
-			kv[i].value = ft_strdup("\n");//WHEN THERE IS NO '='
-			if (!kv[i].value)
+			kv->value = ft_strdup("\n");//WHEN THERE IS NO '='
+			if (!kv->value)
 				return ;//what to do if malloc fails
-			kv[i].key = ft_strdup(*pair);
-			if (!kv[i].key)
+			kv->key = ft_strdup(*pair);
+			if (!kv->key)
 				return ;//what to do if malloc fails
 		}
 		else if (*(value + 1) == '\0')
 		{
-			kv[i].value = ft_strdup("");
-			if (!kv[i].value)
+			kv->value = ft_strdup("");
+			if (!kv->value)
 				return ;//what to do if malloc fails
-			kv[i].key = malloc(ft_strlen(*pair) - 1);
-			if (!kv[i].key)
+			kv->key = malloc(ft_strlen(*pair) - 1);
+			if (!kv->key)
 				return ;//what to do if malloc fails
-			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair));
+			ft_strlcpy(kv->key, *pair, ft_strlen(*pair));
 		}
 		else
 		{
-			kv[i].value = ft_strdup(++value);//???
-			if (!kv[i].value)
+			kv->value = ft_strdup(++value);//???
+			if (!kv->value)
 				return ;//what to do if malloc fails
-			kv[i].key = malloc(ft_strlen(*pair) - ft_strlen(kv[i].value));
-			if (!kv[i].key)
+			kv->key = malloc(ft_strlen(*pair) - ft_strlen(kv->value));
+			if (!kv->key)
 				return ;//what to do if malloc fails
-			ft_strlcpy(kv[i].key, *pair, ft_strlen(*pair) - ft_strlen(kv[i].value));
+			ft_strlcpy(kv->key, *pair, ft_strlen(*pair) - ft_strlen(kv->value));
 		}
 		if (!g_exp)
-			g_exp = ft_lstnew_kv((void *)&(kv[i]));
-		else if (!find_key_replace_val(&g_exp, kv[i].key, kv[i].value))
-			ft_lstadd_back(&g_exp, ft_lstnew_kv((void *)&(kv[i])));
+			g_exp = ft_lstnew_kv((void *)kv);
+		else if (!find_key_replace_val(&g_exp, kv->key, kv->value))
+			ft_lstadd_back(&g_exp, ft_lstnew_kv((void *)kv));
 		pair++;
-		i++;
 	}
+	list = ft_merge_lists(list, g_env);
 	list = ft_merge_lists(list, g_exp);
 	ft_list_sort(&list, compare_key);
 	while(list->next)
@@ -207,8 +216,8 @@ void	ft_export(char *arg)
 		}
 		list = list->next;
 	}
-	ft_lstclear(&list, free_content);
-	free_kv(kv, i);
+	ft_lstclear(&list, free_nothing);
+	//free_kv(kv, i);
 }
 
 void	ft_unset(char *arg)
@@ -271,29 +280,27 @@ t_list	*env_to_list(char **envp)
 	char	**env;
 	char	*value;
 	t_list	*list;
-	t_envar	kv[256];//WHY NOT 32??
-	int i;
+	t_envar	*kv;
 
 	env = envp;
 	list = NULL;
-	i = 0;
 	while (*env)
 	{
+		kv = malloc(sizeof(t_envar));
 		value = ft_strchr(*env, '=');
 		value++;
-		kv[i].key = malloc(ft_strlen(*env) - ft_strlen(value));
-		if (!kv[i].key)
+		kv->key = malloc(ft_strlen(*env) - ft_strlen(value));
+		if (!kv->key)
 			return (NULL);
-		ft_strlcpy(kv[i].key, *env, ft_strlen(*env) - ft_strlen(value));
-		kv[i].value = ft_strdup(value);
-		if (!kv[i].value)
+		ft_strlcpy(kv->key, *env, ft_strlen(*env) - ft_strlen(value));
+		kv->value = ft_strdup(value);
+		if (!kv->value)
 			return (NULL);
 		if (!list)
-			list = ft_lstnew((void *)&(kv[i]));
+			list = ft_lstnew((void *)kv);//malloc(sizeof(t_envar))
 		else
-			ft_lstadd_back(&list, ft_lstnew((void *)&(kv[i])));
+			ft_lstadd_back(&list, ft_lstnew((void *)kv));
 		env++;
-		i++;
 	}
 	return(list);
 }

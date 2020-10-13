@@ -1,5 +1,9 @@
 #include "includes/minishell.h"
-pid_t g_pid;
+
+t_list	*g_exp;
+t_list	*g_env;
+char	*input;
+pid_t	g_pid;
 
 void	echo_assert_test()
 {
@@ -29,7 +33,7 @@ int main(int argc, char **argv, char **envp)
 	t_list *tmp;
 	//echo_assert_test();
 	//ft_pwd();
-	g_env = envp;
+	g_env = env_to_list(envp);
 	g_exp = NULL;
 	//signal(SIGINT, sig_handler);
 	//g_pid = fork();
@@ -46,22 +50,24 @@ int main(int argc, char **argv, char **envp)
 		//	ft_export(0);
 		//else
 		//	ft_export(argv[2]);
+		ft_env();
+		printf("\n\n\n");
+		ft_env();
+		printf("\n\n\n");
 		printf("\n---------------EXPORT1----------------\n");
-			ft_export("LEL=111 LOL=000");
-		printf("\n---------------EXPORT2----------------\n");
-			ft_export("LAL=666");
+			ft_export("LEL=111 LAL=000");
 		printf("\n---------------UNSET0----------------\n");
-			ft_unset(" LEL LAL LOL ");
+			ft_unset("LEL ");
 		printf("\n---------------ENV----------------\n");
-		//ft_env();
+		ft_env();
 		printf("\n---------------EXPORT0----------------\n");
 			ft_export(NULL);
 		return 0;
 	}
-	if (!(strcmp(argv[1], "path")))
-	{
-		printf("%s\n", get_envar(g_env, "PATH"));
-	}
+	//if (!(strcmp(argv[1], "path")))
+	//{
+	//	printf("%s\n", get_envar(g_env, "PATH"));
+	//}
 	ft_cd(argv[1]);
 	//ft_pwd();
 	ft_exit(0);

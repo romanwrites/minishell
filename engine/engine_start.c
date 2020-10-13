@@ -6,14 +6,14 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/13 14:05:01 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/13 17:38:42 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 t_list	*g_exp;
-char	**g_env;
+t_list	*g_env;
 char	*input;
 pid_t	pid;
 
@@ -81,7 +81,7 @@ int     main(int ac, char **av, char **envp)
 	signal(SIGQUIT, ignore);//write (1, "\b", 1);
 	signal(SIGINT, new_line);
 
-	g_env = envp;
+	g_env = env_to_list(envp);
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
 	init(sv);

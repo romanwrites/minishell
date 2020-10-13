@@ -4,7 +4,7 @@
 # include "minishell.h"
 
 extern  t_list  *g_exp;//added by export env vars
-extern  char	**g_env;
+extern  t_list	*g_env;
 extern	pid_t	g_pid;
 
 char	**alloc_mem_env(int lines, int max_len, char *arg);
