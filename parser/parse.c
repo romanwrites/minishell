@@ -285,7 +285,7 @@ void		parse_env(t_mshell *sv)
 				handle_env(sv, &ptr[i]);
 			i++;
 		}
-		print_2d_array(ptr);
+//		print_2d_array(ptr);
 		dlst = dlst->next;
 	}
 }
