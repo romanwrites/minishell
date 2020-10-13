@@ -100,6 +100,32 @@ void        append_line(char **ptr, char **append_this)
     new_line = NULL;
 }
 
+void        check_doubles(t_mshell *sv, const char *str, char c)
+{
+    int     i;
+
+    i = 0;
+    while (str[i])
+    {
+        set_backslash_state(sv->state, str[i]);
+        if (i > 0 && !is_backslash_pressed(sv->state) && str[i] == c && str[i + 1] == c)
+            exit_error_message("command not found. check_doubles()");
+        i++;
+    }
+}
+
+size_t		get_dollars_end(const char *str)
+{
+    size_t	i;
+
+    i = 0;
+    while (str[i] == '$')
+	{
+    	i++;
+	}
+    return (i);
+}
+
 void		handle_env(t_mshell *sv, char **str)
 {
 	char	*ptr;
@@ -107,50 +133,74 @@ void		handle_env(t_mshell *sv, char **str)
 	size_t		i;
     size_t		j;
     size_t		save;
-	_Bool	is_alloc;
 	char	*env_value;
-	char	*tmp_env_val;
-	char	*tmp_append;
 	char    *value_to_check;
 	char    *append_this;
 
 	i = 0;
 	j = 0;
 	save = 0;
-	is_alloc = 0;
     env_value = NULL;
 	new_str = ft_strdup("");
 	value_to_check = NULL;
 	ft_alloc_check(new_str);
+    state_bzero(sv->state);
 	if (str)
 	{
 		ptr = *str;
 		while (ptr[i])
 		{
+            set_backslash_state(sv->state, ptr[i]);
 			if (ptr[i] == '$')
 			{
-			    if (i > 0 && ptr[i - 1] == 92)
+			    if (ptr[i + 1] == '$')
                 {
-
-                }
-			    if (i > save + 1)
-                {
-			        append_this = ft_substr(ptr, save, i - save);
-                    append_line(&new_str, &append_this);
+                    j = get_dollars_end(ptr + i);
+					if (i > save + 2 && is_backslash_pressed(sv->state))
+					{
+						append_this = ft_substr(ptr, save, i - save - 1);
+						append_line(&new_str, &append_this);
+					}
+					else if (i > save + 2 && !is_backslash_pressed(sv->state))
+					{
+						append_this = ft_substr(ptr, save, i - save);
+						append_line(&new_str, &append_this);
+					}
+					append_this = ft_substr(ptr, i, j);
+					append_line(&new_str, &append_this);
+					i += j;
+					save = i + 2;
+					continue ;
                 }
                 j = get_env_from_str(ptr + i);
-                if (j == 2)
-                    value_to_check = ft_strdup("");
-                else
-                    value_to_check = ft_substr(ptr, i + 1, j - 1);
-                ft_alloc_check(value_to_check);
-                env_value = get_envar(sv->envp_mshell, value_to_check);
-                if (!env_value)
-                    append_this = ft_strdup("");
+                if (is_backslash_pressed(sv->state))
+                {
+                    if (i > save + 2)
+                    {
+                        append_this = ft_substr(ptr, save, i - save - 1);
+                        append_line(&new_str, &append_this);
+                    }
+                    append_this = ft_substr(ptr, i, j);
+                }
                 else
                 {
-                    append_this = ft_strdup(env_value);
-//                    append_this = env_value;
+                    if (i > save + 1)
+                    {
+                        append_this = ft_substr(ptr, save, i - save);
+                        append_line(&new_str, &append_this);
+                    }
+                    if (j == 2)
+                        value_to_check = ft_strdup("");
+                    else
+                        value_to_check = ft_substr(ptr, i + 1, j - 1);
+                    ft_alloc_check(value_to_check);
+                    env_value = get_envar(sv->envp_mshell, value_to_check);
+                    if (!env_value)
+                        append_this = ft_strdup("");
+                    else
+                    {
+                        append_this = ft_strdup(env_value);
+                    }
                 }
                 append_line(&new_str, &append_this);
                 i += j - 1;
@@ -287,5 +337,6 @@ void		parse_input(t_mshell *sv)
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
 	dlst = NULL;
+    state_bzero(sv->state);
 	parse_env(sv);
 }
