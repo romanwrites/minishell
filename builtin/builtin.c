@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/13 20:39:44 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/13 23:25:27 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	ft_env()
 
 	env = g_env;
 	exp = g_exp;
-	while(env->next)
+	while(env)
 	{
 		write(1, ((t_envar *)env->content)->key, ft_strlen(((t_envar *)env->content)->key));
 		write(1, "=", 1);
@@ -94,13 +94,6 @@ void	ft_env()
 		}
 		exp = exp->next;
 	}
-	if (ft_strncmp(((t_envar *)env->content)->value, "''", ft_strlen(((t_envar *)env->content)->value)))
-		{
-			write(1, ((t_envar *)env->content)->key, ft_strlen(((t_envar *)env->content)->key));
-			write(1, "=", 1);
-			write(1, ((t_envar *)env->content)->value, ft_strlen(((t_envar *)env->content)->value));
-			write(1, "\n", 1);
-		}
 }
 
 t_list	*ft_merge_lists(t_list *dst, t_list *src)
@@ -153,6 +146,8 @@ void	ft_export(char *arg)
 	while(pair && *pair)
 	{
 		kv = malloc(sizeof(t_envar));
+		if (!kv)
+			return ;
 		value = ft_strchr(*pair, '=');
 		if (!value)
 		{
@@ -192,7 +187,7 @@ void	ft_export(char *arg)
 	list = ft_merge_lists(list, g_env);
 	list = ft_merge_lists(list, g_exp);
 	ft_list_sort(&list, compare_key);
-	while(list->next)
+	while(list)
 	{
 		if (!arg)
 		{
@@ -216,6 +211,7 @@ void	ft_export(char *arg)
 void	ft_unset(char *arg)
 {
 	char **keys;
+	char **copy;
 	int		first;
 	t_list *tmp;
 	t_list *ptr_prev;
@@ -236,7 +232,8 @@ void	ft_unset(char *arg)
 	}
 	else
 	{
-		keys = ft_split(arg, ' ');
+		keys = ft_split(arg, ' ');//FREE
+		copy = keys;
 		while (keys && *keys)
 		{
 			tmp = g_exp;
@@ -264,7 +261,36 @@ void	ft_unset(char *arg)
 				first = 0;
 			}
 			keys++;
-		}	
+		}
+		keys = copy;
+		while (keys && *keys)
+		{
+			tmp = g_env;
+			first = 1;
+			while (tmp)
+			{
+				if(!ft_strncmp(((t_envar *)tmp->content)->key, *keys, ft_strlen(*keys)) && !first)
+				{
+					ptr_next = tmp->next;
+					ft_lstdelone(tmp, free_content);
+					ptr_prev->next = ptr_next;
+					tmp = ptr_prev;	
+				}
+				else if (!ft_strncmp(((t_envar *)tmp->content)->key, *keys, ft_strlen(*keys)) && first)
+				{
+					ptr_prev = tmp;
+					ptr_next = tmp->next;
+					ft_lstdelone(tmp, free_content);
+					tmp = ptr_next;
+					g_env = g_env->next;//COULD BE A LEAK!!!
+				}
+				ptr_prev = tmp;
+				if (!first)
+					tmp = tmp->next;
+				first = 0;
+			}
+			keys++;
+		}
 	}
 }
 
@@ -280,6 +306,8 @@ t_list	*env_to_list(char **envp)
 	while (*env)
 	{
 		kv = malloc(sizeof(t_envar));
+		if (!kv)
+			return (NULL);
 		value = ft_strchr(*env, '=');
 		value++;
 		kv->key = malloc(ft_strlen(*env) - ft_strlen(value));
