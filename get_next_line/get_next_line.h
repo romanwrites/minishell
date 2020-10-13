@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/13 06:44:16 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/12 13:54:21 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/13 14:06:44 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,7 @@ char		*ft_strdup_gnl(const char *s1);
 char		*ft_strchr_gnl(const char *s, int c);
 char		*ft_strjoin_gnl(char *s1, char *s2);
 char		*ft_substr_gnl(char const *s, unsigned int start, size_t len);
+
+extern	char	*input;
 
 #endif
