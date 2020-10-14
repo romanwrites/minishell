@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/10 18:35:27 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/12 10:57:13 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include <dirent.h>
 # include <sys/errno.h>
 # include <signal.h>
+# include <fcntl.h>
 # include <stdio.h> //
 
 #endif

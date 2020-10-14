@@ -6,28 +6,30 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 10:00:34 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/10 18:27:46 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/13 23:43:58 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+//#include "minishell.h"
+#include "../includes/minishell.h"
 
-char *get_envar(char **envp, char *var)
+char *get_envar(char *var)
 {
-    char **env;
-    char *path;
+    t_list *env;
+    char *value;
+    char *ret;
 
-    env = envp; 
-    while (*env)
+    env = g_env;
+    ret = NULL;
+    while (env)
     {
-        if (!ft_strncmp(*env, var, ft_strlen(var)))
+        if (!ft_strncmp(((t_envar *)(env->content))->key, var, ft_strlen(var)))
         {
-            path = ft_strchr(*env, '=');
-            if (path)
-                path++;
-            return (path);
+            value = ((t_envar *)(env->content))->value;
+            ret = ft_strdup(value);
+            return (ret);
         }
-        env++;
+        env = env->next;
     }
     return (NULL);
 }

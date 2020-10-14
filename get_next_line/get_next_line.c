@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/13 06:44:13 by mkristie          #+#    #+#             */
-/*   Updated: 2020/06/13 08:37:03 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/13 13:51:44 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 */
 
 #include "get_next_line.h"
+char	*input;
 
 static _Bool	append_utils(char **append_this, char **remainder, \
 								char **line, char **newline_ptr_temp)
@@ -128,14 +129,27 @@ int				get_next_line(int fd, char **line)
 	_Bool		flag;
 	ssize_t		bytes_read;
 
+	if (input)
+	{
+		free(input);
+		input = NULL;
+	}
 	if (!line || (read(fd, buf, 0) < 0) || \
 		!(check_input(fd, line, &flag, &remainder)))
 		return (-1);
-	while (flag && (bytes_read = read(fd, buf, BUFFER_SIZE)))
+	while (flag && (bytes_read = read(fd, buf, BUFFER_SIZE)) != -1)
 	{
+		if (bytes_read == 0 && input)
+		{
+			write(0, "  \b\b", 4);
+			continue;
+		}
+		else if (bytes_read == 0)
+			return (0);
 		if (bytes_read < 0)
 			return ((append_remainder(-1, &remainder, &newline_ptr, line)));
 		buf[bytes_read] = 0;
+		input = ft_strjoin_gnl(input, buf);
 		if ((newline_ptr = ft_strchr_gnl(buf, '\n')))
 		{
 			*newline_ptr = '\0';
