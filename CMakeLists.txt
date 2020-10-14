@@ -31,4 +31,4 @@ add_executable(minishell
         ${PARSER}
         ${UTILS}
         ${BUILTIN}
-        )
+        engine/gnl_minishell.c)

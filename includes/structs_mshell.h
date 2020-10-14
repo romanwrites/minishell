@@ -16,6 +16,13 @@
 #include "../libft/libft.h"
 #include "minishell.h"
 
+typedef struct		s_char
+{
+	char			*original;
+	char			*copy;
+	int				index;
+}					t_char;
+
 typedef struct	s_parse {
 	_Bool		backslash;
 	_Bool		is_double_quote_open;

@@ -14,6 +14,10 @@
 
 # define MINISHELL_H
 
+# define STDOUT 1
+# define STDIN 0
+# define PROMPT "zaebash: "
+
 # include "structs_mshell.h"
 # include "utils_mshell.h"
 # include "parse_mshell.h"

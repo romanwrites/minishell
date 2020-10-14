@@ -15,5 +15,7 @@
 #include "structs_mshell.h"
 
 void	state_bzero(t_parse *state);
+_Bool	check_quotes_state(t_parse *state);
+int		gnl_minishell(int fd, char **line, char *shell_str, _Bool (*check_quotes_state)(t_parse *state));
 
 #endif
