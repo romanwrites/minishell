@@ -1,6 +1,5 @@
 #include "includes/minishell.h"
 
-t_list	*g_exp;
 t_list	*g_env;
 char	*input;
 pid_t	g_pid;
@@ -34,7 +33,6 @@ int main(int argc, char **argv, char **envp)
 	//echo_assert_test();
 	//ft_pwd();
 	g_env = env_to_list(envp);
-	g_exp = NULL;
 	//signal(SIGINT, sig_handler);
 	//g_pid = fork();
 	//while(1);
@@ -50,14 +48,13 @@ int main(int argc, char **argv, char **envp)
 		//	ft_export(0);
 		//else
 		//	ft_export(argv[2]);
-		ft_env();
-		printf("\n\n\n");
-		ft_env();
-		printf("\n\n\n");
 		printf("\n---------------EXPORT1----------------\n");
-			ft_export("LEL=111 LAL=000");
+			ft_export("Z ZOL= ZIL=1");
+			ft_env();
+			printf("\n-------------------------------\n");
+			ft_export(NULL);
 		printf("\n---------------UNSET0----------------\n");
-			ft_unset("LEL ");
+			ft_unset("Z ");
 		printf("\n---------------ENV----------------\n");
 		ft_env();
 		printf("\n---------------EXPORT0----------------\n");

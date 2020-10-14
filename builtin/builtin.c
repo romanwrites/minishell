@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/13 23:25:27 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/14 14:28:57 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,25 +74,16 @@ void	ft_env()
 	t_list *exp;
 
 	env = g_env;
-	exp = g_exp;
 	while(env)
 	{
-		write(1, ((t_envar *)env->content)->key, ft_strlen(((t_envar *)env->content)->key));
-		write(1, "=", 1);
-		write(1, ((t_envar *)env->content)->value, ft_strlen(((t_envar *)env->content)->value));
-		write(1, "\n", 1);
-		env = env->next;
-	}
-	while(exp)//adds export vars
-	{
-		if (ft_strncmp(((t_envar *)exp->content)->value, "\n", ft_strlen(((t_envar *)exp->content)->value)) || *(((t_envar *)exp->content)->value) == '\0')
+		if (((t_envar *)env->content)->value)
 		{
-			write(1, ((t_envar *)exp->content)->key, ft_strlen(((t_envar *)exp->content)->key));
+			write(1, ((t_envar *)env->content)->key, ft_strlen(((t_envar *)env->content)->key));
 			write(1, "=", 1);
-			write(1, ((t_envar *)exp->content)->value, ft_strlen(((t_envar *)exp->content)->value));
+			write(1, ((t_envar *)env->content)->value, ft_strlen(((t_envar *)env->content)->value));
 			write(1, "\n", 1);
 		}
-		exp = exp->next;
+		env = env->next;
 	}
 }
 
@@ -151,9 +142,7 @@ void	ft_export(char *arg)
 		value = ft_strchr(*pair, '=');
 		if (!value)
 		{
-			kv->value = ft_strdup("\n");//WHEN THERE IS NO '='
-			if (!kv->value)
-				return ;//what to do if malloc fails
+			kv->value = NULL;//WHEN THERE IS NO '='
 			kv->key = ft_strdup(*pair);
 			if (!kv->key)
 				return ;//what to do if malloc fails
@@ -178,14 +167,13 @@ void	ft_export(char *arg)
 				return ;//what to do if malloc fails
 			ft_strlcpy(kv->key, *pair, ft_strlen(*pair) - ft_strlen(kv->value));
 		}
-		if (!g_exp)
-			g_exp = ft_lstnew_kv((void *)kv);
-		else if (!find_key_replace_val(&g_exp, kv->key, kv->value))
-			ft_lstadd_back(&g_exp, ft_lstnew_kv((void *)kv));
+		if (!g_env)
+			g_env = ft_lstnew_kv((void *)kv);
+		else if (!find_key_replace_val(&g_env, kv->key, kv->value))
+			ft_lstadd_back(&g_env, ft_lstnew_kv((void *)kv));
 		pair++;
 	}
 	list = ft_merge_lists(list, g_env);
-	list = ft_merge_lists(list, g_exp);
 	ft_list_sort(&list, compare_key);
 	while(list)
 	{
@@ -193,7 +181,7 @@ void	ft_export(char *arg)
 		{
 			write(1, "declare -x ", ft_strlen("declare -x "));
 			write(1, ((t_envar *)list->content)->key, ft_strlen(((t_envar *)list->content)->key));
-			if (*(((t_envar *)list->content)->value) != '\n')
+			if (((t_envar *)list->content)->value && *(((t_envar *)list->content)->value) != '\n')
 			{
 				write(1, "=", 1);
 				write(1, "\"", 1);
@@ -211,7 +199,6 @@ void	ft_export(char *arg)
 void	ft_unset(char *arg)
 {
 	char **keys;
-	char **copy;
 	int		first;
 	t_list *tmp;
 	t_list *ptr_prev;
@@ -233,50 +220,20 @@ void	ft_unset(char *arg)
 	else
 	{
 		keys = ft_split(arg, ' ');//FREE
-		copy = keys;
-		while (keys && *keys)
-		{
-			tmp = g_exp;
-			first = 1;
-			while (tmp)
-			{
-				if(!ft_strncmp(((t_envar *)tmp->content)->key, *keys, ft_strlen(*keys)) && !first)
-				{
-					ptr_next = tmp->next;
-					ft_lstdelone(tmp, free_content);
-					ptr_prev->next = ptr_next;
-					tmp = ptr_prev;	
-				}
-				else if (!ft_strncmp(((t_envar *)tmp->content)->key, *keys, ft_strlen(*keys)) && first)
-				{
-					ptr_prev = tmp;
-					ptr_next = tmp->next;
-					ft_lstdelone(tmp, free_content);
-					tmp = ptr_next;
-					g_exp = g_exp->next;//COULD BE A LEAK!!!
-				}
-				ptr_prev = tmp;
-				if (!first)
-					tmp = tmp->next;
-				first = 0;
-			}
-			keys++;
-		}
-		keys = copy;
 		while (keys && *keys)
 		{
 			tmp = g_env;
 			first = 1;
 			while (tmp)
 			{
-				if(!ft_strncmp(((t_envar *)tmp->content)->key, *keys, ft_strlen(*keys)) && !first)
+				if(!ft_strcmp(((t_envar *)tmp->content)->key, *keys) && !first)
 				{
 					ptr_next = tmp->next;
 					ft_lstdelone(tmp, free_content);
 					ptr_prev->next = ptr_next;
 					tmp = ptr_prev;	
 				}
-				else if (!ft_strncmp(((t_envar *)tmp->content)->key, *keys, ft_strlen(*keys)) && first)
+				else if (!ft_strcmp(((t_envar *)tmp->content)->key, *keys) && first)
 				{
 					ptr_prev = tmp;
 					ptr_next = tmp->next;

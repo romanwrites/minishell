@@ -3,7 +3,6 @@
 
 # include "minishell.h"
 
-extern  t_list  *g_exp;//added by export env vars
 extern  t_list	*g_env;
 extern	pid_t	g_pid;
 
