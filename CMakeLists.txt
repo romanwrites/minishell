@@ -7,7 +7,7 @@ include_directories(get_next_line)
 include_directories(includes)
 include_directories(libft)
 include_directories(utils)
-
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D BUFFER_SIZE=32")
 file(GLOB
         ENGINE "engine/*.c")
 
