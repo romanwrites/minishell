@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:38:07 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/10 18:47:56 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/14 16:19:34 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ void		handle_env(t_mshell *sv, char **str)
                     else
                         value_to_check = ft_substr(ptr, i + 1, j - 1);
                     ft_alloc_check(value_to_check);
-                    env_value = get_envar(sv->envp_mshell, value_to_check);
+                    env_value = get_envar(value_to_check);
                     if (!env_value)
                         append_this = ft_strdup("");
                     else

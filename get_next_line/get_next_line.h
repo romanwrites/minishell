@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/13 06:44:16 by mkristie          #+#    #+#             */
-/*   Updated: 2020/06/19 19:27:00 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/13 14:06:44 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 21
+#  define BUFFER_SIZE 1
 # endif
 
 int			get_next_line(int fd, char **line);
@@ -25,5 +25,7 @@ char		*ft_strdup_gnl(const char *s1);
 char		*ft_strchr_gnl(const char *s, int c);
 char		*ft_strjoin_gnl(char *s1, char *s2);
 char		*ft_substr_gnl(char const *s, unsigned int start, size_t len);
+
+extern	char	*input;
 
 #endif

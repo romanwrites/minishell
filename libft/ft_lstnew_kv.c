@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 00:20:01 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/01 16:55:47 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/14 13:30:50 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,15 @@ t_list		*ft_lstnew_kv(void *content)
 
 	if (!(new = malloc(sizeof(t_list))))
 		return (NULL);
-	new->content = malloc(sizeof(content));
-	new->content = ft_memcpy(new->content, content, sizeof(content));
-	if (!(((t_envar *)new->content)->key = ft_strdup(((t_envar *)content)->key)))
-		return (NULL);
-	if (!(((t_envar *)new->content)->value = ft_strdup(((t_envar *)content)->value)))
-		return (NULL);
+
+	new->content = content;
+
+	//new->content = malloc(sizeof(content));
+	//new->content = ft_memcpy(new->content, content, sizeof(content));
+
+	//if (!(((t_envar *)new->content)->key = ft_strdup(((t_envar *)content)->key)))
+	//	return (NULL);
+	//((t_envar *)new->content)->value = ft_strdup(((t_envar *)content)->value);
 	new->next = NULL;
 	return (new);
 }
