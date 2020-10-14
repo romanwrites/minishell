@@ -276,7 +276,7 @@ char		*get_new_str_qopen(t_mshell *sv, char **new)
 	}
 }
 
-char		*open_quotes_str(t_mshell *sv, char *str)
+char		*open_quotes_str(t_parse *state, char *str)
 {
 	char 	*new;
 	size_t 	i;
@@ -303,6 +303,7 @@ char		*open_quotes_str(t_mshell *sv, char *str)
 void		open_quotes_2d(t_mshell *sv, char ***ptr)
 {
 	char	**ptr_2d;
+	char 	*tmp;
 	int 	i;
 
 	i = 0;
@@ -310,7 +311,10 @@ void		open_quotes_2d(t_mshell *sv, char ***ptr)
 	while (ptr_2d[i])
 	{
 		state_bzero(sv->state);
-
+		tmp = ptr_2d[i];
+		ptr_2d[i] = open_quotes_str(sv->state, tmp);
+		free(tmp);
+		tmp = NULL;
 		i++;
 	}
 }
@@ -339,6 +343,7 @@ void		parse_input(t_mshell *sv)
 		state_bzero(sv->state);
 		tmp_ptr2d = split_command(sv, semicolons2d[j]);
 		open_quotes_2d(sv, &tmp_ptr2d);
+
 		dlst->content = (void *)tmp_ptr2d;
 		tmp_ptr2d = NULL;
         char **ptr = (char **)dlst->content;

@@ -16,7 +16,7 @@
 
 # define STDOUT 1
 # define STDIN 0
-# define PROMPT "zaebash: "
+# define PROMPT "zaebash-3.2$ "
 
 # include "structs_mshell.h"
 # include "utils_mshell.h"

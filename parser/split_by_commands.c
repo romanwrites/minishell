@@ -48,7 +48,7 @@ void		set_nl_cpy(char **str, int i)
 char		**split_command(t_mshell *sv, char *str)
 {
 	size_t 	i;
-	char	**split_by_command;
+	char	**split_by_spaces;
 
 	i = 0;
 	while (str[i])
@@ -76,7 +76,7 @@ char		**split_command(t_mshell *sv, char *str)
         }
 		i++;
 	}
-	split_by_command = ft_split(str, '\n');
-	ft_alloc_check(split_by_command);
-	return (split_by_command);
+	split_by_spaces = ft_split(str, '\n');
+	ft_alloc_check(split_by_spaces);
+	return (split_by_spaces);
 }

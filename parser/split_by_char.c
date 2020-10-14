@@ -34,11 +34,11 @@ _Bool		is_backslash_pressed(t_parse *state_check)
 
 void		set_quotes_state(t_mshell *sv, t_parse *state_check, int j, const char *str)
 {
-	if (str[j] == 34 && !state_check->is_double_quote_open)
+	if (str[j] == 34 && !state_check->is_double_quote_open && !state_check->is_single_quote_open)
 		state_check->is_double_quote_open = 1;
 	else if (str[j] == 34 && state_check->is_double_quote_open && j > 0 && str[j - 1] != 92)
 		state_check->is_double_quote_open = 0;
-	else if (str[j] == 39 && !state_check->is_single_quote_open)
+	else if (str[j] == 39 && !state_check->is_single_quote_open && !state_check->is_double_quote_open)
 		state_check->is_single_quote_open = 1;
 	else if (str[j] == 39 && state_check->is_single_quote_open)
 		state_check->is_single_quote_open = 0;

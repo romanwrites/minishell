@@ -76,10 +76,10 @@ _Bool						check_quotes_state(t_parse *state)
 	return (!state->is_double_quote_open || !state->is_single_quote_open ? 0 : 1);
 }
 
-void 						set_quotes_state(t_parse *state)
-{
-
-}
+//void 						set_quotes_state(t_parse *state)
+//{
+//
+//}
 
 int     main(int ac, char **av, char **envp)
 {
@@ -100,14 +100,26 @@ int     main(int ac, char **av, char **envp)
 	init(sv);
 	//sv->envp_mshell = (void *)envp;
 
-	int fd = open("parse_tests.txt", O_RDONLY);
-	write(0, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
+//	int fd = open("parse_tests.txt", O_RDONLY);
+	write(0, PROMPT, ft_strlen(PROMPT));
 
-
-	while ((read_res = gnl_minishell(0, &line, PROMPT, check_quotes_state)))
+	while (get_next_line(0, &sv->content))
 	{
-
+//		ft_test(sv->content);//
+		ft_alloc_check(sv->content);
+		parse_input(sv);
+		t_dlist *tmp = sv->dlst_head;
+		char **ptr = (char **)(sv->dlst_head)->content;
+		tmp = tmp->next;
+		print_2d_array(ptr);
+		free(sv->content);
+		sv->content = NULL;
 	}
+
+//	while ((read_res = gnl_minishell(0, &line, PROMPT, check_quotes_state)))
+//	{
+//
+//	}
 	if (*(sv->content) == '\0')
 		write(0, "exit\n", ft_strlen("exit\n"));
 	return (0);
