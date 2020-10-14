@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/14 16:45:07 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/14 21:19:37 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,73 @@ void new_line()
 }
 
 //////////
+char **list_to_env()
+{
+	t_list *list;
+	char **envp;
+	char *tmp;
+	char *str;
+	int i;
+	int len;
+
+	i = 0;
+	list = g_env;
+	while(list)
+	{
+		i++;
+		list = list->next;
+	}
+	list = g_env;
+	envp = (char **)malloc(sizeof(char**) * i);
+	while(len < i)
+	{
+		envp[len] = (char *)malloc(PATH_MAX);
+		str = ft_strjoin(((t_envar *)(list->content))->key, "=");
+		tmp = str;
+		str = ft_strjoin(str, ((t_envar *)(list->content))->value);
+		free(tmp);
+		envp[len] = ft_memcpy(envp[len], str, ft_strlen(str));
+		free(str);
+		len++;
+	}
+	envp[len] = NULL;
+}
+
+void	handle_cmd(char *cmd, char **args)
+{
+	char *to_split;
+	char *tmp;
+	char **path;
+	char **envp;
+	DIR *dir;
+	struct dirent *entry;
+
+	to_split = get_envar("PATH");
+	path = ft_split(to_split, ':');
+	envp = list_to_env();
+	tmp = cmd;
+	cmd = ft_strjoin("/", cmd);
+	free(tmp);
+	while(path)
+	{
+		dir = opendir(*path);
+		while(entry = readdir(dir))
+		{
+			if(!ft_strcmp(cmd, entry->d_name));
+			{
+				tmp = ft_strjoin(path, cmd);
+				execve(tmp, args, envp);
+				free(tmp);
+				closedir(dir);
+				return ;
+			}
+		}
+		closedir(dir);
+		path++;
+	}
+	//command not found0
+}
+
 void ft_test(char *str)
 {
 	if (*str == '\0')
@@ -70,6 +137,8 @@ void ft_test(char *str)
 	}
 	else if (!(strcmp(cmd[0], "unset")))
 		ft_unset(cmd[1]);
+	else if (!(strcmp(cmd[0], "ls")))
+		handle_cmd("ls", NULL);
 }
 //////////
 
