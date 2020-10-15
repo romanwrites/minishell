@@ -54,7 +54,7 @@ char		**split_command(t_mshell *sv, char *str)
 	while (str[i])
 	{
 		set_backslash_state(sv->state, str[i]);
-		set_quotes_state(sv, sv->state, i, str);
+		set_quotes_state(sv->state, i, str);
 		if (is_any_quote_open(sv->state))
 		{
 			i++;
@@ -76,6 +76,8 @@ char		**split_command(t_mshell *sv, char *str)
         }
 		i++;
 	}
+	if (is_any_quote_open(sv->state))
+		exit_error_message("Quotes are open: split_command()");
 	split_by_spaces = ft_split(str, '\n');
 	ft_alloc_check(split_by_spaces);
 	return (split_by_spaces);

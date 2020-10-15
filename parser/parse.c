@@ -227,9 +227,9 @@ void		parse_env(t_mshell *sv)
 		    if (ptr[i][0] == 39)
 		    {
                 tmp = ptr[i];
-                if (count_chr(ptr[i], 39, 0) != count_chr(ptr[i], 39, 1)) {
-                    exit_error_message("syntax error, singly quotes are not closed. parse_env()");
-                }
+//                if (count_chr(ptr[i], 39, 0) != count_chr(ptr[i], 39, 1)) {
+//                    exit_error_message("syntax error, singly quotes are not closed. parse_env()");
+//                }
                 if (count_chr(ptr[i], 39, 0) % 2 == 1) {
                     ptr[i] = ft_strtrim(tmp, "'");
                     i++;
@@ -243,10 +243,10 @@ void		parse_env(t_mshell *sv)
 		    else if (ptr[i][0] == 34)
             {
                 tmp = ptr[i];
-                if (count_chr(ptr[i], 34, 0) != count_chr(ptr[i], 34, 1))
-                {
-                    exit_error_message("syntax error, singly quotes are not closed. parse_env()");
-                }
+//                if (count_chr(ptr[i], 34, 0) != count_chr(ptr[i], 34, 1))
+//                {
+//                    exit_error_message("syntax error, singly quotes are not closed. parse_env()");
+//                }
                 ptr[i] = ft_strtrim(tmp, "\"");
                 free(tmp);
                 tmp = NULL;
@@ -270,34 +270,76 @@ char		*get_new_str_qopen(t_mshell *sv, char **new)
 	while (str[i])
 	{
 		set_backslash_state(sv->state, str[i]);
-		set_quotes_state(sv, sv->state, i, str);
+		set_quotes_state(sv->state, i, str);
 
 		i++;
 	}
 }
 
-char		*open_quotes_str(t_parse *state, char *str)
+_Bool g_dquote;
+_Bool g_squote;
+
+_Bool		is_open_quote()
 {
-	char 	*new;
+	return ((g_squote || g_dquote) && (g_dquote != g_squote)); //xor
+}
+
+void		set_quotes_state_new(char c)
+{
+	if (c == DOUBLE_QUOTES && !is_open_quote())
+		g_dquote = 1;
+	else if (c == DOUBLE_QUOTES && g_dquote)
+		g_dquote = 0;
+	else if (c == SINGLE_QUOTES && !is_open_quote())
+		g_squote = 1;
+	else if (c == SINGLE_QUOTES && g_squote)
+		g_squote = 0;
+}
+
+
+
+char		*open_quotes_str(t_parse *state, const char *str)
+{
+	char 	*new_line;
 	size_t 	i;
-	size_t 	len;
+	size_t 	j;
+	size_t 	save;
+	char 	*tmp;
+	char 	*append_this;
 
 	i = 0;
-	len = ft_strlen(str);
-	if ((str[i] == 34 && str[len] == 34) || (str[i] == 39 && str[len] == 39))
+	save = 0;
+	append_this = NULL;
+	tmp = NULL;
+	g_dquote = 0;
+	g_squote = 0;
+	new_line = ft_strdup("");
+	ft_alloc_check(new_line);
+	while (str[i])
 	{
-		i = 1;
-		len -= 1;
-		new = ft_substr(str, i, len);
-		ft_alloc_check(new);
+		set_quotes_state_new(str[i]);
+		if (is_open_quote())
+		{
+			append_this = ft_substr(str, save, i - save);
+			ft_alloc_check(append_this);
+			append_line(&new_line, &append_this);
+			j = i;
+			while (is_open_quote() && str[++j])
+			{
+				set_quotes_state_new(str[j]);
+			}
+			if (j - i > 1)
+			{
+				append_this = ft_substr(str, i + 1, j - i - 1);
+				ft_alloc_check(append_this);
+				append_line(&new_line, &append_this);
+			}
+			save = j + 1;
+			i = j;
+		}
+		i++;
 	}
-	else
-	{
-		new = ft_strdup(str);
-		ft_alloc_check(new);
-	}
-	new = get_new_str_qopen(sv, &new);
-	return (new);
+	return (new_line);
 }
 
 void		open_quotes_2d(t_mshell *sv, char ***ptr)

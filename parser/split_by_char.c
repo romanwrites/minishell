@@ -32,15 +32,15 @@ _Bool		is_backslash_pressed(t_parse *state_check)
 	return (0);
 }
 
-void		set_quotes_state(t_mshell *sv, t_parse *state_check, int j, const char *str)
+void		set_quotes_state(t_parse *state_check, int j, const char *str)
 {
-	if (str[j] == 34 && !state_check->is_double_quote_open && !state_check->is_single_quote_open)
+	if (str[j] == DOUBLE_QUOTES && !state_check->is_double_quote_open && !state_check->is_single_quote_open)
 		state_check->is_double_quote_open = 1;
-	else if (str[j] == 34 && state_check->is_double_quote_open && j > 0 && str[j - 1] != 92)
+	else if (str[j] == DOUBLE_QUOTES && state_check->is_double_quote_open && j > 0 && str[j - 1] != BACK_SLASH)
 		state_check->is_double_quote_open = 0;
-	else if (str[j] == 39 && !state_check->is_single_quote_open && !state_check->is_double_quote_open)
+	else if (str[j] == SINGLE_QUOTES && !state_check->is_single_quote_open && !state_check->is_double_quote_open)
 		state_check->is_single_quote_open = 1;
-	else if (str[j] == 39 && state_check->is_single_quote_open)
+	else if (str[j] == SINGLE_QUOTES && state_check->is_single_quote_open)
 		state_check->is_single_quote_open = 0;
 }
 
@@ -58,7 +58,7 @@ void		set_new_lines_over_char(t_mshell *sv, char c, char *str)
 	while (str[j])
 	{
 		set_backslash_state(sv->state, str[j]);
-		set_quotes_state(sv, sv->state, j, str);
+		set_quotes_state(sv->state, j, str);
 		if (str[j] == c && !is_any_quote_open(sv->state) && !is_backslash_pressed(sv->state))
 		{
 			if (str[j + 1] == c)
