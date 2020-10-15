@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/14 23:41:09 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/15 19:47:15 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,6 +67,7 @@ fclean: clean
 
 sh: all
 	rm -f $(OBJ)
+	$(MAKE) clean -C $(LIBFT_DIR)
 	./minishell
 
 resh: re

@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/14 23:43:01 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/15 18:25:29 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void ignore()
 void new_line()
 {
 	write(0, "\b\b  \b\b", 6);
-	write(0, "\nzaebash-3.2$ ", ft_strlen("\nzaebash-3.2$ "));
+	write(0, "\nminishell-3.2$ ", ft_strlen("\nminishell-3.2$ "));
 }
 
 //////////
@@ -55,8 +55,8 @@ void ft_test(char *str)
 	}
 	else if (!(strcmp(cmd[0], "unset")))
 		ft_unset(cmd[1]);
-	else if (!(strcmp(cmd[0], "ls")))
-		handle_cmd("ls", NULL);
+	else if (!(strcmp(cmd[0], "cat")))
+		handle_cmd("cat", NULL);
 }
 //////////
 
@@ -93,11 +93,11 @@ int     main(int ac, char **av, char **envp)
 	//sv->envp_mshell = (void *)envp;
 
 	int fd = open("parse_tests.txt", O_RDONLY);
-	write(0, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
+	write(0, "minishell-3.2$ ", ft_strlen("minishell-3.2$ "));
 	while (get_next_line(0, &sv->content))
 	{
 		ft_test(sv->content);//
-		write(0, "zaebash-3.2$ ", ft_strlen("zaebash-3.2$ "));
+		write(0, "minishell-3.2$ ", ft_strlen("minishell-3.2$ "));
 		//ft_alloc_check(sv->content);
 		//parse_input(sv);
 		//t_dlst *tmp = sv->dlst_head
