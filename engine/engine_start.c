@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/15 18:25:29 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/15 20:57:49 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 t_list	*g_env;
 char	*input;
-pid_t	pid;
+pid_t	g_pid;
 
 void ignore()
 {
