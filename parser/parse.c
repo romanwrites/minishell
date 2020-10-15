@@ -339,6 +339,12 @@ char		*open_quotes_str(t_parse *state, const char *str)
 		}
 		i++;
 	}
+	if (i - save > 1)
+	{
+		append_this = ft_substr(str, save, i - save);
+		ft_alloc_check(append_this);
+		append_line(&new_line, &append_this);
+	}
 	return (new_line);
 }
 
