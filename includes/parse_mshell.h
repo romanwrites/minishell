@@ -54,5 +54,7 @@ void		open_quotes_2d(t_mshell *sv, char ***ptr);
 
 void		parse_env(t_mshell *sv);
 void        append_line(char **ptr, char **append_this);
+size_t		get_dollars_end(const char *str);
+int			get_env_from_str(const char *str);
 
 #endif

@@ -146,6 +146,9 @@ char		*open_quotes_str(t_parse *state, const char *str_src)
 	char 	*str;
 	char	tab[] = {DOLLAR, DOUBLE_QUOTE, BACKSLASH, GRAVE_ACCENT};
 
+	char	*value_to_check;
+	char 	*env_value;
+
 	i = 0;
 	save = 0;
 	j = 0;
@@ -159,6 +162,63 @@ char		*open_quotes_str(t_parse *state, const char *str_src)
 	{
 		set_backslash_state_new(str[i]);
 		set_quotes_state_new(str[i]);
+		if (str[i] == DOLLAR)
+		{
+			if (str[i + 1] == '$')
+			{
+				j = get_dollars_end(str + i);
+				if (i > save + 2 && is_backslash_active())
+				{
+					append_this = ft_substr(str, save, i - save - 1);
+					append_line(&new_line, &append_this);
+				}
+				else if (i > save + 2 && !is_backslash_active())
+				{
+					append_this = ft_substr(str, save, i - save);
+					append_line(&new_line, &append_this);
+				}
+				append_this = ft_substr(str, i, j);
+				append_line(&new_line, &append_this);
+				i += j;
+				save = i + 2;
+				continue ;
+			}
+			j = get_env_from_str(str + i);
+			if (is_backslash_active())
+			{
+				if (i > save + 2)
+				{
+					append_this = ft_substr(str, save, i - save - 1);
+					append_line(&new_line, &append_this);
+				}
+				append_this = ft_substr(str, i, j);
+			}
+			else
+			{
+				if (i > save + 1)
+				{
+					append_this = ft_substr(str, save, i - save);
+					append_line(&new_line, &append_this);
+				}
+				if (j == 2)
+					value_to_check = ft_strdup("");
+				else
+					value_to_check = ft_substr(str, i + 1, j - 1);
+				ft_alloc_check(value_to_check);
+				env_value = get_envar(value_to_check);
+				if (!env_value)
+					append_this = ft_strdup("");
+				else
+				{
+					append_this = ft_strdup(env_value);
+				}
+			}
+			append_line(&new_line, &append_this);
+			i += j - 1;
+			save = i + 1;
+			i++;
+			continue ;
+		}
 		if (is_open_quote())
 		{
 			append_this = ft_substr(str, save, i - save);
@@ -258,6 +318,6 @@ void		parse_input(t_mshell *sv)
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
 	dlst = NULL;
-	init_globs();
-	parse_env(sv);
+//	init_globs();
+//	parse_env(sv);
 }
