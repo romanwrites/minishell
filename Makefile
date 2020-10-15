@@ -23,7 +23,8 @@ GNL = get_next_line.c \
 
 PARSE_SRC = parse.c \
 			split_by_char.c \
-			split_by_commands.c 
+			split_by_commands.c \
+			states.c \
 			
 			
 UTILS_SRC = ft_alloc_check.c \
@@ -33,11 +34,11 @@ UTILS_SRC = ft_alloc_check.c \
 			count_2d_lines.c \
 			exit_error_message.c \
 			ft_trim_2d.c \
-			print_2d_array.c 
+			print_2d_array.c \
 
 ENGINE_SRC = engine_start.c \
 
-BUILTIN = builtin.c\
+BUILTIN = builtin.c \
 
 SRC = $(addprefix engine/, $(ENGINE_SRC))
 SRC += $(addprefix parser/, $(PARSE_SRC))

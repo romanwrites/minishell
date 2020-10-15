@@ -47,20 +47,20 @@ void		set_nl_cpy(char **str, int i)
 
 char		**split_command(t_mshell *sv, char *str)
 {
-	size_t 	i;
+	int 	i;
 	char	**split_by_spaces;
 
-	i = 0;
-	while (str[i])
+	i = -1;
+	init_globs();
+	while (i <= 2147483646 && str[i++])
 	{
-		set_backslash_state(sv->state, str[i]);
-		set_quotes_state(sv->state, i, str);
-		if (is_any_quote_open(sv->state))
+		set_backslash_state_new(str[i]);
+		set_quotes_state_new(str[i]);
+		if (is_open_quote())
 		{
-			i++;
 			continue ;
 		}
-		if ((str[i] == ' ' || str[i] == '\t') && !is_backslash_pressed(sv->state))
+		if ((str[i] == ' ' || str[i] == '\t') && !is_backslash_active())
 			str[i] = '\n';
 		else if (i > 0 && (str[i] == '|' || str[i] == '<' || str[i] == '>') && \
 				(is_valid_syntax(str[i - 1], str[i], str[i + 1])) && \
@@ -74,9 +74,8 @@ char		**split_command(t_mshell *sv, char *str)
             set_nl_cpy(&str, i);
             i++;
         }
-		i++;
 	}
-	if (is_any_quote_open(sv->state))
+	if (is_open_quote())
 		exit_error_message("Quotes are open: split_command()");
 	split_by_spaces = ft_split(str, '\n');
 	ft_alloc_check(split_by_spaces);

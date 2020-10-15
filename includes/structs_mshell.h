@@ -16,6 +16,11 @@
 #include "../libft/libft.h"
 #include "minishell.h"
 
+extern _Bool	g_dquote;
+extern _Bool	g_squote;
+extern _Bool	g_backslash;
+extern int		g_backslash_time;
+
 typedef struct		s_char
 {
 	char			*original;

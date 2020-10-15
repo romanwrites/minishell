@@ -115,7 +115,7 @@ void		handle_env(t_mshell *sv, char **str)
 	new_str = ft_strdup("");
 	value_to_check = NULL;
 	ft_alloc_check(new_str);
-    state_bzero(sv->state);
+	init_globs();
 	if (str)
 	{
 		ptr = *str;
@@ -276,47 +276,74 @@ char		*get_new_str_qopen(t_mshell *sv, char **new)
 	}
 }
 
-_Bool g_dquote;
-_Bool g_squote;
 
-_Bool		is_open_quote()
+
+
+size_t		len_without_newlines(const char *ptr)
 {
-	return ((g_squote || g_dquote) && (g_dquote != g_squote)); //xor
+	size_t	i;
+	size_t 	j;
+
+	i = 0;
+	j = 0;
+	while (ptr[i])
+	{
+		if (ptr[i] != '\n')
+			j++;
+		i++;
+	}
+	return (j);
 }
 
-void		set_quotes_state_new(char c)
+char		*realloc_without_newlines(char **append_this)
 {
-	if (c == DOUBLE_QUOTES && !is_open_quote())
-		g_dquote = 1;
-	else if (c == DOUBLE_QUOTES && g_dquote)
-		g_dquote = 0;
-	else if (c == SINGLE_QUOTES && !is_open_quote())
-		g_squote = 1;
-	else if (c == SINGLE_QUOTES && g_squote)
-		g_squote = 0;
+	char	*new_str;
+	char	*ptr;
+	int 	i;
+	int 	j;
+
+	i = 0;
+	j = 0;
+	ptr = *(append_this);
+	new_str = malloc(len_without_newlines(ptr));
+	ft_alloc_check(new_str);
+	while (ptr[i])
+	{
+		if (ptr[i] != '\n')
+		{
+			new_str[j] = ptr[i];
+			j++;
+		}
+		i++;
+	}
+	new_str[j] = '\0';
+	free(ptr);
+	*(append_this) = NULL;
+	return (new_str);
 }
 
-
-
-char		*open_quotes_str(t_parse *state, const char *str)
+char		*open_quotes_str(t_parse *state, const char *str_src)
 {
 	char 	*new_line;
 	size_t 	i;
 	size_t 	j;
 	size_t 	save;
-	char 	*tmp;
 	char 	*append_this;
+	char 	*str;
+	char	tab[] = {DOLLAR, DOUBLE_QUOTE, BACKSLASH, GRAVE_ACCENT};
 
 	i = 0;
 	save = 0;
+	j = 0;
 	append_this = NULL;
-	tmp = NULL;
-	g_dquote = 0;
-	g_squote = 0;
+	init_globs();
 	new_line = ft_strdup("");
 	ft_alloc_check(new_line);
+	str = ft_strdup(str_src);
+	ft_alloc_check(str);
 	while (str[i])
 	{
+		set_backslash_state_new(str[i]);
 		set_quotes_state_new(str[i]);
 		if (is_open_quote())
 		{
@@ -326,12 +353,22 @@ char		*open_quotes_str(t_parse *state, const char *str)
 			j = i;
 			while (is_open_quote() && str[++j])
 			{
+				set_backslash_state_new(str[j]);
 				set_quotes_state_new(str[j]);
+				if (is_backslash_active() && g_dquote && ft_strchr(tab, str[j + 1]))
+				{
+					str[j] = '\n';
+					j++;
+				}
 			}
 			if (j - i > 1)
 			{
 				append_this = ft_substr(str, i + 1, j - i - 1);
 				ft_alloc_check(append_this);
+				if (ft_strchr(append_this, '\n'))
+				{
+					append_this = realloc_without_newlines(&append_this);
+				}
 				append_line(&new_line, &append_this);
 			}
 			save = j + 1;
@@ -358,7 +395,7 @@ void		open_quotes_2d(t_mshell *sv, char ***ptr)
 	ptr_2d = *(ptr);
 	while (ptr_2d[i])
 	{
-		state_bzero(sv->state);
+		init_globs();
 		tmp = ptr_2d[i];
 		ptr_2d[i] = open_quotes_str(sv->state, tmp);
 		free(tmp);
@@ -388,8 +425,9 @@ void		parse_input(t_mshell *sv)
 	{
 	    if (is_bad_syntax(semicolons2d[j][0]))
 	        exit_error_message("bad syntax");
-		state_bzero(sv->state);
+		init_globs();
 		tmp_ptr2d = split_command(sv, semicolons2d[j]);
+
 		open_quotes_2d(sv, &tmp_ptr2d);
 
 		dlst->content = (void *)tmp_ptr2d;
@@ -406,6 +444,6 @@ void		parse_input(t_mshell *sv)
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
 	dlst = NULL;
-    state_bzero(sv->state);
+	init_globs();
 	parse_env(sv);
 }

@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+_Bool	g_dquote;
+_Bool	g_squote;
+_Bool	g_backslash;
+int		g_backslash_time;
+
 t_list	*g_env;
 char	*input;
 pid_t	pid;
@@ -30,7 +35,7 @@ void	init(t_mshell	*sv)
 	sv->i = 0;
 	sv->state = (t_parse *)malloc(sizeof(t_parse) * 1); // free after parse
 	ft_alloc_check(sv->state);
-	state_bzero(sv->state);
+	init_globs();
 }
 
 void ignore()
@@ -116,10 +121,6 @@ int     main(int ac, char **av, char **envp)
 		sv->content = NULL;
 	}
 
-//	while ((read_res = gnl_minishell(0, &line, PROMPT, check_quotes_state)))
-//	{
-//
-//	}
 	if (*(sv->content) == '\0')
 		write(0, "exit\n", ft_strlen("exit\n"));
 	return (0);

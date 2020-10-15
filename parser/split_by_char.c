@@ -34,13 +34,13 @@ _Bool		is_backslash_pressed(t_parse *state_check)
 
 void		set_quotes_state(t_parse *state_check, int j, const char *str)
 {
-	if (str[j] == DOUBLE_QUOTES && !state_check->is_double_quote_open && !state_check->is_single_quote_open)
+	if (str[j] == DOUBLE_QUOTE && !state_check->is_double_quote_open && !state_check->is_single_quote_open)
 		state_check->is_double_quote_open = 1;
-	else if (str[j] == DOUBLE_QUOTES && state_check->is_double_quote_open && j > 0 && str[j - 1] != BACK_SLASH)
+	else if (str[j] == DOUBLE_QUOTE && state_check->is_double_quote_open && j > 0 && str[j - 1] != BACKSLASH)
 		state_check->is_double_quote_open = 0;
-	else if (str[j] == SINGLE_QUOTES && !state_check->is_single_quote_open && !state_check->is_double_quote_open)
+	else if (str[j] == SINGLE_QUOTE && !state_check->is_single_quote_open && !state_check->is_double_quote_open)
 		state_check->is_single_quote_open = 1;
-	else if (str[j] == SINGLE_QUOTES && state_check->is_single_quote_open)
+	else if (str[j] == SINGLE_QUOTE && state_check->is_single_quote_open)
 		state_check->is_single_quote_open = 0;
 }
 
