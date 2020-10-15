@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/12 10:57:13 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/14 23:23:39 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,8 @@
 # include <signal.h>
 # include <fcntl.h>
 # include <stdio.h> //
+
+void	handle_cmd(char *cmd, char **args);//
+char **list_to_env();//
 
 #endif

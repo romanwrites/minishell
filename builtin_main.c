@@ -65,6 +65,12 @@ int main(int argc, char **argv, char **envp)
 	{
 		printf("%s\n", get_envar("PATH"));
 	}
+	if (!(strcmp(argv[1], "ls")))
+	{
+		handle_cmd("ls", NULL);
+		printf("\n\n-------------------\n\n");
+		ft_env();
+	}
 	//ft_cd(argv[1]);
 	//ft_pwd();
 	ft_exit(0);

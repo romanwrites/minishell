@@ -6,32 +6,16 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/14 21:19:37 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/14 23:43:01 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+//#include "minishell.h"
+#include "../includes/minishell.h"
 
 t_list	*g_env;
 char	*input;
 pid_t	pid;
-
-void	state_bzero(t_parse *state)
-{
-	state->is_double_quote_open = 0;
-	state->is_single_quote_open = 0;
-	state->backslash = 0;
-	state->backslash_time = 0;
-}
-
-void	init(t_mshell	*sv)
-{
-	sv->content = NULL;
-	sv->i = 0;
-	sv->state = (t_parse *)malloc(sizeof(t_parse) * 1); // free after parse
-	ft_alloc_check(sv->state);
-	state_bzero(sv->state);
-}
 
 void ignore()
 {
@@ -45,72 +29,6 @@ void new_line()
 }
 
 //////////
-char **list_to_env()
-{
-	t_list *list;
-	char **envp;
-	char *tmp;
-	char *str;
-	int i;
-	int len;
-
-	i = 0;
-	list = g_env;
-	while(list)
-	{
-		i++;
-		list = list->next;
-	}
-	list = g_env;
-	envp = (char **)malloc(sizeof(char**) * i);
-	while(len < i)
-	{
-		envp[len] = (char *)malloc(PATH_MAX);
-		str = ft_strjoin(((t_envar *)(list->content))->key, "=");
-		tmp = str;
-		str = ft_strjoin(str, ((t_envar *)(list->content))->value);
-		free(tmp);
-		envp[len] = ft_memcpy(envp[len], str, ft_strlen(str));
-		free(str);
-		len++;
-	}
-	envp[len] = NULL;
-}
-
-void	handle_cmd(char *cmd, char **args)
-{
-	char *to_split;
-	char *tmp;
-	char **path;
-	char **envp;
-	DIR *dir;
-	struct dirent *entry;
-
-	to_split = get_envar("PATH");
-	path = ft_split(to_split, ':');
-	envp = list_to_env();
-	tmp = cmd;
-	cmd = ft_strjoin("/", cmd);
-	free(tmp);
-	while(path)
-	{
-		dir = opendir(*path);
-		while(entry = readdir(dir))
-		{
-			if(!ft_strcmp(cmd, entry->d_name));
-			{
-				tmp = ft_strjoin(path, cmd);
-				execve(tmp, args, envp);
-				free(tmp);
-				closedir(dir);
-				return ;
-			}
-		}
-		closedir(dir);
-		path++;
-	}
-	//command not found0
-}
 
 void ft_test(char *str)
 {
@@ -141,6 +59,23 @@ void ft_test(char *str)
 		handle_cmd("ls", NULL);
 }
 //////////
+
+void	state_bzero(t_parse *state)
+{
+	state->is_double_quote_open = 0;
+	state->is_single_quote_open = 0;
+	state->backslash = 0;
+	state->backslash_time = 0;
+}
+
+void	init(t_mshell	*sv)
+{
+	sv->content = NULL;
+	sv->i = 0;
+	sv->state = (t_parse *)malloc(sizeof(t_parse) * 1); // free after parse
+	ft_alloc_check(sv->state);
+	state_bzero(sv->state);
+}
 
 int     main(int ac, char **av, char **envp)
 {

@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/10 18:44:29 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/14 23:41:09 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ UTILS_SRC = ft_alloc_check.c \
 ENGINE_SRC = engine_start.c \
 
 BUILTIN = builtin.c\
+			other_cmd.c\
 
 SRC = $(addprefix engine/, $(ENGINE_SRC))
 SRC += $(addprefix parser/, $(PARSE_SRC))
