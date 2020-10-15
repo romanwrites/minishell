@@ -52,7 +52,7 @@ char		**split_command(t_mshell *sv, char *str)
 
 	i = -1;
 	init_globs();
-	while (i <= 2147483646 && str[i++])
+	while (str[++i] && i < 2147483647)
 	{
 		set_backslash_state_new(str[i]);
 		set_quotes_state_new(str[i]);

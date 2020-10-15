@@ -103,19 +103,16 @@ int     main(int ac, char **av, char **envp)
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
 	init(sv);
-	//sv->envp_mshell = (void *)envp;
 
 //	int fd = open("parse_tests.txt", O_RDONLY);
 	write(0, PROMPT, ft_strlen(PROMPT));
 
 	while (get_next_line(0, &sv->content))
 	{
-//		ft_test(sv->content);//
 		ft_alloc_check(sv->content);
 		parse_input(sv);
 		t_dlist *tmp = sv->dlst_head;
 		char **ptr = (char **)(sv->dlst_head)->content;
-		tmp = tmp->next;
 		print_2d_array(ptr);
 		free(sv->content);
 		sv->content = NULL;

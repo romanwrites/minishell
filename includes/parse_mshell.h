@@ -52,6 +52,7 @@ size_t		len_without_newlines(const char *ptr);
 char		*open_quotes_str(t_parse *state, const char *str_src);
 void		open_quotes_2d(t_mshell *sv, char ***ptr);
 
-
+void		parse_env(t_mshell *sv);
+void        append_line(char **ptr, char **append_this);
 
 #endif
