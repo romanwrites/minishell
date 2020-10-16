@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/16 19:23:25 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/16 19:54:07 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,7 @@ void ft_test(char *str)
 	else if (!(strcmp(cmd[0], "exit")))
 		ft_exit(0);
 	else if (!(strcmp(cmd[0], "cd")))
-	{
-		if (cmd[1])
-			ft_cd(cmd[1]);
-	}
+		ft_cd(cmd[1]);
 	else if (!(strcmp(cmd[0], "unset")))
 		ft_unset(cmd[1]);
 	else

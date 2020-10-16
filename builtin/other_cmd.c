@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/16 19:29:18 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/16 20:01:55 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,16 +101,6 @@ void	handle_cmd(char *cmd)
 			closedir(dir);
 		i++;
 	}
-	if (args)
-	{
-		while (args[x])
-		{
-			free(args[x]);
-			x++;
-		}
-		free(args);//in a loop
-		x = 0;
-	}
 	if (path)
 	{
 		while (path[x])
@@ -122,6 +112,16 @@ void	handle_cmd(char *cmd)
 		free(to_split);
 	}
 	write(1, "minishell: ", ft_strlen("minishell: "));
-	write(1, cmd, ft_strlen(cmd));
-	write(1, ": command not found\n", ft_strlen(": command not found\n"));
+	write(1, args[0], ft_strlen(args[0]));
+	write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+	if (args)
+	{
+		while (args[x])
+		{
+			free(args[x]);
+			x++;
+		}
+		free(args);//in a loop
+		x = 0;
+	}
 }
