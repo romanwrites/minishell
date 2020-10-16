@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/13 06:44:13 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/16 16:44:30 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/16 19:18:39 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,11 @@ int				get_next_line(int fd, char **line)
 		if (bytes_read == 0 && input)
 		{
 			write(0, "  \b\b", 4);
+			if (*line)
+			{
+				free(*line);
+				*line = NULL;
+			}
 			continue;
 		}
 		else if (bytes_read == 0)

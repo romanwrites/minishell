@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/16 17:26:42 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/16 19:23:25 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ void ignore()
 
 void new_line()
 {
+	if (input)
+	{
+		free(input);
+		input = NULL;
+	}
 	write(0, "\b\b  \b\b", 6);
 	write(0, "\nminishell-3.2$ ", ft_strlen("\nminishell-3.2$ "));
 }
