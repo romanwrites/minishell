@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/15 20:57:49 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/16 17:26:42 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 t_list	*g_env;
 char	*input;
+char	*g_home;
 pid_t	g_pid;
 
 void ignore()
@@ -55,8 +56,8 @@ void ft_test(char *str)
 	}
 	else if (!(strcmp(cmd[0], "unset")))
 		ft_unset(cmd[1]);
-	else if (!(strcmp(cmd[0], "cat")))
-		handle_cmd("cat", NULL);
+	else
+		handle_cmd(str);
 }
 //////////
 
@@ -87,6 +88,7 @@ int     main(int ac, char **av, char **envp)
 	signal(SIGQUIT, ignore);
 	signal(SIGINT, new_line);
 	g_env = env_to_list(envp);
+	g_home = get_envar("HOME");
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
 	init(sv);

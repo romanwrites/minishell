@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/16 00:28:48 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/16 17:18:06 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,57 +48,79 @@ char **list_to_env()
 	return(envp);
 }
 
-void	handle_cmd(char *cmd, char **args)
+void	handle_cmd(char *cmd)
 {
+	char **args;
 	char *to_split;
 	char *tmp;
 	char **path;
 	char **envp;
 	DIR *dir;
 	struct dirent *entry;
+	int i = 0;
+	int x = 0;
 
-	args = (char **)malloc(sizeof(char *) * 4);
-	args[0] = ft_strdup(cmd);
-	args[1] = ft_strdup("-e");
-	args[2] = ft_strdup("cmd.txt");
-	args[3] = NULL;
+	args = ft_split(cmd, ' ');
 	to_split = get_envar("PATH");
 	path = ft_split(to_split, ':');
 	envp = list_to_env();
-	int i = 0;
-	while(path)
+	while(path && path[i])
 	{
-		dir = opendir(*path);
-		while((entry = readdir(dir)))
+		dir = opendir(path[i]);
+		while(dir && (entry = readdir(dir)))
 		{
-			if(!ft_strcmp(cmd, entry->d_name))
+			if(!ft_strcmp(args[0], entry->d_name))
 			{
-				cmd = ft_strjoin("/", cmd);
-				tmp = ft_strjoin(*path, cmd);
+				tmp = ft_strjoin("/", args[0]);
+				path[i] = ft_strjoin_free_s1(path[i], tmp);
 				g_pid = fork();
-				g_pid = wait(NULL);
-				if (!g_pid)
-				{
-					execve(tmp, args, envp);
-				}
+				if (g_pid)
+					wait(NULL);
+				else
+					execve(path[i], args, envp);
 				free(tmp);
-				free(cmd);
-				free(args[0]);
-				free(args[1]);
-				free(args[2]);
-				free(args);
+				free(to_split);
+				while (args[x])
+				{
+					free(args[x]);
+					x++;
+				}
+				free(args);//in a loop
+				x = 0;
+				while (path[x])
+				{
+					free(path[x]);
+					x++;
+				}
+				free(path);//in a loop
 				closedir(dir);
 				return ;
 			}
 		}
-		closedir(dir);
-		path++;
+		if (dir)
+			closedir(dir);
+		i++;
 	}
-	free(cmd);
-	free(args[0]);
-	free(args[1]);
-	free(args[2]);
-	free(args);
+	if (args)
+	{
+		while (args[x])
+		{
+			free(args[x]);
+			x++;
+		}
+		free(args);//in a loop
+		x = 0;
+	}
+	if (path)
+	{
+		while (path[x])
+		{
+			free(path[x]);
+			x++;
+		}
+		free(path);//in a loop
+		free(to_split);
+	}
 	write(1, "minishell: ", ft_strlen("minishell: "));
 	write(1, cmd, ft_strlen(cmd));
 	write(1, ": command not found\n", ft_strlen(": command not found\n"));

@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 10:00:34 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/13 23:43:58 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/16 16:53:40 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,32 @@ char *get_envar(char *var)
     t_list *env;
     char *value;
     char *ret;
+    int    flag;
 
     env = g_env;
+    flag = 0;
     ret = NULL;
+    if (!ft_strcmp(var, "~"))
+    {
+        var = ft_strdup("HOME");
+        flag = 1;
+    }
     while (env)
     {
         if (!ft_strncmp(((t_envar *)(env->content))->key, var, ft_strlen(var)))
         {
             value = ((t_envar *)(env->content))->value;
             ret = ft_strdup(value);
+            if (flag)
+                free(var);
             return (ret);
         }
         env = env->next;
+    }
+    if (flag)
+    {
+        free(var);
+        return(g_home);
     }
     return (NULL);
 }

@@ -1,7 +1,8 @@
 #include "includes/minishell.h"
 
 t_list	*g_env;
-char	*input;
+char	*g_input;
+char	*g_home;
 pid_t	g_pid;
 
 void	echo_assert_test()
@@ -36,6 +37,7 @@ int main(int argc, char **argv, char **envp)
 	//signal(SIGINT, sig_handler);
 	//g_pid = fork();
 	//while(1);
+	/*
 	if (argv[1][0] == 'e' && argv[1][1] == 'n' && argv[1][2] == 'v' && argv[1][3] == '\0')
 	{
 		ft_env();
@@ -65,14 +67,17 @@ int main(int argc, char **argv, char **envp)
 	{
 		printf("%s\n", get_envar("PATH"));
 	}
-	if (!(strcmp(argv[1], "ls")))
-	{
-		handle_cmd("ls", NULL);
-	}
-	if (!(strcmp(argv[1], "cat")))
-	{
-		handle_cmd("cat", NULL);
-	}
+	*/
+	g_home = get_envar("HOME");
+	//printf("%s\n", get_envar("~"));
+	//printf("%s\n", get_envar("HOME"));
+	//ft_unset("HOME");
+	//printf("%s\n", get_envar("~"));
+	//printf("%s\n", get_envar("HOME"));
+	//handle_cmd("ls");
+	ft_unset("PATH");
+	handle_cmd("ls");
+
 	//ft_cd(argv[1]);
 	//ft_pwd();
 	ft_exit(0);
