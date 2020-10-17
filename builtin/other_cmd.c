@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/17 18:09:52 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/17 19:12:56 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,11 @@ void	handle_cmd(char **args)
 	char **envp;
 	DIR *dir;
 	struct dirent *entry;
-	int i = 0;
-	int x = 0;
+	int i;
+	int x;
 
-	//args = ft_split(cmd, ' ');
+	i = 0;
+	x = 0;
 	to_split = get_envar("PATH");
 	path = ft_split(to_split, ':');
 	envp = list_to_env();
@@ -80,19 +81,12 @@ void	handle_cmd(char **args)
 					execve(path[i], args, envp);
 				free(tmp);
 				free(to_split);
-				while (args[x])
-				{
-					free(args[x]);
-					x++;
-				}
-				free(args);//in a loop
-				x = 0;
 				while (path[x])
 				{
 					free(path[x]);
 					x++;
 				}
-				free(path);//in a loop
+				free(path);
 				closedir(dir);
 				return ;
 			}
@@ -108,20 +102,10 @@ void	handle_cmd(char **args)
 			free(path[x]);
 			x++;
 		}
-		free(path);//in a loop
+		free(path);
 		free(to_split);
 	}
-	x = 0;
 	write(0, PROM, ft_strlen(PROM));
 	write(1, args[0], ft_strlen(args[0]));
 	write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
-	if (args)
-	{
-		while (args[x])
-		{
-			free(args[x]);
-			x++;
-		}
-		free(args);//in a loop
-	}
 }

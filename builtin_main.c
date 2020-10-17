@@ -5,16 +5,6 @@ char	*g_input;
 char	*g_home;
 pid_t	g_pid;
 
-void	echo_assert_test()
-{
-	printf("_________BACKSLASH________\n");
-	ft_echo("", 0);
-	//ft_echo("su\p", 0); //su/p warning: unknown escape sequence '\p' [-Wunknown-escape-sequence]
-	ft_echo("su\tp", 0);
-	ft_echo("su\np", 0);
-	ft_echo("su\0p", 0); //sup
-	ft_echo("sup\n", 0);
-}
 
 void sig_handler(int signum)
 {
@@ -76,7 +66,14 @@ int main(int argc, char **argv, char **envp)
 	//printf("%s\n", get_envar("HOME"));
 	//handle_cmd("ls");
 	//ft_unset("PATH");
-	handle_cmd("lol");
+	
+	char **cmd = (char **)malloc(sizeof(char *) * 4);
+	cmd[0] = ft_strdup("echo");
+	cmd[1] = ft_strdup("lok");
+	cmd[2] = ft_strdup("kek");
+	cmd[3] = NULL;
+	ft_echo(cmd);
+	
 	//ft_cd(argv[1]);
 	//ft_pwd();
 	ft_exit(0);

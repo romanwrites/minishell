@@ -6,18 +6,46 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/16 19:52:33 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/17 19:57:49 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //#include "minishell.h"
 #include "../includes/minishell.h"
 
-void	ft_echo(char *str, int flag_n) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
+void	ft_echo(char **cmd) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
 {
-	write(1, str, ft_strlen(str));
-	if (!flag_n)
-		write(1, "\n", 1);
+	int i;
+
+	i = 1;
+	if (cmd[i])
+	{
+		if (!(ft_strcmp(cmd[i], "-n")))
+		{
+			i++;
+			while(cmd[i])
+			{
+				write(1, cmd[i], ft_strlen(cmd[i]));
+				if (cmd[i + 1])
+					write(0, " ", 1);
+				i++;
+			}
+		}
+		else
+		{
+			while(cmd[i])
+			{
+				write(1, cmd[i], ft_strlen(cmd[i]));
+				if (cmd[i + 1])
+					write(0, " ", 1);
+				else
+					write(0, "\n", 1);
+				i++;
+			}
+		}
+	}
+	else
+		write(0, "\n", 1);
 }
 
 void	ft_exit(int exit_code)

@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/17 17:54:59 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/17 19:23:41 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,7 @@ void 	execute_command(t_mshell *sv, char **cmd)
 	else if (!(strcmp(cmd[0], "pwd")))
 		ft_pwd();
 	else if (!(strcmp(cmd[0], "echo")))
-	{
-		if (cmd[1])
-		{
-			if (!(ft_strcmp(cmd[1], "-n")))
-			{
-				if (cmd[2])
-					ft_echo(cmd[2], 1);
-			}
-			else
-				ft_echo(cmd[1], 0);
-		}
-		else
-			write(0, "\n", 1);
-	}
+		ft_echo(cmd);
 	else if (!(strcmp(cmd[0], "exit")))
 		ft_exit(0);
 	else if (!(strcmp(cmd[0], "cd")))
