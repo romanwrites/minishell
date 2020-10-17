@@ -17,12 +17,11 @@ size_t		get_dollars_end(const char *str)
 int			get_env_from_str(const char *str)
 {
 	int		i;
-	char    tab[] = {47, 92, 36, 34, 39, '\0'};
 
 	i = 1;
 	while (str[i])
 	{
-		if (ft_strchr(tab, str[i]) != NULL)
+		if (!ft_isdigit(str[i]) && !ft_isalpha(str[i]))
 			break ;
 		i++;
 	}

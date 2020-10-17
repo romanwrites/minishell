@@ -6,7 +6,7 @@
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:38:07 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/17 14:30:44 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/17 15:02:12 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,11 @@ char		*realloc_without_newlines(char **append_this)
 	return (new_str);
 }
 
+_Bool		is_env_val_after_dollar(char c)
+{
+	return (ft_isdigit(c) || ft_isalpha(c) || c == DOLLAR);
+}
+
 char		*open_quotes_str(t_parse *state, const char *str_src)
 {
 	char 	*new_line;
@@ -158,11 +163,12 @@ char		*open_quotes_str(t_parse *state, const char *str_src)
 	ft_alloc_check(new_line);
 	str = ft_strdup(str_src);
 	ft_alloc_check(str);
+	env_value = NULL;
 	while (str[i])
 	{
 		set_backslash_state_new(str[i]);
 		set_quotes_state_new(str[i]);
-		if (str[i] == DOLLAR)
+		if (str[i] == DOLLAR && is_env_val_after_dollar(str[i + 1]))
 		{
 			if (str[i + 1] == '$')
 			{
@@ -181,6 +187,12 @@ char		*open_quotes_str(t_parse *state, const char *str_src)
 				append_line(&new_line, &append_this);
 				i += j;
 				save = i + 2;
+				continue ;
+			}
+			else if (ft_isdigit(str[i + 1]))
+			{
+				i += 2;
+				save += 2;
 				continue ;
 			}
 			j = get_env_from_str(str + i);
@@ -232,6 +244,7 @@ char		*open_quotes_str(t_parse *state, const char *str_src)
 				if (is_backslash_active() && g_dquote && ft_strchr(tab, str[i + 1]))
 				{
 					str[i] = '\n';
+					
 					i++;
 				}
 			}
@@ -246,11 +259,10 @@ char		*open_quotes_str(t_parse *state, const char *str_src)
 				append_line(&new_line, &append_this);
 			}
 			save = i + 1;
-			// i = j;
 		}
 		i++;
 	}
-	if (i - save > 1)
+	if (i - save >= 1)
 	{
 		append_this = ft_substr(str, save, i - save);
 		ft_alloc_check(append_this);
