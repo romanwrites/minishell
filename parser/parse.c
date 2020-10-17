@@ -176,6 +176,8 @@ char		*open_quotes_str(const char *str_src)
 			append_this[0] = str[i];
 			append_line(&new_line, &append_this);
 			save = i;
+			set_backslash_state_new(str[i]);
+//			set_quotes_state_new(str[i]);
 		}
 		else if (str[i] == DOLLAR && is_env_val_after_dollar(str[i + 1]))
 		{
@@ -321,7 +323,7 @@ char		*open_quotes_str(const char *str_src)
 					append_line(&new_line, &append_this);
 					i += j - 1;
 					save = i + 1;
-					i++;
+//					i++;
 					continue ;
 				}
 				else if (is_open_quote())
