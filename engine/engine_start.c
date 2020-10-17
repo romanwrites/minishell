@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/17 16:22:29 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/17 16:31:06 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int		g_backslash_time;
 
 t_list	*g_env;
 char	*input;
-pid_t	pid;
+char	*g_home;
+pid_t	g_pid;
 
 void	state_bzero(t_parse *state)
 {
@@ -45,8 +46,13 @@ void ignore()
 
 void new_line()
 {
+	if (input)
+	{
+		free(input);
+		input = NULL;
+	}
 	write(0, "\b\b  \b\b", 6);
-	write(0, "\nzaebash-3.2$ ", ft_strlen("\nzaebash-3.2$ "));
+	write(0, "\nminishell-3.2$ ", ft_strlen("\nminishell-3.2$ "));
 }
 
 void ft_test(char *str)
@@ -68,12 +74,11 @@ void ft_test(char *str)
 	else if (!(strcmp(cmd[0], "exit")))
 		ft_exit(0);
 	else if (!(strcmp(cmd[0], "cd")))
-	{
-		if (cmd[1])
-			ft_cd(cmd[1]);
-	}
+		ft_cd(cmd[1]);
 	else if (!(strcmp(cmd[0], "unset")))
 		ft_unset(cmd[1]);
+	else
+		handle_cmd(str);
 }
 
 _Bool						check_quotes_state(t_parse *state)
@@ -92,14 +97,13 @@ int     main(int ac, char **av, char **envp)
 	int 		read_res;
 	char		*line;
 
-	line = NULL;
-
 	(void)ac;
 	(void)av;
 
 	signal(SIGQUIT, ignore);
 	signal(SIGINT, new_line);
 	g_env = env_to_list(envp);
+	g_home = get_envar("HOME");
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
 	init(sv);
@@ -109,6 +113,8 @@ int     main(int ac, char **av, char **envp)
 
 	while (get_next_line(0, &sv->content))
 	{
+		//ft_test(sv->content);
+		write(0, PROMPT, ft_strlen(PROMPT));
 		ft_alloc_check(sv->content);
 		parse_input(sv);
 		t_dlist *tmp = sv->dlst_head;
