@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/17 16:54:47 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/17 18:09:20 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # define STDOUT 1
 # define STDIN 0
 # define PROMPT "bash-3.2$ "
+# define PROM "bash: "
 
 # include "structs_mshell.h"
 # include "utils_mshell.h"

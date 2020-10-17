@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/17 17:22:45 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/17 17:54:59 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,12 @@ void new_line()
 		input = NULL;
 	}
 	write(0, "\b\b  \b\b", 6);
+	write(0, "\n", 1);
 	write(0, PROMPT, ft_strlen(PROMPT));
 }
 
 void 	execute_command(t_mshell *sv, char **cmd)
 {
-	if (!cmd)
-		return ;
 	if (!(strcmp(cmd[0], "export")))
 		ft_export(cmd[1]);
 	else if (!(strcmp(cmd[0], "env")))
@@ -68,7 +67,17 @@ void 	execute_command(t_mshell *sv, char **cmd)
 	else if (!(strcmp(cmd[0], "echo")))
 	{
 		if (cmd[1])
-			ft_echo(cmd[1], 0);
+		{
+			if (!(ft_strcmp(cmd[1], "-n")))
+			{
+				if (cmd[2])
+					ft_echo(cmd[2], 1);
+			}
+			else
+				ft_echo(cmd[1], 0);
+		}
+		else
+			write(0, "\n", 1);
 	}
 	else if (!(strcmp(cmd[0], "exit")))
 		ft_exit(0);
@@ -114,6 +123,8 @@ int     main(int ac, char **av, char **envp)
 		while (tmp) // maybe bad listing, check
 		{
 			cmd = (char **)(sv->dlst_head)->content;
+			if (!cmd)
+				break ;
 			open_quotes_2d(sv, &cmd);
 			execute_command(sv, cmd);
 			tmp = tmp->next;
@@ -122,7 +133,6 @@ int     main(int ac, char **av, char **envp)
 		free(sv->content);
 		sv->content = NULL;
 	}
-
 	if (*(sv->content) == '\0')
 		write(0, "exit\n", ft_strlen("exit\n"));
 	return (0);
