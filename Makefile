@@ -6,7 +6,7 @@
 #    By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/17 14:20:34 by mkristie         ###   ########.fr        #
+#    Updated: 2020/10/17 14:33:05 by mkristie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,6 +66,9 @@ fclean: clean
 	rm -f $(NAME)
 
 sh: all
+	$(MAKE) clean -C $(LIBFT_DIR)
+	$(MAKE) clean -C $(LIBFT_DIR)
+	rm -f libft/libft.a
 	rm -f $(OBJ)
 	./minishell
 

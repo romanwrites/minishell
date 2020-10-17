@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:38:07 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/14 16:19:34 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/17 14:30:44 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,20 +224,20 @@ char		*open_quotes_str(t_parse *state, const char *str_src)
 			append_this = ft_substr(str, save, i - save);
 			ft_alloc_check(append_this);
 			append_line(&new_line, &append_this);
-			j = i;
-			while (is_open_quote() && str[++j])
+			save = i;
+			while (is_open_quote() && str[++i])
 			{
-				set_backslash_state_new(str[j]);
-				set_quotes_state_new(str[j]);
-				if (is_backslash_active() && g_dquote && ft_strchr(tab, str[j + 1]))
+				set_backslash_state_new(str[i]);
+				set_quotes_state_new(str[i]);
+				if (is_backslash_active() && g_dquote && ft_strchr(tab, str[i + 1]))
 				{
-					str[j] = '\n';
-					j++;
+					str[i] = '\n';
+					i++;
 				}
 			}
-			if (j - i > 1)
+			if (i - save > 1)
 			{
-				append_this = ft_substr(str, i + 1, j - i - 1);
+				append_this = ft_substr(str, save + 1, i - save - 1);
 				ft_alloc_check(append_this);
 				if (ft_strchr(append_this, '\n'))
 				{
@@ -245,8 +245,8 @@ char		*open_quotes_str(t_parse *state, const char *str_src)
 				}
 				append_line(&new_line, &append_this);
 			}
-			save = j + 1;
-			i = j;
+			save = i + 1;
+			// i = j;
 		}
 		i++;
 	}
@@ -318,6 +318,4 @@ void		parse_input(t_mshell *sv)
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
 	dlst = NULL;
-//	init_globs();
-//	parse_env(sv);
 }
