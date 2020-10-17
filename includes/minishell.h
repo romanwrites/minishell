@@ -40,6 +40,6 @@
 # include <stdio.h> //
 
 void	handle_cmd(char *cmd);//
-char **list_to_env();//
+char	**list_to_env();//
 
 #endif

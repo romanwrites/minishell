@@ -141,7 +141,7 @@ _Bool		is_env_val_after_dollar(char c)
 	return (ft_isdigit(c) || ft_isalpha(c) || c == DOLLAR);
 }
 
-char		*open_quotes_str(t_parse *state, const char *str_src)
+char		*open_quotes_str(const char *str_src)
 {
 	char 	*new_line;
 	size_t 	i;
@@ -168,7 +168,16 @@ char		*open_quotes_str(t_parse *state, const char *str_src)
 	{
 		set_backslash_state_new(str[i]);
 		set_quotes_state_new(str[i]);
-		if (str[i] == DOLLAR && is_env_val_after_dollar(str[i + 1]))
+		if (is_backslash_active() && !is_open_quote())
+		{
+			i++;
+			append_this = ft_strdup(" ");
+			ft_alloc_check(append_this);
+			append_this[0] = str[i];
+			append_line(&new_line, &append_this);
+			save = i;
+		}
+		else if (str[i] == DOLLAR && is_env_val_after_dollar(str[i + 1]))
 		{
 			if (str[i + 1] == '$')
 			{
@@ -231,7 +240,7 @@ char		*open_quotes_str(t_parse *state, const char *str_src)
 			i++;
 			continue ;
 		}
-		if (is_open_quote())
+		else if (is_open_quote())
 		{
 			append_this = ft_substr(str, save, i - save);
 			ft_alloc_check(append_this);
@@ -262,7 +271,13 @@ char		*open_quotes_str(t_parse *state, const char *str_src)
 		}
 		i++;
 	}
-	if (i - save >= 1)
+	if (i - save > 1)
+	{
+		append_this = ft_substr(str, save, i - save);
+		ft_alloc_check(append_this);
+		append_line(&new_line, &append_this);
+	}
+	else if (i - save >= 1 && (str[i - 1] == DOUBLE_QUOTE || str[i - 1] == SINGLE_QUOTE))
 	{
 		append_this = ft_substr(str, save, i - save);
 		ft_alloc_check(append_this);
@@ -283,7 +298,7 @@ void		open_quotes_2d(t_mshell *sv, char ***ptr)
 	{
 		init_globs();
 		tmp = ptr_2d[i];
-		ptr_2d[i] = open_quotes_str(sv->state, tmp);
+		ptr_2d[i] = open_quotes_str(tmp);
 		free(tmp);
 		tmp = NULL;
 		i++;
@@ -320,9 +335,12 @@ void		parse_input(t_mshell *sv)
         ft_trim_2d(&ptr);
         if (count_2d_lines(ptr) == 1 && is_bad_syntax(ptr[0][ft_strlen(ptr[0]) - 1]))
             exit_error_message("bad syntax");
-		dlst->next = ft_dlstnew(NULL, NULL);
-		ft_alloc_check(dlst->next);
-		dlst = dlst->next;
+        if (semicolons2d[j + 1])
+		{
+			dlst->next = ft_dlstnew(NULL, NULL);
+			ft_alloc_check(dlst->next);
+			dlst = dlst->next;
+		}
 		j++;
 	}
 	ft_free2d(semicolons2d);

@@ -34,7 +34,7 @@ void	init(t_mshell	*sv)
 {
 	sv->content = NULL;
 	sv->i = 0;
-	sv->state = (t_parse *)malloc(sizeof(t_parse) * 1); // free after parse
+	sv->state = (t_parse *)malloc(sizeof(t_parse) * 1); //todo free after parse
 	ft_alloc_check(sv->state);
 	init_globs();
 }
@@ -118,10 +118,13 @@ int     main(int ac, char **av, char **envp)
 		parse_input(sv);
 		t_dlist *tmp = sv->dlst_head;
 
-		while (tmp) // maybe bad listing, check
+		while (tmp) //todo maybe bad listing, check
 		{
-			cmd = (char **)(sv->dlst_head)->content;
+			cmd = (char **)(sv->dlst_head)->content; //todo if NULL returns what could be wrong?
+			if (!cmd)
+				break ;
 			open_quotes_2d(sv, &cmd);
+			print_2d_array(cmd);
 			execute_command(sv, cmd);
 			tmp = tmp->next;
 		}

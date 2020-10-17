@@ -25,8 +25,6 @@
 # define INPUT 60
 # define OUTPUT 62
 # define AND 38
-# define PARENTHESIS_OPEN 40
-# define PARENTHESIS_CLOSE 41
 
 void		parse_input(t_mshell *sv);
 char		**split_by_char(t_mshell *sv, char c, char *str);
@@ -49,7 +47,7 @@ void		init_globs();
 char		*realloc_without_newlines(char **append_this);
 size_t		len_without_newlines(const char *ptr);
 
-char		*open_quotes_str(t_parse *state, const char *str_src);
+char		*open_quotes_str(const char *str_src);
 void		open_quotes_2d(t_mshell *sv, char ***ptr);
 
 void		parse_env(t_mshell *sv);
