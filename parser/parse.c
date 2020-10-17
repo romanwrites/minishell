@@ -314,8 +314,6 @@ void		parse_input(t_mshell *sv)
 		init_globs();
 		tmp_ptr2d = split_command(sv, semicolons2d[j]);
 
-		open_quotes_2d(sv, &tmp_ptr2d);
-
 		dlst->content = (void *)tmp_ptr2d;
 		tmp_ptr2d = NULL;
         char **ptr = (char **)dlst->content;

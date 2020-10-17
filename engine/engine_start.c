@@ -81,21 +81,20 @@ void ft_test(char *str)
 		handle_cmd(str);
 }
 
-_Bool						check_quotes_state(t_parse *state)
+void 	execute_command(t_mshell *sv, char **cmd)
 {
-	return (!state->is_double_quote_open || !state->is_single_quote_open ? 0 : 1);
-}
 
-//void 						set_quotes_state(t_parse *state)
-//{
-//
-//}
+}
 
 int     main(int ac, char **av, char **envp)
 {
 	t_mshell	*sv;
 	int 		read_res;
 	char		*line;
+	int			i;
+	char		**cmd;
+
+	i = 0;
 
 	(void)ac;
 	(void)av;
@@ -113,13 +112,19 @@ int     main(int ac, char **av, char **envp)
 
 	while (get_next_line(0, &sv->content))
 	{
-		//ft_test(sv->content);
 		write(0, PROMPT, ft_strlen(PROMPT));
 		ft_alloc_check(sv->content);
+
 		parse_input(sv);
 		t_dlist *tmp = sv->dlst_head;
-		char **ptr = (char **)(sv->dlst_head)->content;
-		print_2d_array(ptr);
+
+		while (tmp) // maybe bad listing, check
+		{
+			cmd = (char **)(sv->dlst_head)->content;
+			open_quotes_2d(sv, &cmd);
+			execute_command(sv, cmd);
+			tmp = tmp->next;
+		}
 		free(sv->content);
 		sv->content = NULL;
 	}
