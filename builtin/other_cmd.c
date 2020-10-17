@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/16 20:01:55 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/17 16:12:52 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void	handle_cmd(char *cmd)
 		free(path);//in a loop
 		free(to_split);
 	}
+	x = 0;
 	write(1, "minishell: ", ft_strlen("minishell: "));
 	write(1, args[0], ft_strlen(args[0]));
 	write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
@@ -122,6 +123,5 @@ void	handle_cmd(char *cmd)
 			x++;
 		}
 		free(args);//in a loop
-		x = 0;
 	}
 }

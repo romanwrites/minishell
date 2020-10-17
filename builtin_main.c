@@ -75,9 +75,8 @@ int main(int argc, char **argv, char **envp)
 	//printf("%s\n", get_envar("~"));
 	//printf("%s\n", get_envar("HOME"));
 	//handle_cmd("ls");
-	ft_unset("PATH");
-	handle_cmd("ls");
-
+	//ft_unset("PATH");
+	handle_cmd("lol");
 	//ft_cd(argv[1]);
 	//ft_pwd();
 	ft_exit(0);
