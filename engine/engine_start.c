@@ -120,7 +120,7 @@ int     main(int ac, char **av, char **envp)
 
 		while (tmp) //todo maybe bad listing, check
 		{
-			cmd = (char **)(sv->dlst_head)->content; //todo if NULL returns what could be wrong?
+			cmd = (char **)tmp->content; //todo if NULL returns what could be wrong?
 			if (!cmd)
 				break ;
 			open_quotes_2d(sv, &cmd);

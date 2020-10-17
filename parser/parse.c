@@ -354,7 +354,8 @@ char		*open_quotes_str(const char *str_src)
 		i++;
 	}
 	if (i - save > 1 ||
-		(i - save >= 1 && (str[i - 1] == DOUBLE_QUOTE || str[i - 1] == SINGLE_QUOTE)))
+		(i - save >= 1 && (str[i - 1] == DOUBLE_QUOTE || str[i - 1] == SINGLE_QUOTE)) ||
+		str[0] && !str[1])
 	{
 		append_this = ft_substr(str, save, i - save);
 		ft_alloc_check(append_this);
