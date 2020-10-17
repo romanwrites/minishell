@@ -324,7 +324,7 @@ char		*open_quotes_str(const char *str_src)
 					i++;
 					continue ;
 				}
-				else
+				else if (is_open_quote())
 				{
 					append_this = ft_substr(str, i, 1);
 					ft_alloc_check(append_this);
@@ -333,6 +333,21 @@ char		*open_quotes_str(const char *str_src)
 				}
 			}
 			save = i + 1;
+		}
+		else if (i == 0 && str[i] == '~' && !str[i + 1])
+		{
+			env_value = get_envar("~");
+			if (!env_value)
+				append_this = ft_strdup("");
+			else
+			{
+				append_this = ft_strdup(env_value);
+			}
+			append_line(&new_line, &append_this);
+			save = i + 1;
+			free(env_value);
+			env_value = NULL;
+			return (new_line);
 		}
 		i++;
 	}
