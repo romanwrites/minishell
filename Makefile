@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+         #
+#    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/17 14:33:05 by mkristie         ###   ########.fr        #
+#    Updated: 2020/10/17 16:22:45 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ UTILS_SRC = ft_alloc_check.c \
 
 ENGINE_SRC = engine_start.c \
 
-BUILTIN = builtin.c \
+BUILTIN = builtin.c\
+			other_cmd.c\
 
 SRC = $(addprefix engine/, $(ENGINE_SRC))
 SRC += $(addprefix parser/, $(PARSE_SRC))
@@ -70,6 +71,7 @@ sh: all
 	$(MAKE) clean -C $(LIBFT_DIR)
 	rm -f libft/libft.a
 	rm -f $(OBJ)
+	$(MAKE) clean -C $(LIBFT_DIR)
 	./minishell
 
 resh: re

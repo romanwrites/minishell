@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/12 10:57:13 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/16 14:48:53 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,14 @@
 # include <limits.h>
 # include <string.h>
 # include <sys/types.h>
-# include <dirent.h>
+# include <sys/wait.h>
 # include <sys/errno.h>
+# include <dirent.h>
 # include <signal.h>
 # include <fcntl.h>
 # include <stdio.h> //
+
+void	handle_cmd(char *cmd);//
+char **list_to_env();//
 
 #endif

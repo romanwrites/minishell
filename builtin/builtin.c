@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/14 14:28:57 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/16 19:52:33 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	ft_cd(char *str)
 {
 	DIR *dir;
 
-	dir = NULL;
+	if (!str)
+		str = get_envar("~");
 	dir = opendir(str);
 	if (!dir)
 	{
