@@ -320,9 +320,12 @@ void		parse_input(t_mshell *sv)
         ft_trim_2d(&ptr);
         if (count_2d_lines(ptr) == 1 && is_bad_syntax(ptr[0][ft_strlen(ptr[0]) - 1]))
             exit_error_message("bad syntax");
-		dlst->next = ft_dlstnew(NULL, NULL);
-		ft_alloc_check(dlst->next);
-		dlst = dlst->next;
+        if (semicolons2d[j + 1])
+		{
+			dlst->next = ft_dlstnew(NULL, NULL);
+			ft_alloc_check(dlst->next);
+			dlst = dlst->next;
+		}
 		j++;
 	}
 	ft_free2d(semicolons2d);
