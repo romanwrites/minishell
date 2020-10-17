@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/17 16:12:52 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/17 16:52:50 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ char **list_to_env()
 	return(envp);
 }
 
-void	handle_cmd(char *cmd)
+void	handle_cmd(char **args)
 {
-	char **args;
+	//char **args;
 	char *to_split;
 	char *tmp;
 	char **path;
@@ -60,7 +60,7 @@ void	handle_cmd(char *cmd)
 	int i = 0;
 	int x = 0;
 
-	args = ft_split(cmd, ' ');
+	//args = ft_split(cmd, ' ');
 	to_split = get_envar("PATH");
 	path = ft_split(to_split, ':');
 	envp = list_to_env();

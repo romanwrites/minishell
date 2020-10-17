@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:38:07 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/17 15:02:12 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/17 17:22:38 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,9 +320,12 @@ void		parse_input(t_mshell *sv)
         ft_trim_2d(&ptr);
         if (count_2d_lines(ptr) == 1 && is_bad_syntax(ptr[0][ft_strlen(ptr[0]) - 1]))
             exit_error_message("bad syntax");
-		dlst->next = ft_dlstnew(NULL, NULL);
-		ft_alloc_check(dlst->next);
-		dlst = dlst->next;
+		if (semicolons2d[j + 1])
+		{
+			dlst->next = ft_dlstnew(NULL, NULL);
+			ft_alloc_check(dlst->next);
+			dlst = dlst->next;
+		}
 		j++;
 	}
 	ft_free2d(semicolons2d);

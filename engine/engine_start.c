@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/17 16:31:06 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/17 17:22:45 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,13 @@ void new_line()
 		input = NULL;
 	}
 	write(0, "\b\b  \b\b", 6);
-	write(0, "\nminishell-3.2$ ", ft_strlen("\nminishell-3.2$ "));
+	write(0, PROMPT, ft_strlen(PROMPT));
 }
 
-void ft_test(char *str)
+void 	execute_command(t_mshell *sv, char **cmd)
 {
-	if (*str == '\0')
+	if (!cmd)
 		return ;
-	char **cmd = ft_split(str, ' ');
 	if (!(strcmp(cmd[0], "export")))
 		ft_export(cmd[1]);
 	else if (!(strcmp(cmd[0], "env")))
@@ -78,12 +77,7 @@ void ft_test(char *str)
 	else if (!(strcmp(cmd[0], "unset")))
 		ft_unset(cmd[1]);
 	else
-		handle_cmd(str);
-}
-
-void 	execute_command(t_mshell *sv, char **cmd)
-{
-
+		handle_cmd(cmd);
 }
 
 int     main(int ac, char **av, char **envp)
@@ -112,7 +106,6 @@ int     main(int ac, char **av, char **envp)
 
 	while (get_next_line(0, &sv->content))
 	{
-		write(0, PROMPT, ft_strlen(PROMPT));
 		ft_alloc_check(sv->content);
 
 		parse_input(sv);
@@ -125,6 +118,7 @@ int     main(int ac, char **av, char **envp)
 			execute_command(sv, cmd);
 			tmp = tmp->next;
 		}
+		write(0, PROMPT, ft_strlen(PROMPT));
 		free(sv->content);
 		sv->content = NULL;
 	}
