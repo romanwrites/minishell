@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/17 19:23:41 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/18 19:33:50 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int		g_backslash_time;
 t_list	*g_env;
 char	*input;
 char	*g_home;
+int		g_stdin;
+int		g_stdout;
 pid_t	g_pid;
 
 void	state_bzero(t_parse *state)
@@ -93,6 +95,8 @@ int     main(int ac, char **av, char **envp)
 	signal(SIGINT, new_line);
 	g_env = env_to_list(envp);
 	g_home = get_envar("HOME");
+	g_stdin = dup(0);
+	g_stdout = dup(1);
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
 	init(sv);
