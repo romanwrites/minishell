@@ -175,7 +175,7 @@ char		*open_quotes_str(const char *str_src)
 			ft_alloc_check(append_this);
 			append_this[0] = str[i];
 			append_line(&new_line, &append_this);
-			save = i;
+			save = i + 1;
 			set_backslash_state_new(str[i]);
 //			set_quotes_state_new(str[i]);
 		}
@@ -353,9 +353,10 @@ char		*open_quotes_str(const char *str_src)
 		}
 		i++;
 	}
-	if (i - save > 1 ||
-		(i - save >= 1 && (str[i - 1] == DOUBLE_QUOTE || str[i - 1] == SINGLE_QUOTE)) ||
-		str[0] && !str[1])
+	if (i - save > 1 || \
+		(i - save >= 1 && (str[i - 1] == DOUBLE_QUOTE || str[i - 1] == SINGLE_QUOTE)) || \
+		str[0] && !str[1] || \
+		i - save == 1 && (str[save] != DOUBLE_QUOTE || str[save] != SINGLE_QUOTE))
 	{
 		append_this = ft_substr(str, save, i - save);
 		ft_alloc_check(append_this);
