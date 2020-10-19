@@ -37,12 +37,18 @@ int main(int argc, char **argv)
 	}
 }
 */
+t_list	*g_env;
+char	*g_home;
+pid_t g_pid;
 
 int main(int argc, char **argv, char **envp)
 {
 	char *ls[] = {"ls", NULL};
+	char *pwd[] = {"pwd", NULL};
 	char *cat[] = {"cat", "-e", NULL};
-	pid_t pid;
+	
+	g_env = env_to_list(envp);
+	g_home = get_envar("HOME");
 	int fd[2];//0 read 1 write
 	int i = 0;
 	int savestdout = dup(1);
@@ -50,8 +56,8 @@ int main(int argc, char **argv, char **envp)
 	pipe(fd);
 	while (i < 2)
 	{
-		pid = fork();
-		if (pid == 0)
+		g_pid = fork();
+		if (g_pid == 0)
 		{
 			if (!(i%2))
 			{
@@ -60,9 +66,9 @@ int main(int argc, char **argv, char **envp)
 				close(fd[1]);
 			}
 			if (!(i%2))
-				execve("/bin/ls", ls, envp);
+				execute_command(NULL, ls);
 			else
-				execve("/bin/cat", cat, envp);
+				execute_command(NULL, cat);
 		}
 		else
 		{

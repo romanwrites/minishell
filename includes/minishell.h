@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/17 18:09:20 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/19 17:34:57 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@
 
 void	handle_cmd(char **cmd);//
 char **list_to_env();//
+void 	execute_command(t_mshell *sv, char **cmd);//
 
 #endif
