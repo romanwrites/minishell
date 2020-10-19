@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/19 17:37:44 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/19 18:36:55 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,11 @@ int     main(int ac, char **av, char **envp)
 	char		*line;
 	int			i;
 	char		**cmd;
-
+	int fd[2];
+	int savestdout; 
+	int savestdin; 
+	savestdin = dup(0);
+	savestdout = dup(1);
 	i = 0;
 
 	(void)ac;
@@ -93,12 +97,35 @@ int     main(int ac, char **av, char **envp)
 
 		while (tmp) // maybe bad listing, check
 		{
+			pipe(fd);
 			cmd = (char **)(sv->dlst_head)->content;
 			if (!cmd)
 				break ;
 			open_quotes_2d(sv, &cmd);
 			execute_command(sv, cmd);
+			g_pid = fork();//
+			if (g_pid == 0)
+			{
+				if (!(i%2))
+				{
+					close(fd[0]);
+					dup2(fd[1], 1);
+					close(fd[1]);
+					execute_command(sv, cmd);
+				}
+			}
+			else
+			{
+				wait(NULL);
+				if(!(i%2))
+				{
+					close(fd[1]);
+					dup2(fd[0], 0);
+					close(fd[0]);
+				}
+			}//
 			tmp = tmp->next;
+			i++;
 		}
 		write(0, PROMPT, ft_strlen(PROMPT));
 		free(sv->content);
