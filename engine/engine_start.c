@@ -116,7 +116,7 @@ int     main(int ac, char **av, char **envp)
 		ft_alloc_check(sv->content);
 
 		parse_input(sv);
-		t_dlist *tmp = sv->dlst_head;
+		t_token *tmp = sv->dlst_head;
 
 		while (tmp) //todo maybe bad listing, check
 		{

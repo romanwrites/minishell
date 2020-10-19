@@ -149,7 +149,7 @@ char		*open_quotes_str(const char *str_src)
 	size_t 	save;
 	char 	*append_this;
 	char 	*str;
-	char	tab[] = {DOLLAR, DOUBLE_QUOTE, BACKSLASH, GRAVE_ACCENT, '\0'};
+	static char	tab[] = {DOLLAR, DOUBLE_QUOTE, BACKSLASH, GRAVE_ACCENT, '\0'};
 
 	char	*value_to_check;
 	char 	*env_value;
@@ -388,19 +388,46 @@ void		parse_input(t_mshell *sv)
 {
 	char	**semicolons2d;
 	char	*input_str;
-	t_dlist	*dlst;
+	t_token	*token;
+	t_dlist_sh *dlst_sh;
 	char	**tmp_ptr2d;
+	int 	i;
 	int		j;
+	char **tmp_semi;
+	char **tmp_cmd;
 
-	j = 0;
+	i = 0;
 	input_str = ft_strtrim(sv->content, " \t");
 	ft_alloc_check(input_str);
 	check_common(input_str);
+
 	semicolons2d = split_by_char(sv, ';', input_str);
+	ft_alloc_check(semicolons2d);
+	free(input_str);
+
 	ft_trim_2d(&semicolons2d);
-	dlst = ft_dlstnew(NULL, NULL);
-	ft_alloc_check(dlst);
-    sv->dlst_head = dlst;
+
+	dlst_sh = ft_dlst_sh_new(NULL, NULL);
+	ft_alloc_check(dlst_sh);
+	sv->dlst_sh_head = dlst_sh;
+
+	while (semicolons2d[i])
+	{
+		tmp_semi = split_by_char(sv, '|', semicolons2d[j]);
+		ft_alloc_check(tmp_semi);
+		j = 0;
+		while (tmp_semi[j])
+		{
+			tmp_cmd = split_command(sv, tmp_semi[j]);
+			j++;
+		}
+		i++;
+	}
+
+
+
+
+//    sv->token_head = token;
 	while (semicolons2d[j])
 	{
 	    if (is_bad_syntax(semicolons2d[j][0]))
