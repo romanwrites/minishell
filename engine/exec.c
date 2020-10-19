@@ -2,6 +2,11 @@
 
 void 	execute_command(t_mshell *sv, char **cmd)
 {
+	pid_t pid;
+    int fd;
+
+    int savestdout = dup(1);
+    int savestdin = dup(0);
 	if (!(strcmp(cmd[0], "export")))
 		ft_export(cmd[1]);
 	else if (!(strcmp(cmd[0], "env")))
