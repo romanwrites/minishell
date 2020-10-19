@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/19 18:36:55 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/19 19:25:56 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int		g_backslash_time;
 t_list	*g_env;
 char	*input;
 char	*g_home;
-int		g_stdin;
-int		g_stdout;
+//int		g_stdin;
+//int		g_stdout;
 pid_t	g_pid;
 
 void	state_bzero(t_parse *state)
@@ -64,6 +64,7 @@ int     main(int ac, char **av, char **envp)
 	int 		read_res;
 	char		*line;
 	int			i;
+	int			is_pipe;
 	char		**cmd;
 	int fd[2];
 	int savestdout; 
@@ -71,6 +72,7 @@ int     main(int ac, char **av, char **envp)
 	savestdin = dup(0);
 	savestdout = dup(1);
 	i = 0;
+	is_pipe = 0;
 
 	(void)ac;
 	(void)av;
@@ -79,8 +81,8 @@ int     main(int ac, char **av, char **envp)
 	signal(SIGINT, new_line);
 	g_env = env_to_list(envp);
 	g_home = get_envar("HOME");
-	g_stdin = dup(0);
-	g_stdout = dup(1);
+	//g_stdin = dup(0);
+	//g_stdout = dup(1);
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
 	init(sv);
@@ -97,35 +99,40 @@ int     main(int ac, char **av, char **envp)
 
 		while (tmp) // maybe bad listing, check
 		{
-			pipe(fd);
 			cmd = (char **)(sv->dlst_head)->content;
 			if (!cmd)
 				break ;
 			open_quotes_2d(sv, &cmd);
-			execute_command(sv, cmd);
-			g_pid = fork();//
-			if (g_pid == 0)
+			if(!is_pipe)
+				execute_command(sv, cmd);
+			else//
 			{
-				if (!(i%2))
+				pipe(fd);
+				g_pid = fork();
+				if (g_pid == 0)
 				{
-					close(fd[0]);
-					dup2(fd[1], 1);
-					close(fd[1]);
-					execute_command(sv, cmd);
+					if (!(i%2))
+					{
+						close(fd[0]);
+						dup2(fd[1], 1);
+						close(fd[1]);
+						execute_command(sv, cmd);
+					}
+					return (0);
 				}
-			}
-			else
-			{
-				wait(NULL);
-				if(!(i%2))
+				else
 				{
-					close(fd[1]);
-					dup2(fd[0], 0);
-					close(fd[0]);
+					wait(NULL);
+					if(!(i%2))
+					{
+						close(fd[1]);
+						dup2(fd[0], 0);
+						close(fd[0]);
+					}
 				}
+				i++;
 			}//
 			tmp = tmp->next;
-			i++;
 		}
 		write(0, PROMPT, ft_strlen(PROMPT));
 		free(sv->content);

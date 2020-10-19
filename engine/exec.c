@@ -18,5 +18,4 @@ void 	execute_command(t_mshell *sv, char **cmd)
 		ft_unset(cmd[1]);
 	else
 		handle_cmd(cmd);
-	exit(0);//help
 }
