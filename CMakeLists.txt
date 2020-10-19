@@ -31,4 +31,4 @@ add_executable(minishell
         ${PARSER}
         ${UTILS}
         ${BUILTIN}
-        utils/token.c utils/dlst_sh.c)
+        utils/token.c utils/dlst_pipe.c utils/dlst_sh.c utils/print_token.c)

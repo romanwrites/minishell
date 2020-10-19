@@ -56,43 +56,6 @@ void        append_line(char **ptr, char **append_this)
     new_line = NULL;
 }
 
-void        check_doubles(t_mshell *sv, const char *str, char c)
-{
-    int     i;
-
-    i = 0;
-    while (str[i])
-    {
-        set_backslash_state(sv->state, str[i]);
-        if (i > 0 && !is_backslash_pressed(sv->state) && str[i] == c && str[i + 1] == c)
-            exit_error_message("command not found. check_doubles()");
-        i++;
-    }
-}
-
-
-
-
-char		*get_new_str_qopen(t_mshell *sv, char **new)
-{
-	int 	i;
-	char 	*str;
-	char 	*tmp;
-
-	i = 0;
-	str = *(new);
-	while (str[i])
-	{
-		set_backslash_state(sv->state, str[i]);
-		set_quotes_state(sv->state, i, str);
-
-		i++;
-	}
-}
-
-
-
-
 size_t		len_without_newlines(const char *ptr)
 {
 	size_t	i;
@@ -355,8 +318,8 @@ char		*open_quotes_str(const char *str_src)
 	}
 	if (i - save > 1 || \
 		(i - save >= 1 && (str[i - 1] == DOUBLE_QUOTE || str[i - 1] == SINGLE_QUOTE)) || \
-		str[0] && !str[1] || \
-		i - save == 1 && (str[save] != DOUBLE_QUOTE || str[save] != SINGLE_QUOTE))
+		(str[0] && !str[1]) || \
+		(i - save == 1 && (str[save] != DOUBLE_QUOTE || str[save] != SINGLE_QUOTE)))
 	{
 		append_this = ft_substr(str, save, i - save);
 		ft_alloc_check(append_this);
@@ -365,91 +328,124 @@ char		*open_quotes_str(const char *str_src)
 	return (new_line);
 }
 
-void		open_quotes_2d(t_mshell *sv, char ***ptr)
+void		open_quotes(t_token **tok)
 {
-	char	**ptr_2d;
+	t_token 	*token;
 	char 	*tmp;
-	int 	i;
 
-	i = 0;
-	ptr_2d = *(ptr);
-	while (ptr_2d[i])
+	token = *(tok);
+	while (token)
 	{
 		init_globs();
-		tmp = ptr_2d[i];
-		ptr_2d[i] = open_quotes_str(tmp);
+		tmp = token->content;
+		token->content = open_quotes_str(tmp);
 		free(tmp);
 		tmp = NULL;
-		i++;
+		token = token->next;
 	}
 }
 
-void		parse_input(t_mshell *sv)
+t_token		*alloc_token_list(char **ptr)
+{
+	t_token	*token;
+	t_token	*head;
+	int 	i;
+
+	i = 0;
+	token = token_new(ptr[i], NULL);
+	ft_alloc_check(token);
+	head = token;
+	while (ptr[++i])
+	{
+		token->next = token_new(ptr[i], &token);
+		ft_alloc_check(token->next);
+		token = token->next;
+	}
+	return (head);
+}
+
+t_dlist_pipe	*alloc_pipe_list(char **ptr)
+{
+	int 		i;
+	char 		**tmp_cmd;
+	t_token		*token;
+	t_dlist_pipe	*pipe;
+	t_dlist_pipe	*head;
+
+	i = 0;
+	tmp_cmd = NULL;
+	pipe = pipe_new(NULL, NULL);
+	ft_alloc_check(pipe);
+	head = pipe;
+	while (ptr[i])
+	{
+		tmp_cmd = split_command(ptr[i]);
+		ft_alloc_check(tmp_cmd);
+		ft_trim_2d(&tmp_cmd);
+		token = alloc_token_list(tmp_cmd);
+		ft_alloc_check(token);
+//		ft_free2d(tmp_cmd);
+		tmp_cmd = NULL;
+		pipe->token = token;
+		pipe->next = pipe_new(NULL, &pipe);
+		ft_alloc_check(pipe->next);
+		pipe = pipe->next;
+		i++;
+	}
+	return (head);
+}
+
+t_dlist_sh			*get_sh_list(char **semicolons2d)
+{
+	t_dlist_pipe	*dlst_pipe;
+	t_dlist_sh		*sh;
+	t_dlist_sh		*sh_head;
+	char			**tmp_semi;
+	int 			i;
+
+	i = 0;
+	sh = sh_new(NULL, NULL);
+	ft_alloc_check(sh);
+	sh_head = sh;
+	tmp_semi = NULL;
+	while (semicolons2d[i])
+	{
+		tmp_semi = split_by_char('|', semicolons2d[i]);
+		ft_alloc_check(tmp_semi);
+		ft_trim_2d(&tmp_semi);
+		dlst_pipe = alloc_pipe_list(tmp_semi);
+		ft_free2d(tmp_semi);
+		tmp_semi = NULL;
+		sh->tdlst_pipe = dlst_pipe;
+		sh->next = sh_new(NULL, NULL);
+		ft_alloc_check(sh->next);
+		sh = sh->next;
+		i++;
+	}
+	return (sh_head);
+}
+
+void		parse_input(char *str)
 {
 	char	**semicolons2d;
 	char	*input_str;
-	t_token	*token;
-	t_dlist_sh *dlst_sh;
-	char	**tmp_ptr2d;
-	int 	i;
-	int		j;
-	char **tmp_semi;
-	char **tmp_cmd;
 
-	i = 0;
-	input_str = ft_strtrim(sv->content, " \t");
+	init_globs();
+	input_str = ft_strtrim(str, " \t");
 	ft_alloc_check(input_str);
 	check_common(input_str);
-
-	semicolons2d = split_by_char(sv, ';', input_str);
+	semicolons2d = split_by_char(';', input_str);
 	ft_alloc_check(semicolons2d);
 	free(input_str);
-
 	ft_trim_2d(&semicolons2d);
-
-	dlst_sh = ft_dlst_sh_new(NULL, NULL);
-	ft_alloc_check(dlst_sh);
-	sv->dlst_sh_head = dlst_sh;
-
-	while (semicolons2d[i])
-	{
-		tmp_semi = split_by_char(sv, '|', semicolons2d[j]);
-		ft_alloc_check(tmp_semi);
-		j = 0;
-		while (tmp_semi[j])
-		{
-			tmp_cmd = split_command(sv, tmp_semi[j]);
-			j++;
-		}
-		i++;
-	}
-
-
-
-
-//    sv->token_head = token;
-	while (semicolons2d[j])
-	{
-	    if (is_bad_syntax(semicolons2d[j][0]))
-	        exit_error_message("bad syntax");
-		init_globs();
-		tmp_ptr2d = split_command(sv, semicolons2d[j]);
-
-		dlst->content = (void *)tmp_ptr2d;
-		tmp_ptr2d = NULL;
-        char **ptr = (char **)dlst->content;
-        ft_trim_2d(&ptr);
-        if (count_2d_lines(ptr) == 1 && is_bad_syntax(ptr[0][ft_strlen(ptr[0]) - 1]))
-            exit_error_message("bad syntax");
-        if (semicolons2d[j + 1])
-		{
-			dlst->next = ft_dlstnew(NULL, NULL);
-			ft_alloc_check(dlst->next);
-			dlst = dlst->next;
-		}
-		j++;
-	}
+	g_sv->sh = get_sh_list(semicolons2d);
+	g_sv->sh_head = g_sv->sh;
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
-	dlst = NULL;
+
+//	    if (is_bad_syntax(semicolons2d[j][0]))
+//	        exit_error_message("bad syntax");
+//
+//        if (count_2d_lines(ptr) == 1 && is_bad_syntax(ptr[0][ft_strlen(ptr[0]) - 1]))
+//            exit_error_message("bad syntax");
 }

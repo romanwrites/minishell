@@ -144,51 +144,51 @@ int     count_chr(const char *str, char c, _Bool pos)
 }
 
 
-void		parse_env(t_mshell *sv)
-{
-	t_dlist *dlst;
-	char	**ptr;
-	int 	i;
-	char    *tmp;
-
-	i = 0;
-	dlst = sv->dlst_head;
-	while (dlst)
-	{
-		ptr = (char **)dlst->content;
-		while (ptr && ptr[i])
-		{
-			if (ptr[i][0] == 39)
-			{
-				tmp = ptr[i];
-//                if (count_chr(ptr[i], 39, 0) != count_chr(ptr[i], 39, 1)) {
-//                    exit_error_message("syntax error, singly quotes are not closed. parse_env()");
-//                }
-				if (count_chr(ptr[i], 39, 0) % 2 == 1) {
-					ptr[i] = ft_strtrim(tmp, "'");
-					i++;
-					continue;
-				} else {
-					ptr[i] = ft_strtrim(tmp, "'");
-				}
-				free(tmp);
-				tmp = NULL;
-			}
-			else if (ptr[i][0] == 34)
-			{
-				tmp = ptr[i];
-//                if (count_chr(ptr[i], 34, 0) != count_chr(ptr[i], 34, 1))
-//                {
-//                    exit_error_message("syntax error, singly quotes are not closed. parse_env()");
-//                }
-				ptr[i] = ft_strtrim(tmp, "\"");
-				free(tmp);
-				tmp = NULL;
-			}
-			if (ft_strchr(ptr[i], (int)'$'))
-				handle_env(sv, &ptr[i]);
-			i++;
-		}
-		dlst = dlst->next;
-	}
-}
+//void		parse_env()
+//{
+//	t_dlist_sh *dlst_sh;
+//	char	**ptr;
+//	int 	i;
+//	char    *tmp;
+//
+//	i = 0;
+//	dlst_sh = g_sv->sh_head;
+//	while (dlst_sh)
+//	{
+//		ptr = (char **)dlst->content;
+//		while (ptr && ptr[i])
+//		{
+//			if (ptr[i][0] == 39)
+//			{
+//				tmp = ptr[i];
+////                if (count_chr(ptr[i], 39, 0) != count_chr(ptr[i], 39, 1)) {
+////                    exit_error_message("syntax error, singly quotes are not closed. parse_env()");
+////                }
+//				if (count_chr(ptr[i], 39, 0) % 2 == 1) {
+//					ptr[i] = ft_strtrim(tmp, "'");
+//					i++;
+//					continue;
+//				} else {
+//					ptr[i] = ft_strtrim(tmp, "'");
+//				}
+//				free(tmp);
+//				tmp = NULL;
+//			}
+//			else if (ptr[i][0] == 34)
+//			{
+//				tmp = ptr[i];
+////                if (count_chr(ptr[i], 34, 0) != count_chr(ptr[i], 34, 1))
+////                {
+////                    exit_error_message("syntax error, singly quotes are not closed. parse_env()");
+////                }
+//				ptr[i] = ft_strtrim(tmp, "\"");
+//				free(tmp);
+//				tmp = NULL;
+//			}
+//			if (ft_strchr(ptr[i], (int)'$'))
+//				handle_env(sv, &ptr[i]);
+//			i++;
+//		}
+//		dlst = dlst->next;
+//	}
+//}

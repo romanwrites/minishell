@@ -51,15 +51,15 @@ _Bool		is_any_quote_open(t_parse *state_check)
 	return (0);
 }
 
-void		set_new_lines_over_char(t_mshell *sv, char c, char *str)
+void		set_new_lines_over_char(char c, char *str)
 {
 	int		j = 0;
 
 	while (str[j])
 	{
-		set_backslash_state(sv->state, str[j]);
-		set_quotes_state(sv->state, j, str);
-		if (str[j] == c && !is_any_quote_open(sv->state) && !is_backslash_pressed(sv->state))
+		set_backslash_state(g_sv->state, str[j]);
+		set_quotes_state(g_sv->state, j, str);
+		if (str[j] == c && !is_any_quote_open(g_sv->state) && !is_backslash_pressed(g_sv->state))
 		{
 			if (str[j + 1] == c)
 			{
@@ -83,11 +83,11 @@ void		set_new_lines_over_char(t_mshell *sv, char c, char *str)
 	}
 }
 
-char		**split_by_char(t_mshell *sv, char c, char *str)
+char		**split_by_char(char c, char *str)
 {
 	char	**semicolon2d;
 
-	set_new_lines_over_char(sv, c, str);
+	set_new_lines_over_char(c, str);
 	semicolon2d = ft_split(str, '\n');
 	ft_alloc_check(semicolon2d);
 	return (semicolon2d);

@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   dlst_sh.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/19 23:09:01 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/19 23:09:03 by mkristie         ###   ########.fr       */
+/*   Created: 2020/10/19 18:50:27 by mkristie          #+#    #+#             */
+/*   Updated: 2020/10/19 18:51:08 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_dlist_sh		*sh_new(t_dlist_pipe *content, t_dlist_sh **prev)
+t_dlist_pipe		*pipe_new(t_token *content, t_dlist_pipe **prev)
 {
-	t_dlist_sh	*new;
+	t_dlist_pipe	*new;
 
-	if (!(new = malloc(sizeof(t_dlist_sh))))
+	if (!(new = malloc(sizeof(t_dlist_pipe))))
 		return (NULL);
-	new->tdlst_pipe = content;
+	new->token = content;
 	if (prev)
 		new->prev = *prev;
 	else

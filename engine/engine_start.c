@@ -16,6 +16,7 @@ _Bool	g_dquote;
 _Bool	g_squote;
 _Bool	g_backslash;
 int		g_backslash_time;
+t_mshell *g_sv;
 
 t_list	*g_env;
 char	*input;
@@ -88,14 +89,11 @@ void 	execute_command(t_mshell *sv, char **cmd)
 
 int     main(int ac, char **av, char **envp)
 {
-	t_mshell	*sv;
 	int 		read_res;
-	char		*line;
-	int			i;
 	char		**cmd;
+	char		*str;
 
-	i = 0;
-
+	str = NULL;
 	(void)ac;
 	(void)av;
 
@@ -103,36 +101,39 @@ int     main(int ac, char **av, char **envp)
 	signal(SIGINT, new_line);
 	g_env = env_to_list(envp);
 	g_home = get_envar("HOME");
-	sv = (t_mshell *)malloc(sizeof(t_mshell));
-	ft_alloc_check(sv);
-	init(sv);
+	g_sv = (t_mshell *)malloc(sizeof(t_mshell));
+	ft_alloc_check(g_sv);
+	init(g_sv);
 
+	t_token *token;
 //	int fd = open("parse_tests.txt", O_RDONLY);
 	write(0, PROMPT, ft_strlen(PROMPT));
 
-	while (get_next_line(0, &sv->content))
+	while (get_next_line(0, &str))
 	{
 		write(0, PROMPT, ft_strlen(PROMPT));
-		ft_alloc_check(sv->content);
-
-		parse_input(sv);
-		t_token *tmp = sv->dlst_head;
-
-		while (tmp) //todo maybe bad listing, check
+		ft_alloc_check(str);
+		parse_input(str);
+		while (g_sv->sh)
 		{
-			cmd = (char **)tmp->content; //todo if NULL returns what could be wrong?
-			if (!cmd)
-				break ;
-			open_quotes_2d(sv, &cmd);
-			print_2d_array(cmd);
-			execute_command(sv, cmd);
-			tmp = tmp->next;
+			while (g_sv->sh->tdlst_pipe)
+			{
+				while (g_sv->sh->tdlst_pipe->token)
+				{
+					token = g_sv->sh->tdlst_pipe->token;
+					open_quotes(&token);
+					print_token(token);
+					g_sv->sh->tdlst_pipe->token = g_sv->sh->tdlst_pipe->token->next;
+				}
+				g_sv->sh->tdlst_pipe = g_sv->sh->tdlst_pipe->next;
+			}
+			g_sv->sh = g_sv->sh->next;
 		}
-		free(sv->content);
-		sv->content = NULL;
+		free(str);
+		str = NULL;
 	}
 
-	if (*(sv->content) == '\0')
+	if (*(str) == '\0')
 		write(0, "exit\n", ft_strlen("exit\n"));
 	return (0);
 }
