@@ -48,9 +48,9 @@ int main(int argc, char **argv, char **envp)
 	int savestdout = dup(1);
 	int savestdin = dup(0);
 	pipe(fd);
-	pid = fork();
 	while (i < 2)
 	{
+		pid = fork();
 		if (pid == 0)
 		{
 			if (!(i%2))
@@ -63,18 +63,16 @@ int main(int argc, char **argv, char **envp)
 				execve("/bin/ls", ls, envp);
 			else
 				execve("/bin/cat", cat, envp);
-			i++;
 		}
 		else
 		{
 			wait(NULL);
-			if(i%2)
+			if(!(i%2))
 			{
 				close(fd[1]);
 				dup2(fd[0], 0);
 				close(fd[0]);
 			}
-			i++;
 			//execve("/bin/cat", cat, envp);
 			//в родительском не будет execve, 
 			//просто будут меняться дескрипторы, эта функция должна вызываться в 
@@ -82,5 +80,6 @@ int main(int argc, char **argv, char **envp)
 			//но нужны два условия чтобы вначале не читать и в конце не менять дескрипторы? 
 			//вроде так, удачи, Илюха из будущего
 		}
+		i++;
 	}
 }
