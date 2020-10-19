@@ -40,10 +40,8 @@ int main(int argc, char **argv)
 
 int main(int argc, char **argv, char **envp)
 {
-    if (argc != 2)
-        return (1);
     char *ls[] = {"ls", NULL};
-    char *cat[] = {"cat", NULL};
+    char *cat[] = {"cat", "-e", NULL};
     pid_t pid;
     int fd[2];//0 read 1 write
 
