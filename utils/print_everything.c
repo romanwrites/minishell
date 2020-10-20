@@ -15,9 +15,11 @@
 void		print_everything()
 {
 	t_token *token;
+	int 	pipe = 0, tok = 0, semi = 0;
 	
 	while (g_sv->sh)
 	{
+		pipe = 0;
 		while (g_sv->sh->tdlst_pipe)
 		{
 			g_sv->sh->tdlst_pipe->token_head = g_sv->sh->tdlst_pipe->token;
@@ -29,8 +31,11 @@ void		print_everything()
 			}
 			token = g_sv->sh->tdlst_pipe->token_head;
 			print_token_list(token);
+			printf("semi: %d, pipe: %d, tok: %d\n", semi, pipe, ++tok);
 			g_sv->sh->tdlst_pipe = g_sv->sh->tdlst_pipe->next;
+			++pipe;
 		}
 		g_sv->sh = g_sv->sh->next;
+		++semi;
 	}
 }
