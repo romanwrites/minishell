@@ -17,6 +17,7 @@
 # define STDOUT 1
 # define STDIN 0
 # define PROMPT "bash-3.2$ "
+# define PRINT_ERROR_FD 1
 
 # include "structs_mshell.h"
 # include "utils_mshell.h"
@@ -37,7 +38,13 @@
 # include <dirent.h>
 # include <signal.h>
 # include <fcntl.h>
-# include <stdio.h> //
+# include <stdio.h>
+
+extern t_mshell				*g_sv;
+extern _Bool				g_dquote;
+extern _Bool				g_squote;
+extern _Bool				g_backslash;
+extern int					g_backslash_time;
 
 void	handle_cmd(char *cmd);//
 char	**list_to_env();//

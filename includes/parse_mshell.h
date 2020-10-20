@@ -25,15 +25,18 @@
 # define INPUT 60
 # define OUTPUT 62
 # define AND 38
+# define REDIR_LEFT 60
+# define REDIR_RIGHT 62
+# define REDIR_RIGHT_DOUBLE ">>"
 
-void		parse_input(t_mshell *sv);
-char		**split_by_char(t_mshell *sv, char c, char *str);
+_Bool		parse_input(char *str);
+char		**split_by_char(char c, char *str);
 int			count_2d_lines(char **arr2d);
 _Bool		is_backslash_pressed(t_parse *state_check);
 void		set_backslash_state(t_parse *state_check, char c);
 void		set_quotes_state(t_parse *state_check, int j, const char *str);
 _Bool		is_any_quote_open(t_parse *state_check);
-char		**split_command(t_mshell *sv, char *str);
+char		**split_command(char *str);
 void		set_nl_cpy(char **str, int i);
 _Bool		is_redir_or_pipe(char c);
 _Bool		is_valid_syntax(char pre, char cur, char next);
@@ -48,9 +51,9 @@ char		*realloc_without_newlines(char **append_this);
 size_t		len_without_newlines(const char *ptr);
 
 char		*open_quotes_str(const char *str_src);
-void		open_quotes_2d(t_mshell *sv, char ***ptr);
+void		open_quotes(t_token **tok);
 
-void		parse_env(t_mshell *sv);
+void		parse_env();
 void        append_line(char **ptr, char **append_this);
 size_t		get_dollars_end(const char *str);
 int			get_env_from_str(const char *str);

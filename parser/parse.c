@@ -12,30 +12,77 @@
 
 #include "minishell.h"
 
-void        check_common(char *str)
+_Bool			check_syntax_by_indexes(const char *str)
 {
-     if (str)
-     {
-         if (str[0] == ';' || str[1] == '|' || str[ft_strlen(str)] == '|' || str[ft_strlen(str)] == ';')
-         {
-             exit_error_message("Bad syntax. check_common()");
-         }
-     }
+	size_t 	len;
+
+	len = ft_strlen(str);
+	if (str[0] == PIPE || str[0] == SEMICOLON)
+		return (1);
+	else if (str[len] == REDIR_LEFT && len > 1 && str[len - 1] != BACKSLASH)
+		return (1);
+	else if (str[len] == REDIR_RIGHT && len > 1 && str[len - 1] != BACKSLASH)
+		return (1);
+	return (0);
 }
 
-_Bool   is_bad_syntax(char c)
+_Bool			check_sequence(char c1, char c2)
 {
-    int     i;
-    char    tab[] = ";|><";
+	if (c1 == SEMICOLON && (c2 == SEMICOLON || c2 == PIPE))
+		return (1);
+	else if (c1 == PIPE && (c2 == PIPE || c2 == SEMICOLON))
+		return (1);
+	else if (c1 == REDIR_LEFT && c2 == PIPE)
+		return (1);
 
-    i = 0;
-    while(tab[i])
-    {
-        if (tab[i] == c)
-            return (1);
-        i++;
-    }
-    return (0);
+	return (0);
+}
+
+_Bool			check_syntax_errors(const char *str)
+{
+	int 	i;
+	int 	j;
+
+	i = 0;
+	j = 0;
+	if (str)
+	{
+		if (check_syntax_by_indexes(str))
+			return (1);
+		while (str[i])
+		{
+			set_backslash_state_new(str[i]);
+			set_quotes_state_new(str[i]);
+			if (is_open_quote())
+			{
+				while (str[i++] && is_open_quote())
+				{
+					set_backslash_state_new(str[i]);
+					set_quotes_state_new(str[i]);
+				}
+				continue ;
+			}
+			if (ft_isspace(str[i]))
+			{
+				j = i - 1;
+				while (ft_isspace(str[i]))
+				{
+					set_backslash_state_new(str[i]);
+					set_quotes_state_new(str[i]);
+					i++;
+				}
+				if (str[i] && check_sequence(str[j], str[i]))
+					return (1);
+			}
+			else if (!is_open_quote() && i > 0 && !is_backslash_active() \
+						&& check_sequence(str[i - 1], str[i]))
+			{
+				return (1);
+			}
+			i++;
+		}
+	}
+	return (0);
 }
 
 void        append_line(char **ptr, char **append_this)
@@ -55,43 +102,6 @@ void        append_line(char **ptr, char **append_this)
     *(append_this) = NULL;
     new_line = NULL;
 }
-
-void        check_doubles(t_mshell *sv, const char *str, char c)
-{
-    int     i;
-
-    i = 0;
-    while (str[i])
-    {
-        set_backslash_state(sv->state, str[i]);
-        if (i > 0 && !is_backslash_pressed(sv->state) && str[i] == c && str[i + 1] == c)
-            exit_error_message("command not found. check_doubles()");
-        i++;
-    }
-}
-
-
-
-
-char		*get_new_str_qopen(t_mshell *sv, char **new)
-{
-	int 	i;
-	char 	*str;
-	char 	*tmp;
-
-	i = 0;
-	str = *(new);
-	while (str[i])
-	{
-		set_backslash_state(sv->state, str[i]);
-		set_quotes_state(sv->state, i, str);
-
-		i++;
-	}
-}
-
-
-
 
 size_t		len_without_newlines(const char *ptr)
 {
@@ -149,7 +159,7 @@ char		*open_quotes_str(const char *str_src)
 	size_t 	save;
 	char 	*append_this;
 	char 	*str;
-	char	tab[] = {DOLLAR, DOUBLE_QUOTE, BACKSLASH, GRAVE_ACCENT, '\0'};
+	static char	tab[] = {DOLLAR, DOUBLE_QUOTE, BACKSLASH, GRAVE_ACCENT, '\0'};
 
 	char	*value_to_check;
 	char 	*env_value;
@@ -175,7 +185,9 @@ char		*open_quotes_str(const char *str_src)
 			ft_alloc_check(append_this);
 			append_this[0] = str[i];
 			append_line(&new_line, &append_this);
-			save = i;
+			save = i + 1;
+			set_backslash_state_new(str[i]);
+//			set_quotes_state_new(str[i]);
 		}
 		else if (str[i] == DOLLAR && is_env_val_after_dollar(str[i + 1]))
 		{
@@ -321,10 +333,10 @@ char		*open_quotes_str(const char *str_src)
 					append_line(&new_line, &append_this);
 					i += j - 1;
 					save = i + 1;
-					i++;
+//					i++;
 					continue ;
 				}
-				else
+				else if (is_open_quote())
 				{
 					append_this = ft_substr(str, i, 1);
 					ft_alloc_check(append_this);
@@ -334,10 +346,27 @@ char		*open_quotes_str(const char *str_src)
 			}
 			save = i + 1;
 		}
+		else if (i == 0 && str[i] == '~' && !str[i + 1])
+		{
+			env_value = get_envar("~");
+			if (!env_value)
+				append_this = ft_strdup("");
+			else
+			{
+				append_this = ft_strdup(env_value);
+			}
+			append_line(&new_line, &append_this);
+			save = i + 1;
+			free(env_value);
+			env_value = NULL;
+			return (new_line);
+		}
 		i++;
 	}
-	if (i - save > 1 ||
-		(i - save >= 1 && (str[i - 1] == DOUBLE_QUOTE || str[i - 1] == SINGLE_QUOTE)))
+	if (i - save > 1 || \
+		(i - save >= 1 && (str[i - 1] == DOUBLE_QUOTE || str[i - 1] == SINGLE_QUOTE)) || \
+		(str[0] && !str[1]) || \
+		(i - save == 1 && (str[save] != DOUBLE_QUOTE || str[save] != SINGLE_QUOTE)))
 	{
 		append_this = ft_substr(str, save, i - save);
 		ft_alloc_check(append_this);
@@ -346,64 +375,123 @@ char		*open_quotes_str(const char *str_src)
 	return (new_line);
 }
 
-void		open_quotes_2d(t_mshell *sv, char ***ptr)
+void		open_quotes(t_token **tok)
 {
-	char	**ptr_2d;
+	t_token 	*token;
 	char 	*tmp;
-	int 	i;
 
-	i = 0;
-	ptr_2d = *(ptr);
-	while (ptr_2d[i])
+	token = *(tok);
+	while (token)
 	{
 		init_globs();
-		tmp = ptr_2d[i];
-		ptr_2d[i] = open_quotes_str(tmp);
+		tmp = token->content;
+		token->content = open_quotes_str(tmp);
 		free(tmp);
 		tmp = NULL;
-		i++;
+		token = token->next;
 	}
 }
 
-void		parse_input(t_mshell *sv)
+t_token		*alloc_token_list(char **ptr)
 {
-	char	**semicolons2d;
-	char	*input_str;
-	t_dlist	*dlst;
-	char	**tmp_ptr2d;
-	int		j;
+	t_token	*token;
+	t_token	*head;
+	int 	i;
 
-	j = 0;
-	input_str = ft_strtrim(sv->content, " \t");
-	ft_alloc_check(input_str);
-	check_common(input_str);
-	semicolons2d = split_by_char(sv, ';', input_str);
-	ft_trim_2d(&semicolons2d);
-	dlst = ft_dlstnew(NULL, NULL);
-	ft_alloc_check(dlst);
-    sv->dlst_head = dlst;
-	while (semicolons2d[j])
+	i = 0;
+	token = token_new(ptr[i], NULL);
+	ft_alloc_check(token);
+	head = token;
+	while (ptr[++i])
 	{
-	    if (is_bad_syntax(semicolons2d[j][0]))
-	        exit_error_message("bad syntax");
-		init_globs();
-		tmp_ptr2d = split_command(sv, semicolons2d[j]);
-
-		dlst->content = (void *)tmp_ptr2d;
-		tmp_ptr2d = NULL;
-        char **ptr = (char **)dlst->content;
-        ft_trim_2d(&ptr);
-        if (count_2d_lines(ptr) == 1 && is_bad_syntax(ptr[0][ft_strlen(ptr[0]) - 1]))
-            exit_error_message("bad syntax");
-        if (semicolons2d[j + 1])
-		{
-			dlst->next = ft_dlstnew(NULL, NULL);
-			ft_alloc_check(dlst->next);
-			dlst = dlst->next;
-		}
-		j++;
+		token->next = token_new(ptr[i], &token);
+		ft_alloc_check(token->next);
+		token = token->next;
 	}
+	return (head);
+}
+
+t_dlist_pipe	*alloc_pipe_list(char **ptr)
+{
+	int 		i;
+	char 		**tmp_cmd;
+	t_token		*token;
+	t_dlist_pipe	*pipe;
+	t_dlist_pipe	*head;
+
+	i = 0;
+	tmp_cmd = NULL;
+	pipe = pipe_new(NULL, NULL);
+	ft_alloc_check(pipe);
+	head = pipe;
+	while (ptr[i])
+	{
+		tmp_cmd = split_command(ptr[i]);
+		ft_alloc_check(tmp_cmd);
+		ft_trim_2d(&tmp_cmd);
+		token = alloc_token_list(tmp_cmd);
+		ft_alloc_check(token);
+		tmp_cmd = NULL;
+		pipe->token = token;
+		pipe->next = pipe_new(NULL, &pipe);
+		ft_alloc_check(pipe->next);
+		pipe = pipe->next;
+		i++;
+	}
+	return (head);
+}
+
+t_dlist_sh			*get_sh_list(char **semicolons2d)
+{
+	t_dlist_pipe	*dlst_pipe;
+	t_dlist_sh		*sh;
+	t_dlist_sh		*sh_head;
+	char			**tmp_semi;
+	int 			i;
+
+	i = 0;
+	sh = sh_new(NULL, NULL);
+	ft_alloc_check(sh);
+	sh_head = sh;
+	tmp_semi = NULL;
+	while (semicolons2d[i])
+	{
+		tmp_semi = split_by_char(PIPE, semicolons2d[i]);
+		ft_alloc_check(tmp_semi);
+		ft_trim_2d(&tmp_semi);
+		dlst_pipe = alloc_pipe_list(tmp_semi);
+		ft_free2d(tmp_semi);
+		tmp_semi = NULL;
+		sh->tdlst_pipe = dlst_pipe;
+		sh->next = sh_new(NULL, NULL);
+		ft_alloc_check(sh->next);
+		sh = sh->next;
+		i++;
+	}
+	return (sh_head);
+}
+
+_Bool		parse_input(char *str)
+{
+	char **semicolons2d;
+	char *input_str;
+
+	init_globs();
+	input_str = ft_strtrim(str, " \t");
+	ft_alloc_check(input_str);
+	if (check_syntax_errors(input_str))
+	{
+		print_error("syntax error");
+		return (1);
+	}
+	semicolons2d = split_by_char(SEMICOLON, input_str);
+	ft_alloc_check(semicolons2d);
+	free(input_str);
+	ft_trim_2d(&semicolons2d);
+	init_globs();
+	g_sv->sh = get_sh_list(semicolons2d);
+	g_sv->sh_head = g_sv->sh;
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
-	dlst = NULL;
+	return (0);
 }
