@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_token.c                                      :+:      :+:    :+:   */
+/*   print_token_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,11 +12,11 @@
 
 #include "minishell.h"
 
-void 	print_token(t_token *token)
+void 	print_token_list(t_token *token)
 {
 	while (token)
 	{
-		ft_putstr_fd(token->content, 1);
+		ft_putendl_fd(token->content, 1);
 		token = token->next;
 	}
 }

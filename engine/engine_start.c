@@ -114,21 +114,7 @@ int     main(int ac, char **av, char **envp)
 		write(0, PROMPT, ft_strlen(PROMPT));
 		ft_alloc_check(str);
 		parse_input(str);
-		while (g_sv->sh)
-		{
-			while (g_sv->sh->tdlst_pipe)
-			{
-				while (g_sv->sh->tdlst_pipe->token)
-				{
-					token = g_sv->sh->tdlst_pipe->token;
-					open_quotes(&token);
-					print_token(token);
-					g_sv->sh->tdlst_pipe->token = g_sv->sh->tdlst_pipe->token->next;
-				}
-				g_sv->sh->tdlst_pipe = g_sv->sh->tdlst_pipe->next;
-			}
-			g_sv->sh = g_sv->sh->next;
-		}
+		print_everything();
 		free(str);
 		str = NULL;
 	}
