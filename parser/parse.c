@@ -162,9 +162,12 @@ t_dlist_pipe	*alloc_pipe_list(char **ptr)
 		ft_alloc_check(token);
 		tmp_cmd = NULL;
 		pipe->token = token;
-		pipe->next = pipe_new(NULL, &pipe);
-		ft_alloc_check(pipe->next);
-		pipe = pipe->next;
+		if (ptr[i + 1])
+		{
+			pipe->next = pipe_new(NULL, &pipe);
+			ft_alloc_check(pipe->next);
+			pipe = pipe->next;
+		}
 		i++;
 	}
 	return (head);
@@ -192,9 +195,12 @@ t_dlist_sh			*get_sh_list(char **semicolons2d)
 		ft_free2d(tmp_semi);
 		tmp_semi = NULL;
 		sh->tdlst_pipe = dlst_pipe;
-		sh->next = sh_new(NULL, NULL);
-		ft_alloc_check(sh->next);
-		sh = sh->next;
+		if (semicolons2d[i + 1])
+		{
+			sh->next = sh_new(NULL, NULL);
+			ft_alloc_check(sh->next);
+			sh = sh->next;
+		}
 		i++;
 	}
 	return (sh_head);
