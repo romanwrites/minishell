@@ -12,30 +12,77 @@
 
 #include "minishell.h"
 
-void        check_common(char *str)
+_Bool			check_syntax_by_indexes(const char *str)
 {
-     if (str)
-     {
-         if (str[0] == ';' || str[1] == '|' || str[ft_strlen(str)] == '|' || str[ft_strlen(str)] == ';')
-         {
-             exit_error_message("Bad syntax. check_common()");
-         }
-     }
+	size_t 	len;
+
+	len = ft_strlen(str);
+	if (str[0] == PIPE || str[0] == SEMICOLON)
+		return (1);
+	else if (str[len] == REDIR_LEFT && len > 1 && str[len - 1] != BACKSLASH)
+		return (1);
+	else if (str[len] == REDIR_RIGHT && len > 1 && str[len - 1] != BACKSLASH)
+		return (1);
+	return (0);
 }
 
-_Bool   is_bad_syntax(char c)
+_Bool			check_sequence(char c1, char c2)
 {
-    int     i;
-    char    tab[] = ";|><";
+	if (c1 == SEMICOLON && (c2 == SEMICOLON || c2 == PIPE))
+		return (1);
+	else if (c1 == PIPE && (c2 == PIPE || c2 == SEMICOLON))
+		return (1);
+	else if (c1 == REDIR_LEFT && c2 == PIPE)
+		return (1);
 
-    i = 0;
-    while(tab[i])
-    {
-        if (tab[i] == c)
-            return (1);
-        i++;
-    }
-    return (0);
+	return (0);
+}
+
+_Bool			check_syntax_errors(const char *str)
+{
+	int 	i;
+	int 	j;
+
+	i = 0;
+	j = 0;
+	if (str)
+	{
+		if (check_syntax_by_indexes(str))
+			return (1);
+		while (str[i])
+		{
+			set_backslash_state_new(str[i]);
+			set_quotes_state_new(str[i]);
+			if (is_open_quote())
+			{
+				while (str[i++] && is_open_quote())
+				{
+					set_backslash_state_new(str[i]);
+					set_quotes_state_new(str[i]);
+				}
+				continue ;
+			}
+			if (ft_isspace(str[i]))
+			{
+				j = i - 1;
+				while (ft_isspace(str[i]))
+				{
+					set_backslash_state_new(str[i]);
+					set_quotes_state_new(str[i]);
+					i++;
+				}
+				if (str[i] && check_sequence(str[j], str[i]))
+					return (1);
+			}
+			else if (!is_open_quote() && i > 0 && !is_backslash_active() \
+						&& check_sequence(str[i - 1], str[i]))
+			{
+				return (1);
+			}
+			i++;
+		}
+	}
+	return (0);
 }
 
 void        append_line(char **ptr, char **append_this)
@@ -384,7 +431,6 @@ t_dlist_pipe	*alloc_pipe_list(char **ptr)
 		ft_trim_2d(&tmp_cmd);
 		token = alloc_token_list(tmp_cmd);
 		ft_alloc_check(token);
-//		ft_free2d(tmp_cmd);
 		tmp_cmd = NULL;
 		pipe->token = token;
 		pipe->next = pipe_new(NULL, &pipe);
@@ -410,7 +456,7 @@ t_dlist_sh			*get_sh_list(char **semicolons2d)
 	tmp_semi = NULL;
 	while (semicolons2d[i])
 	{
-		tmp_semi = split_by_char('|', semicolons2d[i]);
+		tmp_semi = split_by_char(PIPE, semicolons2d[i]);
 		ft_alloc_check(tmp_semi);
 		ft_trim_2d(&tmp_semi);
 		dlst_pipe = alloc_pipe_list(tmp_semi);
@@ -425,27 +471,27 @@ t_dlist_sh			*get_sh_list(char **semicolons2d)
 	return (sh_head);
 }
 
-void		parse_input(char *str)
+_Bool		parse_input(char *str)
 {
-	char	**semicolons2d;
-	char	*input_str;
+	char **semicolons2d;
+	char *input_str;
 
 	init_globs();
 	input_str = ft_strtrim(str, " \t");
 	ft_alloc_check(input_str);
-	check_common(input_str);
-	semicolons2d = split_by_char(';', input_str);
+	if (check_syntax_errors(input_str))
+	{
+		print_error("syntax error");
+		return (1);
+	}
+	semicolons2d = split_by_char(SEMICOLON, input_str);
 	ft_alloc_check(semicolons2d);
 	free(input_str);
 	ft_trim_2d(&semicolons2d);
+	init_globs();
 	g_sv->sh = get_sh_list(semicolons2d);
 	g_sv->sh_head = g_sv->sh;
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
-
-//	    if (is_bad_syntax(semicolons2d[j][0]))
-//	        exit_error_message("bad syntax");
-//
-//        if (count_2d_lines(ptr) == 1 && is_bad_syntax(ptr[0][ft_strlen(ptr[0]) - 1]))
-//            exit_error_message("bad syntax");
+	return (0);
 }

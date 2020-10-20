@@ -113,7 +113,12 @@ int     main(int ac, char **av, char **envp)
 	{
 		write(0, PROMPT, ft_strlen(PROMPT));
 		ft_alloc_check(str);
-		parse_input(str);
+		if (parse_input(str))
+		{
+			free(str);
+			str = NULL;
+			continue;
+		}
 		print_everything();
 		free(str);
 		str = NULL;

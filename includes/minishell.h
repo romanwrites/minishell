@@ -17,6 +17,7 @@
 # define STDOUT 1
 # define STDIN 0
 # define PROMPT "bash-3.2$ "
+# define PRINT_ERROR_FD 1
 
 # include "structs_mshell.h"
 # include "utils_mshell.h"
