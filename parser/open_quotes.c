@@ -268,8 +268,8 @@ char		*open_quotes_str(const char *str_src)
 
 void		set_token_flag(t_token *token, char *str)
 {
-	if (str[0] == REDIR_RIGHT || str[0] == REDIR_LEFT || \
-		!(ft_strcmp(str, REDIR_RIGHT_DOUBLE)))
+	if (((str[0] == REDIR_RIGHT || str[0] == REDIR_LEFT) && \
+		!str[1]) || !(ft_strcmp(str, REDIR_RIGHT_DOUBLE)))
 	{
 		token->is_diff = 1;
 	}
@@ -286,8 +286,13 @@ void		open_quotes(t_token **tok)
 	while (token)
 	{
 		init_globs();
+		set_token_flag(token, token->content);
+		if (token->is_diff)
+		{
+			token = token->next;
+			continue ;
+		}
 		tmp = token->content;
-		set_token_flag(token, tmp);
 		token->content = open_quotes_str(tmp);
 		free(tmp);
 		tmp = NULL;
