@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/21 16:17:40 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/21 17:30:11 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ UTILS_SRC = ft_alloc_check.c \
 
 ENGINE_SRC = engine_start.c \
 				exec.c \
+				process.c \
 
 BUILTIN = builtin.c\
 			other_cmd.c\

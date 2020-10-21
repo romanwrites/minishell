@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void 	execute(t_mshell *sv, char **cmd)
+void 	execute(char **cmd)
 {
 	if (!(strcmp(cmd[0], "export")))
 		ft_export(cmd[1]);
@@ -20,7 +20,7 @@ void 	execute(t_mshell *sv, char **cmd)
 		handle_cmd(cmd);
 }
 
-void 	execute_command(t_mshell *sv, char **cmd)
+void 	execute_command(char **cmd)
 {
 	pid_t pid;
     int fd;
@@ -56,7 +56,7 @@ void 	execute_command(t_mshell *sv, char **cmd)
     	if (pid == 0)
     	{
 			close(fd);
-			execute(NULL, cmd);
+			execute(cmd);
 			return ;
 		}
 		else
@@ -70,5 +70,5 @@ void 	execute_command(t_mshell *sv, char **cmd)
 		}
 	}
 	else
-		execute(NULL, cmd);
+		execute(cmd);
 }
