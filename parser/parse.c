@@ -144,6 +144,7 @@ t_dlist_pipe	*alloc_pipe_list(char **ptr)
 {
 	int 		i;
 	char 		**tmp_cmd;
+	char 		**trim_cmd;
 	t_token		*token;
 	t_dlist_pipe	*pipe;
 	t_dlist_pipe	*head;
@@ -155,11 +156,30 @@ t_dlist_pipe	*alloc_pipe_list(char **ptr)
 	head = pipe;
 	while (ptr[i])
 	{
+		printf("str[%d]: %s\n",i, ptr[i]);
 		tmp_cmd = split_command(ptr[i]);
+		printf("SUPER\n");
+		ft_free2d(tmp_cmd);
+		for (int k = 0; tmp_cmd[k]; k++)
+		{
+			printf("1 tmp_cmd[%d]: [%s]\n", k, tmp_cmd[k]);
+		}
+		printf("\n");
 		ft_alloc_check(tmp_cmd);
-		ft_trim_2d(&tmp_cmd);
-		token = alloc_token_list(tmp_cmd);
+		trim_cmd = ft_trim_2d_cpy(tmp_cmd);
+		for (int k = 0; trim_cmd[k]; k++)
+		{
+			printf("2 tmp_cmd[%d]: [%s]\n", k, trim_cmd[k]);
+		}
+		printf("\n");
+		token = alloc_token_list(trim_cmd);
+		for (int k = 0; trim_cmd[k]; k++)
+		{
+			printf("3 tmp_cmd[%d]: [%s]\n", k, trim_cmd[k]);
+		}
+		printf("\n");
 		ft_alloc_check(token);
+//		ft_free2d(tmp_cmd);
 		tmp_cmd = NULL;
 		pipe->token = token;
 		if (ptr[i + 1])
@@ -168,8 +188,10 @@ t_dlist_pipe	*alloc_pipe_list(char **ptr)
 			ft_alloc_check(pipe->next);
 			pipe = pipe->next;
 		}
+		printf("str[%d]: %s\n",i, ptr[i]);
 		i++;
 	}
+
 	return (head);
 }
 
@@ -189,10 +211,14 @@ t_dlist_sh			*get_sh_list(char **semicolons2d)
 	while (semicolons2d[i])
 	{
 		tmp_semi = split_by_char(PIPE, semicolons2d[i]);
+		print_2d_array(tmp_semi);
 		ft_alloc_check(tmp_semi);
-		ft_trim_2d(&tmp_semi);
+		ft_trim_2d(&tmp_semi);//todo
+		print_2d_array(tmp_semi);
 		dlst_pipe = alloc_pipe_list(tmp_semi);
+		print_2d_array(tmp_semi);
 		ft_free2d(tmp_semi);
+		print_2d_array(tmp_semi);
 		tmp_semi = NULL;
 		sh->tdlst_pipe = dlst_pipe;
 		if (semicolons2d[i + 1])
@@ -222,7 +248,7 @@ _Bool		parse_input(char *str)
 	semicolons2d = split_by_char(SEMICOLON, input_str);
 	ft_alloc_check(semicolons2d);
 	free(input_str);
-	ft_trim_2d(&semicolons2d);
+	ft_trim_2d(&semicolons2d);//todo
 	init_globs();
 	g_sv->sh = get_sh_list(semicolons2d);
 	g_sv->sh_head = g_sv->sh;

@@ -20,6 +20,7 @@ void				ft_alloc_check(void *ptr);
 void				exit_error_message(char *str);
 void				print_2d_array(char **arr2d);
 void				ft_trim_2d(char ***arr_2d);
+char				**ft_trim_2d_cpy(char **arr_2d);
 int					compare_key(t_envar *a, t_envar *b);
 t_token				*token_new(char *content, t_token **prev);
 
