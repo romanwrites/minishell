@@ -6,6 +6,8 @@
 extern  t_list	*g_env;
 extern	pid_t	g_pid;
 extern	char	*g_home;
+extern  int     g_stdin;
+extern  int     g_stdout;
 
 char	**alloc_mem_env(int lines, int max_len, char *arg);
 int		compare_key(t_envar *a, t_envar *b);
@@ -15,7 +17,7 @@ void	fill_env(char **env_array, char *arg);
 void	free_content(void *to_free); //should be pointed be del() in ft_lstclear()
 void	free_env(char **env_array, int lines);
 void	ft_cd(char *str);
-void	ft_echo(char *str, int flag_n);
+void	ft_echo(char **str);
 void	ft_env();
 void	ft_exit(int exit_code);
 void	ft_export(char *arg);

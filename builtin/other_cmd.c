@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/17 16:12:52 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/21 15:56:31 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,19 @@ char **list_to_env()
 	return(envp);
 }
 
-void	handle_cmd(char *cmd)
+void	handle_cmd(char **args)
 {
-	char **args;
 	char *to_split;
 	char *tmp;
 	char **path;
 	char **envp;
 	DIR *dir;
 	struct dirent *entry;
-	int i = 0;
-	int x = 0;
+	int i;
+	int x;
 
-	args = ft_split(cmd, ' ');
+	i = 0;
+	x = 0;
 	to_split = get_envar("PATH");
 	path = ft_split(to_split, ':');
 	envp = list_to_env();
@@ -80,19 +80,12 @@ void	handle_cmd(char *cmd)
 					execve(path[i], args, envp);
 				free(tmp);
 				free(to_split);
-				while (args[x])
-				{
-					free(args[x]);
-					x++;
-				}
-				free(args);//in a loop
-				x = 0;
 				while (path[x])
 				{
 					free(path[x]);
 					x++;
 				}
-				free(path);//in a loop
+				free(path);
 				closedir(dir);
 				return ;
 			}
@@ -108,20 +101,10 @@ void	handle_cmd(char *cmd)
 			free(path[x]);
 			x++;
 		}
-		free(path);//in a loop
+		free(path);
 		free(to_split);
 	}
-	x = 0;
-	write(1, "minishell: ", ft_strlen("minishell: "));
+	write(0, PROM, ft_strlen(PROM));
 	write(1, args[0], ft_strlen(args[0]));
 	write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
-	if (args)
-	{
-		while (args[x])
-		{
-			free(args[x]);
-			x++;
-		}
-		free(args);//in a loop
-	}
 }

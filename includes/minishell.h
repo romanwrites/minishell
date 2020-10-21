@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/16 14:48:53 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/21 16:59:46 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define STDIN 0
 # define PROMPT "bash-3.2$ "
 # define PRINT_ERROR_FD 1
+# define PROM "bash: "
 
 # include "structs_mshell.h"
 # include "utils_mshell.h"
@@ -46,7 +47,8 @@ extern _Bool				g_squote;
 extern _Bool				g_backslash;
 extern int					g_backslash_time;
 
-void	handle_cmd(char *cmd);//
-char	**list_to_env();//
+void	handle_cmd(char **cmd);//
+char **list_to_env();//
+void 	execute_command(t_mshell *sv, char **cmd);//
 
 #endif

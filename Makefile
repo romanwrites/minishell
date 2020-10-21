@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/17 16:22:45 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/21 16:17:40 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,8 +35,10 @@ UTILS_SRC = ft_alloc_check.c \
 			exit_error_message.c \
 			ft_trim_2d.c \
 			print_2d_array.c \
+			delete2nodes.c \
 
 ENGINE_SRC = engine_start.c \
+				exec.c \
 
 BUILTIN = builtin.c\
 			other_cmd.c\
@@ -69,7 +71,7 @@ fclean: clean
 sh: all
 	$(MAKE) clean -C $(LIBFT_DIR)
 	$(MAKE) clean -C $(LIBFT_DIR)
-	rm -f libft/libft.a
+	#rm -f libft/libft.a
 	rm -f $(OBJ)
 	$(MAKE) clean -C $(LIBFT_DIR)
 	./minishell

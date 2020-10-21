@@ -6,3 +6,4 @@ a.out
 a.out.dSYM/
 minishell
 libft/libft.a
+test.txt
