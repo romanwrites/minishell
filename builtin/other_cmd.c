@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/18 19:33:13 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/21 15:56:31 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ char **list_to_env()
 
 void	handle_cmd(char **args)
 {
-	//char **args;
 	char *to_split;
 	char *tmp;
 	char **path;
