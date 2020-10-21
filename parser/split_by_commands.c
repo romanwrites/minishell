@@ -25,7 +25,7 @@ _Bool		is_valid_syntax(char pre, char cur, char next)
 
 _Bool		is_redir_or_pipe(char c)
 {
-	if (c == '|' || c == '>' || c == '<')
+	if (c == '|' || c == '<')
 		return (1);
 	return (0);
 }
@@ -62,12 +62,24 @@ char		**split_command(char *str)
 		}
 		if ((str[i] == ' ' || str[i] == '\t') && !is_backslash_active())
 			str[i] = '\n';
-		else if (i > 0 && (str[i] == '|' || str[i] == '<' || str[i] == '>') && \
+		else if (i > 0 && (str[i] == '|' || str[i] == '<' || (str[i] == '>' && str[i + 1] != '>' && str[i - 1] != '>')) && \
 				(is_valid_syntax(str[i - 1], str[i], str[i + 1])) && \
 				(str[i - 1] != '\n'))
         {
 			set_nl_cpy(&str, i);
 			i++;
+		}
+		else if ((i > 0 && str[i - 1] != '\n') && (str[i] == '>' && str[i + 1] == '>'))
+		{
+			set_nl_cpy(&str, i);
+			i += 2;
+		}
+		else if ((i > 1 && str[i] != '>' && str[i] != '<') && \
+				((str[i - 1] == '>' && str[i - 2] == '>') || (str[i - 1] == '>' && str[i = 2] == '\n') || \
+				(str[i - 1] == '<' && str[i - 2] == '\n')))
+		{
+			set_nl_cpy(&str, i);
+			i += 1;
 		}
 		else if (i > 0 && str[i] != ' ' && str[i] != 34 && str[i] != 39 && is_redir_or_pipe(str[i - 1]))
         {
