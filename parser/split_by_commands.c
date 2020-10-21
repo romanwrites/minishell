@@ -75,7 +75,7 @@ char		**split_command(char *str)
 			i += 2;
 		}
 		else if ((i > 1 && str[i] != '>' && str[i] != '<') && \
-				((str[i - 1] == '>' && str[i - 2] == '>') || (str[i - 1] == '>' && str[i = 2] == '\n') || \
+				((str[i - 1] == '>' && str[i - 2] == '>') || (str[i - 1] == '>' && str[i - 2] == '\n') || \
 				(str[i - 1] == '<' && str[i - 2] == '\n')))
 		{
 			set_nl_cpy(&str, i);
