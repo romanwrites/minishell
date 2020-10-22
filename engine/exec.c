@@ -30,13 +30,13 @@ void 	execute_command(char **cmd, char *is_redir, char *file)
 
 	if (is_redir)
 	{
-		if(ft_strcmp(is_redir, ">"))
+		if(!ft_strcmp(is_redir, ">"))
 		{
 			fd = open(file, O_CREAT | O_TRUNC | O_WRONLY | S_IRUSR | S_IWUSR | S_IROTH);
 			if(fd)
 				dup2(fd, 1);
 		}
-		else if(ft_strcmp(is_redir, "<"))
+		else if(!ft_strcmp(is_redir, "<"))
 		{
 			fd = open(file, O_RDONLY | S_IRUSR | S_IWUSR | S_IROTH);
 			if(fd)
@@ -61,7 +61,7 @@ void 	execute_command(char **cmd, char *is_redir, char *file)
 		{
 			wait(NULL);
 			close(fd);
-			if (is_redir == "<")
+			if (!ft_strcmp(is_redir, "<"))
 				dup2(savestdin, 0);
 			else
 				dup2(savestdout, 1);

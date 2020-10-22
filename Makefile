@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/22 10:38:41 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/22 10:56:27 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ PARSE_SRC = parse.c \
 			split_by_commands.c \
 			states.c \
 			parse_env.c \
+			open_quotes.c \
 					
 UTILS_SRC = ft_alloc_check.c \
 			compare_kv.c \
@@ -35,6 +36,10 @@ UTILS_SRC = ft_alloc_check.c \
 			ft_trim_2d.c \
 			print_2d_array.c \
 			delete2nodes.c \
+			dlst_pipe.c \
+			print_error.c \
+			dlst_sh.c \
+			token.c \
 
 ENGINE_SRC = engine_start.c \
 				exec.c \
