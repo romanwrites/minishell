@@ -20,25 +20,23 @@ void 	execute(char **cmd)
 		handle_cmd(cmd);
 }
 
-void 	execute_command(char **cmd)
+void 	execute_command(char **cmd, char *is_redir, char *file)
 {
 	pid_t pid;
     int fd;
 
     int savestdout = dup(1);
     int savestdin = dup(0);
-	char is_redir = 0;
-	char *file = NULL;
 
 	if (is_redir)
 	{
-		if(is_redir == ">")
+		if(ft_strcmp(is_redir, ">"))
 		{
 			fd = open(file, O_CREAT | O_TRUNC | O_WRONLY | S_IRUSR | S_IWUSR | S_IROTH);
 			if(fd)
 				dup2(fd, 1);
 		}
-		else if(is_redir == "<")
+		else if(ft_strcmp(is_redir, "<"))
 		{
 			fd = open(file, O_RDONLY | S_IRUSR | S_IWUSR | S_IROTH);
 			if(fd)

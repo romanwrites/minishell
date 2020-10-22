@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/21 18:38:22 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/22 10:28:10 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ extern int					g_backslash_time;
 
 void	handle_cmd(char **cmd);//
 char **list_to_env();//
-void 	execute_command(char **cmd);//
+void 	execute_command(char **cmd, char *is_redir, char *file);//
 void	process_cmd();//
 
 #endif

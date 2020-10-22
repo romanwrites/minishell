@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/21 17:30:11 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/22 10:38:41 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,6 @@ PARSE_SRC = parse.c \
 			parse_env.c \
 					
 UTILS_SRC = ft_alloc_check.c \
-			ft_bell.c \
 			compare_kv.c \
 			get_envar.c \
 			count_2d_lines.c \
