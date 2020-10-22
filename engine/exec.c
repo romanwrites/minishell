@@ -20,14 +20,30 @@ void 	execute(char **cmd)
 		handle_cmd(cmd);
 }
 
-void 	execute_command(char **cmd, char *is_redir, char *file)
+int	handle_redir(char *is_redir, char *file)
+{
+	int fd;
+
+	fd = -1;
+	if (is_redir)
+	{
+		if(!ft_strcmp(is_redir, ">"))
+			fd = open(file, O_CREAT | O_TRUNC | O_WRONLY | S_IRUSR | S_IWUSR | S_IROTH);
+		else if(!ft_strcmp(is_redir, "<"))
+			fd = open(file, O_RDONLY | S_IRUSR | S_IWUSR | S_IROTH);
+		else
+			fd = open(file, O_CREAT | O_APPEND | O_WRONLY | S_IRUSR | S_IWUSR | S_IROTH);
+	}
+	return (fd);
+}
+
+void 	execute_command(char **cmd, char *is_redir, int fd)
 {
 	pid_t pid;
-    int fd;
 
     int savestdout = dup(1);
     int savestdin = dup(0);
-
+	/*
 	if (is_redir)
 	{
 		if(!ft_strcmp(is_redir, ">"))
@@ -49,13 +65,26 @@ void 	execute_command(char **cmd, char *is_redir, char *file)
 				dup2(fd, 1);
 		}
 		if(!fd)
+		{
+			if (!ft_strcmp(is_redir, "<"))
+				dup2(savestdin, 0);
+			else
+				dup2(savestdout, 1);
 			return ;
+		}
+		*/
+	if(fd != -1)
+	{
+		if (!ft_strcmp(is_redir, "<"))
+			dup2(fd, 0);
+		else
+			dup2(fd, 1);
 		pid = fork();
     	if (pid == 0)
     	{
 			close(fd);
 			execute(cmd);
-			return ;
+			exit(0);
 		}
 		else
 		{

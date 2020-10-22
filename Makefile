@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/22 10:56:27 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/22 11:17:11 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,8 +74,6 @@ fclean: clean
 	rm -f $(NAME)
 
 sh: all
-	$(MAKE) clean -C $(LIBFT_DIR)
-	$(MAKE) clean -C $(LIBFT_DIR)
 	#rm -f libft/libft.a
 	rm -f $(OBJ)
 	$(MAKE) clean -C $(LIBFT_DIR)

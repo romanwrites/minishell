@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/22 10:39:10 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/22 11:04:06 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ int     main(int ac, char **av, char **envp)
 
 	while (get_next_line(0, &str))
 	{
-		write(0, PROMPT, ft_strlen(PROMPT));
 		ft_alloc_check(str);
 		if (parse_input(str))
 		{
@@ -105,6 +104,7 @@ int     main(int ac, char **av, char **envp)
 		}
 		//print_everything();/////////////////////////////////////
 		process_cmd();
+		write(0, PROMPT, ft_strlen(PROMPT));
 		free(str);
 		str = NULL;
 	}
