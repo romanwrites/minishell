@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/22 12:24:22 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/22 16:35:44 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,20 @@ void		process_cmd()
 	char **cmd;
 	char *last_redir;
 	int fd;
+	int fds[2];
 	int i;
-	
+	int x;
+	int pid;
+	int after_pipe;
+	int savestdout; 
+	int savestdin; 
+	savestdin = dup(0);
+	savestdout = dup(1);
+	int com = 0;
 	cmd = (char **)malloc((sizeof(char *) * PATH_MAX));
 	i = 0;
 	fd = -1;
+	after_pipe = 0;
 	last_redir = NULL;
 	while (g_sv->sh)
 	{
@@ -60,11 +69,55 @@ void		process_cmd()
 					cmd[i++] = token->content;
 				g_sv->sh->tdlst_pipe->token = g_sv->sh->tdlst_pipe->token->next;
 			}
+						//execve("/bin/cat", cat, envp);
+			//в родительском не будет execve, 
+			//просто будут меняться дескрипторы, эта функция должна вызываться в 
+			//цикле и на следующей иттерации выполнять execve для второй части пайпа, 
+			//но нужны два условия чтобы вначале не читать и в конце не менять дескрипторы? 
+			//вроде так, удачи, Илюха из будущего
 			if (i)
 			{
 				cmd[i] = NULL;
 				i = 0;
-				execute_command(cmd, last_redir, fd);
+				//execute_command(cmd, last_redir, fd);
+				if (g_sv->sh->tdlst_pipe->next)
+				{
+					pipe(fds);
+					pid = fork();
+					if (pid == 0)
+					{
+						//if(!after_pipe)
+						//{
+							close(fds[0]);
+							dup2(fds[1], 1);
+							close(fds[1]);
+							after_pipe = 1;
+							execute_command(cmd, last_redir, fd);
+						//}
+						//else
+						//	after_pipe = 0;
+						exit(0);
+					}
+					else
+					{
+						wait(NULL);
+						//if(!after_pipe)
+						//{
+							close(fds[1]);
+							dup2(fds[0], 0);
+							close(fds[0]);
+							after_pipe = 1;
+						//}
+						//else
+						//	after_pipe = 0;
+					}
+				}
+				else
+				{
+					execute_command(cmd, last_redir, fd);
+					dup2(savestdin, 0);
+					dup2(savestdout, 1);
+				}
 			}
 			token = g_sv->sh->tdlst_pipe->token_head;
 			//print_token_list(token);

@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/22 11:04:06 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/22 16:00:23 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,9 @@ int     main(int ac, char **av, char **envp)
 	int 		read_res;
 	char		*line;
 	int			i;
-	int			is_pipe;
 	char		**cmd;
-	int fd[2];
-	int savestdout; 
-	int savestdin; 
-	savestdin = dup(0);
-	savestdout = dup(1);
 	char		*str;
 	i = 0;
-	is_pipe = 0;
 	str = NULL;
 	(void)ac;
 	(void)av;
@@ -86,13 +79,8 @@ int     main(int ac, char **av, char **envp)
 	g_sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(g_sv);
 	init(g_sv);
-
 	t_token *token;
-	//g_stdin = dup(0);
-	//g_stdout = dup(1);
-//	int fd = open("parse_tests.txt", O_RDONLY);
 	write(0, PROMPT, ft_strlen(PROMPT));
-
 	while (get_next_line(0, &str))
 	{
 		ft_alloc_check(str);
@@ -102,7 +90,6 @@ int     main(int ac, char **av, char **envp)
 			str = NULL;
 			continue;
 		}
-		//print_everything();/////////////////////////////////////
 		process_cmd();
 		write(0, PROMPT, ft_strlen(PROMPT));
 		free(str);

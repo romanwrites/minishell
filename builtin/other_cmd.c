@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/22 10:05:03 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/22 15:50:02 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	handle_cmd(char **args)
 		free(path);
 		free(to_split);
 	}
-	write(0, PROM, ft_strlen(PROM));//why zero??????
+	write(1, PROM, ft_strlen(PROM));//why zero??????
 	write(1, args[0], ft_strlen(args[0]));
 	write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 }
