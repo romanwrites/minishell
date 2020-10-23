@@ -28,11 +28,11 @@ int	handle_redir(char *is_redir, char *file)
 	if (is_redir)
 	{
 		if(!ft_strcmp(is_redir, ">"))
-			fd = open(file, O_CREAT | O_TRUNC | O_WRONLY | S_IRUSR | S_IWUSR | S_IROTH);
+			fd = open(file, O_TRUNC | O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 		else if(!ft_strcmp(is_redir, "<"))
-			fd = open(file, O_RDONLY | S_IRUSR | S_IWUSR | S_IROTH);
+			fd = open(file, O_RDONLY);
 		else
-			fd = open(file, O_CREAT | O_APPEND | O_WRONLY | S_IRUSR | S_IWUSR | S_IROTH);
+			fd = open(file, O_APPEND | O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	}
 	return (fd);
 }

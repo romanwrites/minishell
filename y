@@ -1,4 +1,4 @@
-! total 232
+total 224
 -rw-r--r--   1 lhelper  student    665 Oct 22 10:42 CMakeLists.txt
 -rw-r--r--   1 lhelper  student   2269 Oct 23 11:39 Makefile
 -rw-r--r--   1 lhelper  student    344 Oct 10 10:26 README.md
@@ -21,5 +21,5 @@ drwxr-xr-x   8 lhelper  student    272 Oct 23 14:00 parser
 drwxr-xr-x   4 lhelper  student    136 Oct 10 16:15 test
 -rwxr-xr-x   1 lhelper  student    815 Oct 22 17:12 test.txt
 drwxr-xr-x  16 lhelper  student    544 Oct 23 14:00 utils
--rw-r--r--   1 lhelper  student   1484 Oct 23 14:01 y
--rw-r--r--   1 lhelper  student      3 Oct 23 14:01 z
+-rw-r--r--   1 lhelper  student      0 Oct 23 14:01 y
+-rw-r--r--   1 lhelper  student   1432 Oct 23 13:59 z

@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/22 11:17:11 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/23 11:39:41 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,9 @@ UTILS_SRC = ft_alloc_check.c \
 			print_error.c \
 			dlst_sh.c \
 			token.c \
+			print_everything.c \
+			print_token.c \
+			
 
 ENGINE_SRC = engine_start.c \
 				exec.c \
