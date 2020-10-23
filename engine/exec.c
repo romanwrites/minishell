@@ -82,6 +82,8 @@ void 	execute_command(char **cmd, char *is_redir, int fd)
 		pid = fork();
     	if (pid == 0)
     	{
+			signal(SIGQUIT, handle_child_signal);
+			signal(SIGINT, handle_child_signal);
 			close(fd);
 			execute(cmd);
 			exit(0);

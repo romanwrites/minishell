@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/23 15:35:58 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/23 18:32:59 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ UTILS_SRC = compare_kv.c \
 			print_everything.c \
 			print_token.c \
 			reset_newlines.c \
+			signal.c \
 			token.c \
 
 ENGINE_SRC = engine_start.c \

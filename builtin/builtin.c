@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/23 17:18:00 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/23 18:37:31 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_echo(char **cmd)
 		write(0, "\n", 1);
 }
 
-void	ft_exit(int exit_code)
+void	ft_exit(int exit_code)//g_exit?
 {
 	//ft_lstclear()
 	write(1, "exit\n", ft_strlen("exit\n"));

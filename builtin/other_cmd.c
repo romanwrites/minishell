@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/23 14:10:51 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/23 18:29:26 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,11 @@ void	handle_cmd(char **args)
 		if (g_pid)
 			wait(NULL);
 		else
+		{
+			signal(SIGQUIT, handle_child_signal);
+			signal(SIGINT, handle_child_signal);
 			execve(tmp, args, envp);
+		}
 		free(tmp);
 		return ;
 	}
@@ -106,7 +110,11 @@ void	handle_cmd(char **args)
 				if (g_pid)
 					wait(NULL);
 				else
+				{
+					signal(SIGQUIT, handle_child_signal);
+					signal(SIGINT, handle_child_signal);
 					execve(path[i], args, envp);
+				}
 				free(tmp);
 				free(to_split);
 				while (path[x])

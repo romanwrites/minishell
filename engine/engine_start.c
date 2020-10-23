@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/23 17:58:36 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/23 18:34:55 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	init(t_mshell	*sv)
 	ft_alloc_check(sv->state);
 	init_globs();
 }
-
+////
 void ignore()
 {
 	write(0, "\b\b  \b\b", 6);
@@ -60,21 +60,7 @@ void new_line()
 	write(0, "\n", 1);
 	write(0, PROMPT, ft_strlen(PROMPT));
 }
-
-void	handle_parent_signal(int signal)
-{
-	if (!g_isfork)
-	{
-		if(SIGINT == signal)
-		{
-			write(0, "\b\b  \b\b", 6);
-			write(0, "\n", 1);
-			write(0, PROMPT, ft_strlen(PROMPT));
-			g_exit = 1;
-		}
-	}
-}
-
+////
 int     main(int ac, char **av, char **envp)
 {
 	t_mshell	*sv;
