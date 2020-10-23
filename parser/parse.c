@@ -243,7 +243,6 @@ _Bool		parse_input(char *str, t_mshell *sv)
 	free(input_str);
 	trim_semi = ft_trim_2d_cpy(semicolons2d);//todo alloc
 	init_globs();
-//	g_sv->sh = get_sh_list(trim_semi);//todo alloc
 	sv->sh = get_sh_list(trim_semi);//todo alloc
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;

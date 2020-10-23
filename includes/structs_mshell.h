@@ -16,13 +16,6 @@
 #include "../libft/libft.h"
 #include "minishell.h"
 
-typedef struct				s_char
-{
-	char					*original;
-	char					*copy;
-	int						index;
-}							t_char;
-
 typedef struct				s_parse {
 	_Bool					backslash;
 	_Bool					is_double_quote_open;
@@ -33,7 +26,6 @@ typedef struct				s_parse {
 typedef struct				s_token {
 	char 					*content;
 	_Bool					is_diff;
-	_Bool					is_handled;//
 	struct s_token			*next;
 	struct s_token			*prev;
 }							t_token;
@@ -47,16 +39,15 @@ typedef struct				s_dlist_pipe {
 
 typedef struct				s_dlist_sh {
 	t_dlist_pipe			*tdlst_pipe;
+	t_dlist_pipe			*tdlst_pipe_head;
 	struct s_dlist_sh		*next;
 	struct s_dlist_sh		*prev;
 }							t_dlist_sh;
 
 typedef struct				s_mshell {
-	char					*content;
-	int						i;
 	t_parse					*state;
 	t_dlist_sh				*sh;
-	void     	   			*envp_mshell;
+	t_dlist_sh				*sh_head;
 }							t_mshell;
 
 typedef struct				s_envar

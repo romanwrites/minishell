@@ -40,7 +40,7 @@ void		process_cmd(t_mshell *sv)
 			sv->sh->tdlst_pipe->token_head = sv->sh->tdlst_pipe->token;
 			token = sv->sh->tdlst_pipe->token;
 			open_quotes(&token);
-			token = sv->sh->tdlst_pipe->token_head;
+			token = sv->sh->tdlst_pipe->token;
 			while (token)
 			{
 				//if (token->is_handled)
@@ -128,6 +128,8 @@ void		process_cmd(t_mshell *sv)
 			//printf("semi: %d, pipe: %d, tok: %d\n", semi, pipe, ++tok);
 			sv->sh->tdlst_pipe = sv->sh->tdlst_pipe->next;
 		}
+		sv->sh->tdlst_pipe = sv->sh->tdlst_pipe_head;
 		sv->sh = sv->sh->next;
 	}
+	sv->sh = sv->sh_head;
 }

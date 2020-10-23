@@ -31,5 +31,7 @@ void				print_everything();
 void				print_everything_new(t_mshell *sv);
 void				print_error(char *str);
 void 				reset_newlines(char *str);
+void				free_all_lists(t_mshell *sv);
+void 				set_heads(t_mshell *sv);
 
 #endif

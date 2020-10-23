@@ -33,6 +33,7 @@ UTILS_SRC = compare_kv.c \
             dlst_pipe.c \
             dlst_sh.c \
             exit_error_message.c \
+            free_all_lists.c \
             ft_alloc_check.c \
             ft_trim_2d.c \
 			get_envar.c \
@@ -41,6 +42,7 @@ UTILS_SRC = compare_kv.c \
 			print_everything.c \
 			print_token.c \
 			reset_newlines.c \
+			set_heads.c \
 			token.c \
 
 ENGINE_SRC = engine_start.c \

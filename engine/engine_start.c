@@ -36,8 +36,6 @@ void	state_bzero(t_parse *state)
 
 void	init(t_mshell	*sv)
 {
-	sv->content = NULL;
-	sv->i = 0;
 	sv->state = (t_parse *)malloc(sizeof(t_parse) * 1); //todo free after parse
 	ft_alloc_check(sv->state);
 	init_globs();
@@ -100,9 +98,11 @@ int     main(int ac, char **av, char **envp)
 			write(0, PROMPT, ft_strlen(PROMPT));
 			continue;
 		}
-		print_everything_new(sv);
-//		process_cmd(sv);
+		set_heads(sv);
+//		print_everything_new(sv);
+		process_cmd(sv);
 		write(0, PROMPT, ft_strlen(PROMPT));
+		free_all_lists(sv);
 		free(str);
 		str = NULL;
 	}
