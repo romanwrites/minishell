@@ -21,20 +21,27 @@ LIBFT_DIR = ./libft
 GNL = get_next_line.c \
 		get_next_line_utils.c \
 
-PARSE_SRC = parse.c \
+PARSE_SRC = open_quotes.c \
+            parse.c \
+            parse_env.c \
 			split_by_char.c \
 			split_by_commands.c \
 			states.c \
-			parse_env.c \
-					
-UTILS_SRC = ft_alloc_check.c \
-			ft_bell.c \
-			compare_kv.c \
+
+UTILS_SRC = compare_kv.c \
+            count_2d_lines.c \
+            dlst_pipe.c \
+            dlst_sh.c \
+            exit_error_message.c \
+            ft_alloc_check.c \
+            ft_trim_2d.c \
 			get_envar.c \
-			count_2d_lines.c \
-			exit_error_message.c \
-			ft_trim_2d.c \
 			print_2d_array.c \
+			print_error.c \
+			print_everything.c \
+			print_token.c \
+			reset_newlines.c \
+			token.c \
 
 ENGINE_SRC = engine_start.c \
 
