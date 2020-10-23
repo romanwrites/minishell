@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/23 16:35:48 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/23 16:55:55 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void		process_cmd(t_mshell *sv)
 			{
 				//if (token->is_handled)
 				//	continue;
-//				printf("is_diff %s=%d\n", token->content, token->is_diff);//!!!!!!!!!!!!!!!!!!!
+				//printf("is_diff %s=%d\n", token->content, token->is_diff);//!!!!!!!!!!!!!!!!!!!
 				if (((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && token->next && token->next->content && (ft_strcmp(token->next->content, ">") && ft_strcmp(token->next->content, ">>") && ft_strcmp(token->next->content, "<"))))
 				{
 					//cmd[i] = NULL;
@@ -58,7 +58,7 @@ void		process_cmd(t_mshell *sv)
 					//token->next->is_handled = 1;
 					
 					//execute_command(cmd, token->content, token->next->content);
-					sv->sh->tdlst_pipe->token = sv->sh->tdlst_pipe->token->next;//QUESTIONABLE BUT DOESN'T REQUIRE IS_HANDLED
+					token = token->next;//QUESTIONABLE BUT DOESN'T REQUIRE IS_HANDLED
 				}
 				else if ((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && token->next && token->next->content && (!ft_strcmp(token->next->content, ">") || !ft_strcmp(token->next->content, ">>") || !ft_strcmp(token->next->content, "<")))
 				{
@@ -70,6 +70,7 @@ void		process_cmd(t_mshell *sv)
 				}
 				else
 					cmd[i++] = token->content;
+				//print_2d_array(cmd);
 				token = token->next;
 			}
 						//execve("/bin/cat", cat, envp);
