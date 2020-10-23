@@ -156,30 +156,12 @@ t_dlist_pipe	*alloc_pipe_list(char **ptr)
 	head = pipe;
 	while (ptr[i])
 	{
-		printf("str[%d]: %s\n",i, ptr[i]);
 		tmp_cmd = split_command(ptr[i]);
-		printf("SUPER\n");
-		ft_free2d(tmp_cmd);
-		for (int k = 0; tmp_cmd[k]; k++)
-		{
-			printf("1 tmp_cmd[%d]: [%s]\n", k, tmp_cmd[k]);
-		}
-		printf("\n");
 		ft_alloc_check(tmp_cmd);
 		trim_cmd = ft_trim_2d_cpy(tmp_cmd);
-		for (int k = 0; trim_cmd[k]; k++)
-		{
-			printf("2 tmp_cmd[%d]: [%s]\n", k, trim_cmd[k]);
-		}
-		printf("\n");
 		token = alloc_token_list(trim_cmd);
-		for (int k = 0; trim_cmd[k]; k++)
-		{
-			printf("3 tmp_cmd[%d]: [%s]\n", k, trim_cmd[k]);
-		}
-		printf("\n");
 		ft_alloc_check(token);
-//		ft_free2d(tmp_cmd);
+		ft_free2d(tmp_cmd);
 		tmp_cmd = NULL;
 		pipe->token = token;
 		if (ptr[i + 1])
@@ -188,7 +170,6 @@ t_dlist_pipe	*alloc_pipe_list(char **ptr)
 			ft_alloc_check(pipe->next);
 			pipe = pipe->next;
 		}
-		printf("str[%d]: %s\n",i, ptr[i]);
 		i++;
 	}
 
@@ -202,6 +183,7 @@ t_dlist_sh			*get_sh_list(char **semicolons2d)
 	t_dlist_sh		*sh_head;
 	char			**tmp_semi;
 	int 			i;
+	char 			**trim_tmp_semi;
 
 	i = 0;
 	sh = sh_new(NULL, NULL);
@@ -210,20 +192,16 @@ t_dlist_sh			*get_sh_list(char **semicolons2d)
 	tmp_semi = NULL;
 	while (semicolons2d[i])
 	{
-		tmp_semi = split_by_char(PIPE, semicolons2d[i]);
-		print_2d_array(tmp_semi);
+		tmp_semi = split_by_char(PIPE, semicolons2d[i]);//todo alloc
 		ft_alloc_check(tmp_semi);
-		ft_trim_2d(&tmp_semi);//todo
-		print_2d_array(tmp_semi);
-		dlst_pipe = alloc_pipe_list(tmp_semi);
-		print_2d_array(tmp_semi);
-		ft_free2d(tmp_semi);
-		print_2d_array(tmp_semi);
+		trim_tmp_semi = ft_trim_2d_cpy(tmp_semi);//todo alloc
+		dlst_pipe = alloc_pipe_list(trim_tmp_semi);//todo alloc
+		ft_free2d(trim_tmp_semi);
 		tmp_semi = NULL;
 		sh->tdlst_pipe = dlst_pipe;
 		if (semicolons2d[i + 1])
 		{
-			sh->next = sh_new(NULL, NULL);
+			sh->next = sh_new(NULL, NULL);//todo alloc
 			ft_alloc_check(sh->next);
 			sh = sh->next;
 		}
@@ -234,23 +212,24 @@ t_dlist_sh			*get_sh_list(char **semicolons2d)
 
 _Bool		parse_input(char *str)
 {
-	char **semicolons2d;
-	char *input_str;
+	char	**semicolons2d;
+	char	*input_str;
+	char	**trim_semi;
 
 	init_globs();
-	input_str = ft_strtrim(str, " \t");
+	input_str = ft_strtrim(str, " ");//todo alloc
 	ft_alloc_check(input_str);
 	if (check_syntax_errors(input_str))
 	{
 		print_error("syntax error");
 		return (1);
 	}
-	semicolons2d = split_by_char(SEMICOLON, input_str);
+	semicolons2d = split_by_char(SEMICOLON, input_str);//todo alloc
 	ft_alloc_check(semicolons2d);
 	free(input_str);
-	ft_trim_2d(&semicolons2d);//todo
+	trim_semi = ft_trim_2d_cpy(semicolons2d);//todo alloc
 	init_globs();
-	g_sv->sh = get_sh_list(semicolons2d);
+	g_sv->sh = get_sh_list(trim_semi);//todo alloc
 	g_sv->sh_head = g_sv->sh;
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;

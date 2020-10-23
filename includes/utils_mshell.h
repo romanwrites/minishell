@@ -29,5 +29,6 @@ t_dlist_sh			*sh_new(t_dlist_pipe *content, t_dlist_sh **prev);
 void 				print_token_list(t_token *token);
 void				print_everything();
 void				print_error(char *str);
+void 				reset_newlines(char *str);
 
 #endif

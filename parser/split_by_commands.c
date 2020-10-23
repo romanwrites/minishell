@@ -35,14 +35,14 @@ void		set_nl_cpy(char **str, int i)
 	char 	*tmp;
 	char	*new;
 
-	tmp = *(str);
+	tmp = *str;
 	new = malloc(ft_strlen(tmp) + 2);
 	ft_alloc_check(new);
 	ft_memcpy(new, tmp, i);
 	new[i] = '\n';
-	ft_memcpy(new + i + 1, tmp + i, ft_strlen(tmp) - i + 2);
+	ft_memcpy(new + i + 1, tmp + i, ft_strlen(tmp) - i + 1);
 	free(tmp);
-	*(str) = new;
+	*str = new;
 }
 
 char		**split_command(const char *str_input)
@@ -50,14 +50,12 @@ char		**split_command(const char *str_input)
 	int 	i;
 	char	**split_by_spaces;
 	char 	*str;
-	char 	*strtofree;
 
 	str = ft_strdup(str_input);
 	ft_alloc_check(str);
-	strtofree = str;
-	i = -1;
+	i = 0;
 	init_globs();
-	while (str[++i] && i < 2147483647)
+	while (str[i])
 	{
 		set_backslash_state_new(str[i]);
 		set_quotes_state_new(str[i]);
@@ -73,11 +71,13 @@ char		**split_command(const char *str_input)
         {
 			set_nl_cpy(&str, i);
 			i++;
+			continue ;
 		}
 		else if ((i > 0 && str[i - 1] != '\n') && (str[i] == '>' && str[i + 1] == '>'))
 		{
 			set_nl_cpy(&str, i);
 			i += 2;
+			continue ;
 		}
 		else if ((i > 1 && str[i] != '>' && str[i] != '<') && \
 				((str[i - 1] == '>' && str[i - 2] == '>') || (str[i - 1] == '>' && str[i - 2] == '\n') || \
@@ -85,17 +85,21 @@ char		**split_command(const char *str_input)
 		{
 			set_nl_cpy(&str, i);
 			i += 1;
+			continue ;
 		}
 		else if (i > 0 && str[i] != ' ' && str[i] != 34 && str[i] != 39 && is_redir_or_pipe(str[i - 1]))
         {
             set_nl_cpy(&str, i);
             i++;
+			continue ;
         }
+		i++;
 	}
 	if (is_open_quote())
 		exit_error_message("Quotes are open: split_command()");
 	split_by_spaces = ft_split(str, '\n');
 	ft_alloc_check(split_by_spaces);
-	free(strtofree);
+	reset_newlines(str);
+	free(str);
 	return (split_by_spaces);
 }
