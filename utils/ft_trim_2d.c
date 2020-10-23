@@ -12,6 +12,41 @@
 
 #include "minishell.h"
 
+size_t		len_2d(char **ptr)
+{
+	size_t	i;
+
+	i = 0;
+	while (ptr[i])
+	{
+		i++;
+	}
+	return (i);
+}
+
+char		**ft_trim_2d_cpy(char **arr_2d)
+{
+	char	**new;
+	char	*tmp;
+	size_t 	len;
+	int 	i;
+
+	i = 0;
+	len = len_2d(arr_2d);
+	new = (char **)malloc(sizeof(char *) * len + 1);
+	ft_alloc_check(new);
+	while (i < len)
+	{
+		tmp = ft_strtrim(arr_2d[i], " ");
+		ft_alloc_check(tmp);
+		new[i] = tmp;
+		tmp = NULL;
+		i++;
+	}
+	new[i] = NULL;
+	return (new);
+}
+
 void		ft_trim_2d(char ***arr_2d)
 {
 	char	**tmp_2d;

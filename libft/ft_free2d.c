@@ -20,6 +20,8 @@ char	**ft_free2d(char **strarr)
 	while (strarr[i])
 	{
 		ft_free_and_clear(strarr[i]);
+//		printf("str in[%d]: [%s]\n", i, strarr[i]);
+//		free(strarr[i]);
 		i++;
 	}
 	free(strarr);

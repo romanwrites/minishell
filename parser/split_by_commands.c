@@ -35,44 +35,50 @@ void		set_nl_cpy(char **str, int i)
 	char 	*tmp;
 	char	*new;
 
-	tmp = *(str);
+	tmp = *str;
 	new = malloc(ft_strlen(tmp) + 2);
 	ft_alloc_check(new);
 	ft_memcpy(new, tmp, i);
 	new[i] = '\n';
-	ft_memcpy(new + i + 1, tmp + i, ft_strlen(tmp) - i + 2);
+	ft_memcpy(new + i + 1, tmp + i, ft_strlen(tmp) - i + 1);
 	free(tmp);
-	*(str) = new;
+	*str = new;
 }
 
-char		**split_command(char *str)
+char		**split_command(const char *str_input)
 {
 	int 	i;
 	char	**split_by_spaces;
+	char 	*str;
 
-	i = -1;
+	str = ft_strdup(str_input);
+	ft_alloc_check(str);
+	i = 0;
 	init_globs();
-	while (str[++i] && i < 2147483647)
+	while (str[i])
 	{
 		set_backslash_state_new(str[i]);
 		set_quotes_state_new(str[i]);
 		if (is_open_quote())
 		{
+			i++;
 			continue ;
 		}
 		if ((str[i] == ' ' || str[i] == '\t') && !is_backslash_active())
 			str[i] = '\n';
 		else if (i > 0 && (str[i] == '|' || str[i] == '<' || (str[i] == '>' && str[i + 1] != '>' && str[i - 1] != '>')) && \
-				(is_valid_syntax(str[i - 1], str[i], str[i + 1])) && \
+//				(is_valid_syntax(str[i - 1], str[i], str[i + 1])) &&
 				(str[i - 1] != '\n'))
         {
 			set_nl_cpy(&str, i);
 			i++;
+			continue ;
 		}
 		else if ((i > 0 && str[i - 1] != '\n') && (str[i] == '>' && str[i + 1] == '>'))
 		{
 			set_nl_cpy(&str, i);
 			i += 2;
+			continue ;
 		}
 		else if ((i > 1 && str[i] != '>' && str[i] != '<') && \
 				((str[i - 1] == '>' && str[i - 2] == '>') || (str[i - 1] == '>' && str[i - 2] == '\n') || \
@@ -80,16 +86,22 @@ char		**split_command(char *str)
 		{
 			set_nl_cpy(&str, i);
 			i += 1;
+			continue ;
 		}
 		else if (i > 0 && str[i] != ' ' && str[i] != 34 && str[i] != 39 && is_redir_or_pipe(str[i - 1]))
         {
             set_nl_cpy(&str, i);
             i++;
+			continue ;
         }
+		i++;
 	}
 	if (is_open_quote())
 		exit_error_message("Quotes are open: split_command()");
 	split_by_spaces = ft_split(str, '\n');
 	ft_alloc_check(split_by_spaces);
+	reset_newlines(str);
+	free(str);
+	str = NULL;
 	return (split_by_spaces);
 }

@@ -89,6 +89,7 @@ char		**split_by_char(char c, char *str)
 
 	set_new_lines_over_char(c, str);
 	semicolon2d = ft_split(str, '\n');
+	reset_newlines(str);
 	ft_alloc_check(semicolon2d);
 	return (semicolon2d);
 }
