@@ -62,6 +62,13 @@ char		**split_command(const char *str_input)
 		if (is_open_quote())
 		{
 			i++;
+			while (is_open_quote() && str[i])
+			{
+				set_backslash_state_new(str[i]);
+				set_quotes_state_new(str[i]);
+				i++;
+			}
+
 			continue ;
 		}
 		if ((str[i] == ' ' || str[i] == '\t') && !is_backslash_active())

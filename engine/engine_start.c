@@ -77,6 +77,8 @@ int     main(int ac, char **av, char **envp)
 	g_env = env_to_list(envp);
 	g_home = get_envar("HOME");
 	g_sv = (t_mshell *)malloc(sizeof(t_mshell));
+	sv = (t_mshell *)malloc(sizeof(t_mshell));
+	ft_alloc_check(sv);
 	ft_alloc_check(g_sv);
 	init(g_sv);
 	t_token *token;
@@ -84,14 +86,14 @@ int     main(int ac, char **av, char **envp)
 	while (get_next_line(0, &str))
 	{
 		ft_alloc_check(str);
-		if (parse_input(str))
+		if (parse_input(str, sv))
 		{
 			free(str);
 			str = NULL;
-			continue;
+			continue ;
 		}
-		//print_everything();
-		process_cmd();
+//		print_everything_new(sv);
+		process_cmd(sv);
 		write(0, PROMPT, ft_strlen(PROMPT));
 		free(str);
 		str = NULL;

@@ -17,6 +17,10 @@ void 	print_token_list(t_token *token)
 	while (token)
 	{
 		ft_putendl_fd(token->content, 1);
+		ft_putstr_fd("is_diff: ", 1);
+		char c = token->is_diff + '0';
+		write(1, &c, 1);
+		write(1, "\n", 1);
 		token = token->next;
 	}
 }

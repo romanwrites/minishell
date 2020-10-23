@@ -47,7 +47,6 @@ typedef struct				s_dlist_pipe {
 
 typedef struct				s_dlist_sh {
 	t_dlist_pipe			*tdlst_pipe;
-	t_dlist_pipe			*tdlst_pipe_head;
 	struct s_dlist_sh		*next;
 	struct s_dlist_sh		*prev;
 }							t_dlist_sh;
@@ -57,7 +56,6 @@ typedef struct				s_mshell {
 	int						i;
 	t_parse					*state;
 	t_dlist_sh				*sh;
-	t_dlist_sh				*sh_head;
 	void     	   			*envp_mshell;
 }							t_mshell;
 

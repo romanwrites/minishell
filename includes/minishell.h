@@ -50,7 +50,6 @@ extern int					g_backslash_time;
 void	handle_cmd(char **cmd);//
 char **list_to_env();//
 void 	execute_command(char **cmd, char *is_redir, int fd);//
-void	process_cmd();//
 int	handle_redir(char *is_redir, char *file);//
 
 #endif
