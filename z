@@ -1,6 +1,0 @@
--rw-r--r--   1 lhelper  student    344 Oct 10 10:26 README.md
--rw-r--r--   1 lhelper  student   1688 Oct 22 10:42 builtin_main.c
-drwxr-xr-x   8 lhelper  student    272 Oct 19 19:03 cmake-build-debug
--rwxr-xr-x   1 lhelper  student  57388 Oct 23 16:54 minishell
--rw-r--r--   1 lhelper  student    681 Oct 22 10:42 roma.c
-/
