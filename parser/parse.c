@@ -26,7 +26,7 @@ _Bool			check_syntax_by_indexes(const char *str)
 	return (0);
 }
 
-_Bool			check_sequence(char c1, char c2)
+_Bool			check_sequence_semi(char c1, char c2)
 {
 	if (c1 == SEMICOLON && (c2 == SEMICOLON || c2 == PIPE))
 		return (1);
@@ -34,7 +34,21 @@ _Bool			check_sequence(char c1, char c2)
 		return (1);
 	else if (c1 == REDIR_LEFT && c2 == PIPE)
 		return (1);
+	return (0);
+}
 
+_Bool			check_sequence_full(char c1, char c2)
+{
+	if (c1 == SEMICOLON && (c2 == SEMICOLON || c2 == PIPE))
+		return (1);
+	else if (c1 == PIPE && (c2 == PIPE || c2 == SEMICOLON))
+		return (1);
+	else if (c1 == REDIR_LEFT && c2 == PIPE)
+		return (1);
+	else if (c1 == REDIR_LEFT && c2 == REDIR_LEFT)
+		return (1);
+	else if (c1 == REDIR_RIGHT && c2 == REDIR_RIGHT)
+		return (1);
 	return (0);
 }
 
@@ -71,11 +85,11 @@ _Bool			check_syntax_errors(const char *str)
 					set_quotes_state_new(str[i]);
 					i++;
 				}
-				if (str[i] && check_sequence(str[j], str[i]))
+				if (str[i] && check_sequence_full(str[j], str[i]))
 					return (1);
 			}
 			else if (!is_open_quote() && i > 0 && !is_backslash_active() \
-						&& check_sequence(str[i - 1], str[i]))
+						&& check_sequence_semi(str[i - 1], str[i]))
 			{
 				return (1);
 			}

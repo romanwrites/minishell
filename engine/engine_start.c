@@ -100,8 +100,8 @@ int     main(int ac, char **av, char **envp)
 			write(0, PROMPT, ft_strlen(PROMPT));
 			continue;
 		}
-//		print_everything_new(sv);
-		process_cmd(sv);
+		print_everything_new(sv);
+//		process_cmd(sv);
 		write(0, PROMPT, ft_strlen(PROMPT));
 		free(str);
 		str = NULL;

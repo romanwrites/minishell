@@ -37,15 +37,15 @@ void	ft_echo(char **cmd) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
 			{
 				write(1, cmd[i], ft_strlen(cmd[i]));
 				if (cmd[i + 1])
-					write(0, " ", 1);
+					write(1, " ", 1);
 				else
-					write(0, "\n", 1);
+					write(1, "\n", 1);
 				i++;
 			}
 		}
 	}
 	else
-		write(0, "\n", 1);
+		write(1, "\n", 1);
 }
 
 void	ft_exit(int exit_code)
