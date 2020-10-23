@@ -210,7 +210,7 @@ t_dlist_sh			*get_sh_list(char **semicolons2d)
 	return (sh_head);
 }
 
-_Bool		parse_input(char *str)
+_Bool		parse_input(char *str, t_mshell *sv)
 {
 	char	**semicolons2d;
 	char	*input_str;
@@ -229,8 +229,8 @@ _Bool		parse_input(char *str)
 	free(input_str);
 	trim_semi = ft_trim_2d_cpy(semicolons2d);//todo alloc
 	init_globs();
-	g_sv->sh = get_sh_list(trim_semi);//todo alloc
-	g_sv->sh_head = g_sv->sh;
+//	g_sv->sh = get_sh_list(trim_semi);//todo alloc
+	sv->sh = get_sh_list(trim_semi);//todo alloc
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
 	return (0);

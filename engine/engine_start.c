@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/23 16:28:05 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/23 16:37:30 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ int     main(int ac, char **av, char **envp)
 	g_env = env_to_list(envp);
 	g_home = get_envar("HOME");
 	g_sv = (t_mshell *)malloc(sizeof(t_mshell));
+	sv = (t_mshell *)malloc(sizeof(t_mshell));
+	ft_alloc_check(sv);
 	ft_alloc_check(g_sv);
 	init(g_sv);
 	t_token *token;
@@ -91,15 +93,15 @@ int     main(int ac, char **av, char **envp)
 	while (get_next_line(0, &str))
 	{
 		ft_alloc_check(str);
-		if (parse_input(str))
+		if (parse_input(str, sv))
 		{
 			free(str);
 			str = NULL;
 			write(0, PROMPT, ft_strlen(PROMPT));
 			continue;
 		}
-		//print_everything();
-		process_cmd();
+//		print_everything_new(sv);
+		process_cmd(sv);
 		write(0, PROMPT, ft_strlen(PROMPT));
 		free(str);
 		str = NULL;

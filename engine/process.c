@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void		process_cmd()
+void		process_cmd(t_mshell *sv)
 {
 	t_token *token;
 	char **cmd;
@@ -33,17 +33,19 @@ void		process_cmd()
 	fd = -1;
 	after_pipe = 0;
 	last_redir = NULL;
-	while (g_sv->sh)
+	while (sv->sh)
 	{
-		while (g_sv->sh->tdlst_pipe)
+		while (sv->sh->tdlst_pipe)
 		{
-			g_sv->sh->tdlst_pipe->token_head = g_sv->sh->tdlst_pipe->token;
-			while ((token = g_sv->sh->tdlst_pipe->token))
+			sv->sh->tdlst_pipe->token_head = sv->sh->tdlst_pipe->token;
+			token = sv->sh->tdlst_pipe->token;
+			open_quotes(&token);
+			token = sv->sh->tdlst_pipe->token_head;
+			while (token)
 			{
-				open_quotes(&token);
 				//if (token->is_handled)
 				//	continue;
-				printf("is_diff %s=%d\n", token->content, token->is_diff);//!!!!!!!!!!!!!!!!!!!
+//				printf("is_diff %s=%d\n", token->content, token->is_diff);//!!!!!!!!!!!!!!!!!!!
 				if (((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && token->next && token->next->content && (ft_strcmp(token->next->content, ">") && ft_strcmp(token->next->content, ">>") && ft_strcmp(token->next->content, "<"))))
 				{
 					//cmd[i] = NULL;
@@ -56,7 +58,7 @@ void		process_cmd()
 					//token->next->is_handled = 1;
 					
 					//execute_command(cmd, token->content, token->next->content);
-					g_sv->sh->tdlst_pipe->token = g_sv->sh->tdlst_pipe->token->next;//QUESTIONABLE BUT DOESN'T REQUIRE IS_HANDLED
+					sv->sh->tdlst_pipe->token = sv->sh->tdlst_pipe->token->next;//QUESTIONABLE BUT DOESN'T REQUIRE IS_HANDLED
 				}
 				else if ((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && token->next && token->next->content && (!ft_strcmp(token->next->content, ">") || !ft_strcmp(token->next->content, ">>") || !ft_strcmp(token->next->content, "<")))
 				{
@@ -68,7 +70,7 @@ void		process_cmd()
 				}
 				else
 					cmd[i++] = token->content;
-				g_sv->sh->tdlst_pipe->token = g_sv->sh->tdlst_pipe->token->next;
+				token = token->next;
 			}
 						//execve("/bin/cat", cat, envp);
 			//в родительском не будет execve, 
@@ -81,7 +83,7 @@ void		process_cmd()
 				cmd[i] = NULL;
 				i = 0;
 				//execute_command(cmd, last_redir, fd);
-				if (g_sv->sh->tdlst_pipe->next)
+				if (sv->sh->tdlst_pipe->next)
 				{
 					pipe(fds);
 					pid = fork();
@@ -120,11 +122,11 @@ void		process_cmd()
 					dup2(savestdout, 1);
 				}
 			}
-			token = g_sv->sh->tdlst_pipe->token_head;
+			token = sv->sh->tdlst_pipe->token_head;
 			//print_token_list(token);
 			//printf("semi: %d, pipe: %d, tok: %d\n", semi, pipe, ++tok);
-			g_sv->sh->tdlst_pipe = g_sv->sh->tdlst_pipe->next;
+			sv->sh->tdlst_pipe = sv->sh->tdlst_pipe->next;
 		}
-		g_sv->sh = g_sv->sh->next;
+		sv->sh = sv->sh->next;
 	}
 }

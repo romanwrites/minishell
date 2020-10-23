@@ -29,7 +29,7 @@
 # define REDIR_RIGHT 62
 # define REDIR_RIGHT_DOUBLE ">>"
 
-_Bool		parse_input(char *str);
+_Bool		parse_input(char *str, t_mshell *sv);
 char		**split_by_char(char c, char *str);
 int			count_2d_lines(char **arr2d);
 _Bool		is_backslash_pressed(t_parse *state_check);
