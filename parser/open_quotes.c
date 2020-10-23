@@ -299,3 +299,26 @@ void		open_quotes(t_token **tok)
 		token = token->next;
 	}
 }
+
+void		open_quotes_new(t_token *token)
+{
+//	t_token 	*token;
+	char 	*tmp;
+
+//	token = tok;
+	while (token)
+	{
+		init_globs();
+		set_token_flag(token, token->content);
+		if (token->is_diff)
+		{
+			token = token->next;
+			continue ;
+		}
+		tmp = token->content;
+		token->content = open_quotes_str(tmp);
+		free(tmp);
+		tmp = NULL;
+		token = token->next;
+	}
+}

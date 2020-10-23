@@ -172,7 +172,6 @@ t_dlist_pipe	*alloc_pipe_list(char **ptr)
 		}
 		i++;
 	}
-
 	return (head);
 }
 
@@ -195,6 +194,7 @@ t_dlist_sh			*get_sh_list(char **semicolons2d)
 		tmp_semi = split_by_char(PIPE, semicolons2d[i]);//todo alloc
 		ft_alloc_check(tmp_semi);
 		trim_tmp_semi = ft_trim_2d_cpy(tmp_semi);//todo alloc
+		ft_free2d(tmp_semi);
 		dlst_pipe = alloc_pipe_list(trim_tmp_semi);//todo alloc
 		ft_free2d(trim_tmp_semi);
 		tmp_semi = NULL;
