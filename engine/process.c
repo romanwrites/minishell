@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/23 15:11:05 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/23 15:37:09 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		process_cmd()
 				open_quotes(&token);
 				//if (token->is_handled)
 				//	continue;
-				printf("is_diff %s=%d\n", token->content, token->is_diff);
+				printf("is_diff %s=%d\n", token->content, token->is_diff);//!!!!!!!!!!!!!!!!!!!
 				if (((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && token->next && token->next->content && (ft_strcmp(token->next->content, ">") && ft_strcmp(token->next->content, ">>") && ft_strcmp(token->next->content, "<"))))
 				{
 					//cmd[i] = NULL;
