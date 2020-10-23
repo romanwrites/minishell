@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/21 16:17:40 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/23 11:39:41 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,9 @@ PARSE_SRC = parse.c \
 			split_by_commands.c \
 			states.c \
 			parse_env.c \
+			open_quotes.c \
 					
 UTILS_SRC = ft_alloc_check.c \
-			ft_bell.c \
 			compare_kv.c \
 			get_envar.c \
 			count_2d_lines.c \
@@ -36,9 +36,17 @@ UTILS_SRC = ft_alloc_check.c \
 			ft_trim_2d.c \
 			print_2d_array.c \
 			delete2nodes.c \
+			dlst_pipe.c \
+			print_error.c \
+			dlst_sh.c \
+			token.c \
+			print_everything.c \
+			print_token.c \
+			
 
 ENGINE_SRC = engine_start.c \
 				exec.c \
+				process.c \
 
 BUILTIN = builtin.c\
 			other_cmd.c\
@@ -69,8 +77,6 @@ fclean: clean
 	rm -f $(NAME)
 
 sh: all
-	$(MAKE) clean -C $(LIBFT_DIR)
-	$(MAKE) clean -C $(LIBFT_DIR)
 	#rm -f libft/libft.a
 	rm -f $(OBJ)
 	$(MAKE) clean -C $(LIBFT_DIR)

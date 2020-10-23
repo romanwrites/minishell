@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void 	execute(t_mshell *sv, char **cmd)
+void 	execute(char **cmd)
 {
 	if (!(strcmp(cmd[0], "export")))
 		ft_export(cmd[1]);
@@ -20,25 +20,39 @@ void 	execute(t_mshell *sv, char **cmd)
 		handle_cmd(cmd);
 }
 
-void 	execute_command(t_mshell *sv, char **cmd)
+int	handle_redir(char *is_redir, char *file)
+{
+	int fd;
+
+	fd = -1;
+	if (is_redir)
+	{
+		if(!ft_strcmp(is_redir, ">"))
+			fd = open(file, O_TRUNC | O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+		else if(!ft_strcmp(is_redir, "<"))
+			fd = open(file, O_RDONLY);
+		else
+			fd = open(file, O_APPEND | O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	}
+	return (fd);
+}
+
+void 	execute_command(char **cmd, char *is_redir, int fd)
 {
 	pid_t pid;
-    int fd;
 
     int savestdout = dup(1);
     int savestdin = dup(0);
-	char is_redir = 0;
-	char *file = NULL;
-
+	/*
 	if (is_redir)
 	{
-		if(is_redir == ">")
+		if(!ft_strcmp(is_redir, ">"))
 		{
 			fd = open(file, O_CREAT | O_TRUNC | O_WRONLY | S_IRUSR | S_IWUSR | S_IROTH);
 			if(fd)
 				dup2(fd, 1);
 		}
-		else if(is_redir == "<")
+		else if(!ft_strcmp(is_redir, "<"))
 		{
 			fd = open(file, O_RDONLY | S_IRUSR | S_IWUSR | S_IROTH);
 			if(fd)
@@ -51,24 +65,37 @@ void 	execute_command(t_mshell *sv, char **cmd)
 				dup2(fd, 1);
 		}
 		if(!fd)
+		{
+			if (!ft_strcmp(is_redir, "<"))
+				dup2(savestdin, 0);
+			else
+				dup2(savestdout, 1);
 			return ;
+		}
+		*/
+	if(fd != -1)
+	{
+		if (!ft_strcmp(is_redir, "<"))
+			dup2(fd, 0);
+		else
+			dup2(fd, 1);
 		pid = fork();
     	if (pid == 0)
     	{
 			close(fd);
-			execute(NULL, cmd);
-			return ;
+			execute(cmd);
+			exit(0);
 		}
 		else
 		{
 			wait(NULL);
 			close(fd);
-			if (is_redir == "<")
+			if (!ft_strcmp(is_redir, "<"))
 				dup2(savestdin, 0);
 			else
 				dup2(savestdout, 1);
 		}
 	}
 	else
-		execute(NULL, cmd);
+		execute(cmd);
 }

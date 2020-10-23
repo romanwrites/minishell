@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/21 15:56:31 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/23 14:10:51 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,23 @@ char **list_to_env()
 	return(envp);
 }
 
+char	*find_cmd(char *path)
+{
+	int len;
+	int i;
+	char *cmd;
+
+	len = ft_strlen(path);
+	i = len;
+	while(len > 0 && path[len] != '/')
+		len--;
+	i = i - len;
+	cmd = malloc(i);
+	if (cmd)
+		ft_memcpy(cmd, &path[++len], i);
+	return(cmd);
+}
+
 void	handle_cmd(char **args)
 {
 	char *to_split;
@@ -61,9 +78,21 @@ void	handle_cmd(char **args)
 
 	i = 0;
 	x = 0;
+	envp = list_to_env();
+	if (args[0][0] == '/')
+	{
+		tmp = args[0];
+		args[0] = find_cmd(tmp);
+		g_pid = fork();
+		if (g_pid)
+			wait(NULL);
+		else
+			execve(tmp, args, envp);
+		free(tmp);
+		return ;
+	}
 	to_split = get_envar("PATH");
 	path = ft_split(to_split, ':');
-	envp = list_to_env();
 	while(path && path[i])
 	{
 		dir = opendir(path[i]);
@@ -104,7 +133,7 @@ void	handle_cmd(char **args)
 		free(path);
 		free(to_split);
 	}
-	write(0, PROM, ft_strlen(PROM));
+	write(1, PROM, ft_strlen(PROM));//why zero??????
 	write(1, args[0], ft_strlen(args[0]));
 	write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 }
