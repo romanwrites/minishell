@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/23 15:29:00 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/23 16:28:05 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_mshell *g_sv;
 t_list	*g_env;
 char	*input;
 char	*g_home;
+int		g_isfork;
 //int		g_stdin;
 //int		g_stdout;
 pid_t	g_pid;
@@ -59,6 +60,11 @@ void new_line()
 	write(0, PROMPT, ft_strlen(PROMPT));
 }
 
+void	handle_parent_signal()
+{
+	
+}
+
 int     main(int ac, char **av, char **envp)
 {
 	t_mshell	*sv;
@@ -67,6 +73,7 @@ int     main(int ac, char **av, char **envp)
 	int			i;
 	char		**cmd;
 	char		*str;
+	g_isfork = 0;
 	i = 0;
 	str = NULL;
 	(void)ac;
@@ -88,6 +95,7 @@ int     main(int ac, char **av, char **envp)
 		{
 			free(str);
 			str = NULL;
+			write(0, PROMPT, ft_strlen(PROMPT));
 			continue;
 		}
 		//print_everything();
