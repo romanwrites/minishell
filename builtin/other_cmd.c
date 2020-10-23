@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/23 18:29:26 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/23 21:01:51 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,13 @@ void	handle_cmd(char **args)
 		args[0] = find_cmd(tmp);
 		g_pid = fork();
 		if (g_pid)
+		{
+			signal(SIGQUIT, SIG_IGN);
+			signal(SIGINT, SIG_IGN);
 			wait(NULL);
+			signal(SIGQUIT, handle_parent_signal);
+			signal(SIGINT, handle_parent_signal);
+		}
 		else
 		{
 			signal(SIGQUIT, handle_child_signal);
@@ -108,7 +114,13 @@ void	handle_cmd(char **args)
 				path[i] = ft_strjoin_free_s1(path[i], tmp);
 				g_pid = fork();
 				if (g_pid)
+				{
+					signal(SIGQUIT, SIG_IGN);
+					signal(SIGINT, SIG_IGN);
 					wait(NULL);
+					signal(SIGQUIT, handle_parent_signal);
+					signal(SIGINT, handle_parent_signal);
+				}
 				else
 				{
 					signal(SIGQUIT, handle_child_signal);

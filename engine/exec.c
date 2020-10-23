@@ -90,7 +90,11 @@ void 	execute_command(char **cmd, char *is_redir, int fd)
 		}
 		else
 		{
+			signal(SIGQUIT, SIG_IGN);
+			signal(SIGINT, SIG_IGN);
 			wait(NULL);
+			signal(SIGQUIT, handle_parent_signal);
+			signal(SIGINT, handle_parent_signal);
 			close(fd);
 			if (!ft_strcmp(is_redir, "<"))
 				dup2(savestdin, 0);

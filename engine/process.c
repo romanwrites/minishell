@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/23 18:30:26 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/23 21:01:50 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,11 @@ void		process_cmd(t_mshell *sv)
 					}
 					else
 					{
+						signal(SIGQUIT, SIG_IGN);
+						signal(SIGINT, SIG_IGN);
 						wait(NULL);
+						signal(SIGQUIT, handle_parent_signal);
+						signal(SIGINT, handle_parent_signal);
 						//if(!after_pipe)
 						//{
 							close(fds[1]);

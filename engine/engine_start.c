@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/23 18:34:55 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/23 20:35:02 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,4 +109,4 @@ int     main(int ac, char **av, char **envp)
 	if (*(str) == '\0')
 		write(0, "exit\n", ft_strlen("exit\n"));
 	return (0);
-}
+}//FREE INPUT!
