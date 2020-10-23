@@ -49,6 +49,8 @@ _Bool			check_sequence_full(char c1, char c2)
 		return (1);
 	else if (c1 == REDIR_RIGHT && c2 == REDIR_RIGHT)
 		return (1);
+	else if (c1 == REDIR_RIGHT && c2 == REDIR_LEFT)
+		return (1);
 	return (0);
 }
 
@@ -90,6 +92,11 @@ _Bool			check_syntax_errors(const char *str)
 			}
 			else if (!is_open_quote() && i > 0 && !is_backslash_active() \
 						&& check_sequence_semi(str[i - 1], str[i]))
+			{
+				return (1);
+			}
+			else if (str[i] == REDIR_RIGHT && str[i + 1] == REDIR_RIGHT && \
+					str[i + 2] == REDIR_RIGHT)
 			{
 				return (1);
 			}

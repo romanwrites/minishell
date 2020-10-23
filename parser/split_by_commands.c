@@ -101,6 +101,13 @@ char		**split_command(const char *str_input)
             i++;
 			continue ;
         }
+		else if (i > 0 && str[i] != REDIR_RIGHT && str[i] != REDIR_LEFT && (str[i - 1] == REDIR_LEFT || str[i - 1] == REDIR_RIGHT))
+		{
+			printf("i: %d\n", i);
+			set_nl_cpy(&str, i);
+//			i++;
+//			continue ;
+		}
 		i++;
 	}
 	if (is_open_quote())

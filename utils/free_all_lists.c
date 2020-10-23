@@ -30,7 +30,7 @@ void		free_all_lists(t_mshell *sv)
 		while (sv->sh->tdlst_pipe)
 		{
 			free_token_lst(sv->sh->tdlst_pipe->token_head);
-			printf("semi: %d, pipe: %d, tok: %d\n", semi, pipe, ++tok);
+//			printf("semi: %d, pipe: %d, tok: %d\n", semi, pipe, ++tok);
 			tmp_pipe = sv->sh->tdlst_pipe;
 			sv->sh->tdlst_pipe = sv->sh->tdlst_pipe->next;
 			free(tmp_pipe);
