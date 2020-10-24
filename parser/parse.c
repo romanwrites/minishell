@@ -12,100 +12,6 @@
 
 #include "minishell.h"
 
-_Bool			check_syntax_by_indexes(const char *str)
-{
-	size_t 	len;
-
-	len = ft_strlen(str);
-	if (str[0] == PIPE || str[0] == SEMICOLON)
-		return (1);
-	else if (str[len] == REDIR_LEFT && len > 1 && str[len - 1] != BACKSLASH)
-		return (1);
-	else if (str[len] == REDIR_RIGHT && len > 1 && str[len - 1] != BACKSLASH)
-		return (1);
-	return (0);
-}
-
-_Bool			check_sequence_semi(char c1, char c2)
-{
-	if (c1 == SEMICOLON && (c2 == SEMICOLON || c2 == PIPE))
-		return (1);
-	else if (c1 == PIPE && (c2 == PIPE || c2 == SEMICOLON))
-		return (1);
-	else if (c1 == REDIR_LEFT && c2 == PIPE)
-		return (1);
-	return (0);
-}
-
-_Bool			check_sequence_full(char c1, char c2)
-{
-	if (c1 == SEMICOLON && (c2 == SEMICOLON || c2 == PIPE))
-		return (1);
-	else if (c1 == PIPE && (c2 == PIPE || c2 == SEMICOLON))
-		return (1);
-	else if (c1 == REDIR_LEFT && c2 == PIPE)
-		return (1);
-	else if (c1 == REDIR_LEFT && c2 == REDIR_LEFT)
-		return (1);
-	else if (c1 == REDIR_RIGHT && c2 == REDIR_RIGHT)
-		return (1);
-	else if (c1 == REDIR_RIGHT && c2 == REDIR_LEFT)
-		return (1);
-	return (0);
-}
-
-_Bool			check_syntax_errors(const char *str)
-{
-	int 	i;
-	int 	j;
-
-	i = 0;
-	j = 0;
-	if (str)
-	{
-		if (check_syntax_by_indexes(str))
-			return (1);
-		while (str[i])
-		{
-			set_backslash_state_new(str[i]);
-			set_quotes_state_new(str[i]);
-			if (is_open_quote())
-			{
-				while (str[i++] && is_open_quote())
-				{
-					set_backslash_state_new(str[i]);
-					set_quotes_state_new(str[i]);
-				}
-				continue ;
-			}
-			if (ft_isspace(str[i]))
-			{
-				j = i - 1;
-				while (ft_isspace(str[i]))
-				{
-					set_backslash_state_new(str[i]);
-					set_quotes_state_new(str[i]);
-					i++;
-				}
-				if (str[i] && check_sequence_full(str[j], str[i]))
-					return (1);
-			}
-			else if (!is_open_quote() && i > 0 && !is_backslash_active() \
-						&& check_sequence_semi(str[i - 1], str[i]))
-			{
-				return (1);
-			}
-			else if (str[i] == REDIR_RIGHT && str[i + 1] == REDIR_RIGHT && \
-					str[i + 2] == REDIR_RIGHT)
-			{
-				return (1);
-			}
-			i++;
-		}
-	}
-	return (0);
-}
-
 void        append_line(char **ptr, char **append_this)
 {
     char    *tmp_ptr;
@@ -231,6 +137,32 @@ t_dlist_sh			*get_sh_list(char **semicolons2d)
 	return (sh_head);
 }
 
+_Bool			check_redirs_only(const char *str)
+{
+	if (!(ft_strcmp(">>", str)) || !(ft_strcmp(">", str)) || \
+		!(ft_strcmp("<", str)) || !(ft_strcmp("<", str)))
+	{
+		printf("WTF: [%s]\n", str);
+		return (1);
+	}
+
+	return (0);
+}
+
+_Bool			check_syntax_2d(char **ptr)
+{
+	int			i;
+
+	i = 0;
+	while (ptr[i])
+	{
+		if (check_redirs_only(ptr[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 _Bool		parse_input(char *str, t_mshell *sv)
 {
 	char	**semicolons2d;
@@ -243,11 +175,26 @@ _Bool		parse_input(char *str, t_mshell *sv)
 	if (check_syntax_errors(input_str))
 	{
 		print_error("syntax error");
+		g_exit = 258;
 		return (1);
 	}
 	semicolons2d = split_by_char(SEMICOLON, input_str);//todo alloc
 	ft_alloc_check(semicolons2d);
 	free(input_str);
+	int			i;
+
+	i = 0;
+	while (semicolons2d[i])
+	{
+		printf("SUK: %s\n", semicolons2d[i]);
+		i++;
+	}
+	if (check_syntax_2d(semicolons2d))
+	{
+		print_error("syntax error");
+		g_exit = 258;
+		return (1);
+	}
 	trim_semi = ft_trim_2d_cpy(semicolons2d);//todo alloc
 	init_globs();
 	sv->sh = get_sh_list(trim_semi);//todo alloc
