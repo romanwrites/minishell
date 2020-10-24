@@ -11,7 +11,7 @@ void 	execute(char **cmd)
 	else if (!(strcmp(cmd[0], "echo")))
 		ft_echo(cmd);
 	else if (!(strcmp(cmd[0], "exit")))
-		ft_exit(g_exit);
+		ft_exit(cmd);
 	else if (!(strcmp(cmd[0], "cd")))
 		ft_cd(cmd[1]);
 	else if (!(strcmp(cmd[0], "unset")))

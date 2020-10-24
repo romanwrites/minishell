@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/23 18:32:59 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/24 16:40:11 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,11 +30,14 @@ PARSE_SRC = open_quotes.c \
 
 UTILS_SRC = compare_kv.c \
             count_2d_lines.c \
+			check_numeric.c \
             dlst_pipe.c \
             dlst_sh.c \
             exit_error_message.c \
             ft_alloc_check.c \
             ft_trim_2d.c \
+			ft_atoll.c \
+			ft_atoull.c \
 			get_envar.c \
 			print_2d_array.c \
 			print_error.c \

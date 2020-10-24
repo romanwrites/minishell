@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/23 20:35:02 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/24 14:44:55 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_list	*g_env;
 char	*input;
 char	*g_home;
 int		g_isfork;
-int		g_exit;
+long long g_exit;
 //int		g_stdin;
 //int		g_stdout;
 pid_t	g_pid;

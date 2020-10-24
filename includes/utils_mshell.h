@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:56:37 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/10 18:26:14 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/24 16:36:09 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,9 @@ void				print_everything();
 void				print_everything_new(t_mshell *sv);
 void				print_error(char *str);
 void 				reset_newlines(char *str);
+int                 check_numeric(char *str);
+long long		    ft_atoll(char *str);
+unsigned long long  ft_atoull(char *str, int *minus);
+
 
 #endif
