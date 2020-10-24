@@ -6,7 +6,7 @@
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:39:05 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/25 19:58:49 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/24 20:06:00 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void		set_backslash_state(t_parse *state_check, char c);
 void		set_quotes_state(t_parse *state_check, int j, const char *str);
 _Bool		is_any_quote_open(t_parse *state_check);
 char		**split_command(const char *str_input);
-//void		set_nl_cpy(char **str, int i);
 _Bool		is_redir_or_pipe(char c);
 _Bool		is_valid_syntax(char pre, char cur, char next);
 
@@ -59,9 +58,17 @@ _Bool 		is_after_redir(const char *str, int i);
 _Bool		is_double_redir(const char *str, int i);
 _Bool		is_pipe_or_single_redir(const char *str, int i);
 
+/*
+** check_syntax.c
+*/
 _Bool			check_syntax_errors(const char *str);
+_Bool			other_conditions(const char *str, int i);
+_Bool			check_sequence_full(char c1, char c2);
+_Bool			check_sequence_semi(char c1, char c2);
 
-//check_syntax2.c
+/*
+** check_syntax2.c
+*/
 _Bool			check_redirs_only(const char *str);
 _Bool			check_syntax_2d(char **ptr);
 _Bool			check_syntax_by_indexes(const char *str);

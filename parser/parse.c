@@ -146,7 +146,7 @@ _Bool		parse_input(char *str, t_mshell *sv)
 	init_globs();
 	input_str = ft_strtrim(str, " ");//todo alloc
 	ft_alloc_check(input_str);
-	if (check_syntax_by_indexes(str) || check_syntax_errors(input_str))
+	if (check_syntax_by_indexes(input_str) || check_syntax_errors(input_str))
 	{
 		print_error("syntax error");
 		g_exit = 258;
@@ -155,14 +155,6 @@ _Bool		parse_input(char *str, t_mshell *sv)
 	semicolons2d = split_by_char(SEMICOLON, input_str);//todo alloc
 	ft_alloc_check(semicolons2d);
 	free(input_str);
-	int			i;
-
-	i = 0;
-	while (semicolons2d[i])
-	{
-		printf("SUK: %s\n", semicolons2d[i]);
-		i++;
-	}
 	if (check_syntax_2d(semicolons2d))
 	{
 		print_error("syntax error");
