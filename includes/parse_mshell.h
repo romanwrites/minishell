@@ -59,5 +59,13 @@ _Bool 		is_after_redir(const char *str, int i);
 _Bool		is_double_redir(const char *str, int i);
 _Bool		is_pipe_or_single_redir(const char *str, int i);
 
+_Bool			check_syntax_errors(const char *str);
+
+//check_syntax2.c
+_Bool			check_redirs_only(const char *str);
+_Bool			check_syntax_2d(char **ptr);
+_Bool			check_syntax_by_indexes(const char *str);
+
+
 
 #endif

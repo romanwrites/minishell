@@ -137,32 +137,6 @@ t_dlist_sh			*get_sh_list(char **semicolons2d)
 	return (sh_head);
 }
 
-_Bool			check_redirs_only(const char *str)
-{
-	if (!(ft_strcmp(">>", str)) || !(ft_strcmp(">", str)) || \
-		!(ft_strcmp("<", str)) || !(ft_strcmp("<", str)))
-	{
-		printf("WTF: [%s]\n", str);
-		return (1);
-	}
-
-	return (0);
-}
-
-_Bool			check_syntax_2d(char **ptr)
-{
-	int			i;
-
-	i = 0;
-	while (ptr[i])
-	{
-		if (check_redirs_only(ptr[i]))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 _Bool		parse_input(char *str, t_mshell *sv)
 {
 	char	**semicolons2d;
@@ -172,7 +146,7 @@ _Bool		parse_input(char *str, t_mshell *sv)
 	init_globs();
 	input_str = ft_strtrim(str, " ");//todo alloc
 	ft_alloc_check(input_str);
-	if (check_syntax_errors(input_str))
+	if (check_syntax_by_indexes(str) || check_syntax_errors(input_str))
 	{
 		print_error("syntax error");
 		g_exit = 258;
