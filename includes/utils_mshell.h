@@ -38,5 +38,6 @@ _Bool				is_backslash_active();
 void				set_quotes_state_new(char c);
 _Bool				is_open_quote();
 void				init_globs();
+void				*ft_strdup_and_check(const char *str);
 
 #endif

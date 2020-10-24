@@ -28,6 +28,7 @@
 # define REDIR_LEFT 60
 # define REDIR_RIGHT 62
 # define REDIR_RIGHT_DOUBLE ">>"
+# define NEWLINE 10
 
 _Bool		parse_input(char *str, t_mshell *sv);
 char		**split_by_char(char c, char *str);
@@ -52,5 +53,11 @@ void		parse_env();
 void        append_line(char **ptr, char **append_this);
 size_t		get_dollars_end(const char *str);
 int			get_env_from_str(const char *str);
+_Bool		is_after_redir_semi_check(const char *str, int i);
+_Bool		is_after_redir_or_pipe(const char *str, int i);
+_Bool 		is_after_redir(const char *str, int i);
+_Bool		is_double_redir(const char *str, int i);
+_Bool		is_pipe_or_single_redir(const char *str, int i);
+
 
 #endif

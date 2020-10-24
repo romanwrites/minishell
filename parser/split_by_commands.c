@@ -12,17 +12,10 @@
 
 #include "minishell.h"
 
-_Bool		is_redir_or_pipe(char c)
+static int		set_nl_cpy(char **str, int i)
 {
-	if (c == '|' || c == '<')
-		return (1);
-	return (0);
-}
-
-static void		set_nl_cpy(char **str, int i)
-{
-	char 	*tmp;
-	char	*new;
+	char		*tmp;
+	char		*new;
 
 	tmp = *str;
 	new = malloc(ft_strlen(tmp) + 2);
@@ -32,75 +25,55 @@ static void		set_nl_cpy(char **str, int i)
 	ft_memcpy(new + i + 1, tmp + i, ft_strlen(tmp) - i + 1);
 	free(tmp);
 	*str = new;
+	return (1);
 }
 
-
-
-char		**split_command(const char *str_input)
+static int		process_open_quotes(char *str, int j)
 {
-	int 	i;
-	char	**split_by_spaces;
-	char 	*str;
+	while (is_open_quote() && str[j])
+	{
+		set_states(str[j]);
+		j++;
+	}
+	return (j);
+}
 
-	str = ft_strdup(str_input);
-	ft_alloc_check(str);
+char			*process_str(const char *str_input)
+{
+	int			i;
+	char		*str;
+
+	str = ft_strdup_and_check(str_input);
 	i = 0;
-	init_globs();
 	while (str[i])
 	{
 		set_states(str[i]);
 		if (is_open_quote())
-		{
-			i++;
-			while (is_open_quote() && str[i])
-			{
-				set_states(str[i]);
-				i++;
-			}
-
-			continue ;
-		}
-		if ((str[i] == ' ' || str[i] == '\t') && !is_backslash_active())
+			i = process_open_quotes(str, ++i) - 1;
+		else if (ft_isspace(str[i]) && !is_backslash_active())
 			str[i] = '\n';
-		else if (i > 0 && (str[i] == '|' || str[i] == '<' || \
-		(str[i] == '>' && str[i + 1] != '>' && str[i - 1] != '>')) && \
-				(str[i - 1] != '\n'))
-        {
+		else if (i > 0 && is_pipe_or_single_redir(str, i))
+			i += set_nl_cpy(&str, i);
+		else if (i > 0 && is_double_redir(str, i))
+			i += set_nl_cpy(&str, i) + 1;
+		else if (i > 1 && is_after_redir(str, i))
+			i += set_nl_cpy(&str, i);
+		else if (i > 0 && is_after_redir_or_pipe(str, i))
+			i += set_nl_cpy(&str, i);
+		else if (i > 0 && is_after_redir_semi_check(str, i))
 			set_nl_cpy(&str, i);
-			i++;
-			continue ;
-		}
-		else if ((i > 0 && str[i - 1] != '\n') && \
-				(str[i] == '>' && str[i + 1] == '>'))
-		{
-			set_nl_cpy(&str, i);
-			i += 2;
-			continue ;
-		}
-		else if ((i > 1 && str[i] != '>' && str[i] != '<') && \
-				((str[i - 1] == '>' && str[i - 2] == '>') || \
-				(str[i - 1] == '>' && str[i - 2] == '\n') || \
-				(str[i - 1] == '<' && str[i - 2] == '\n')))
-		{
-			set_nl_cpy(&str, i);
-			i += 1;
-			continue ;
-		}
-		else if (i > 0 && str[i] != ' ' && str[i] != 34 && \
-				str[i] != 39 && is_redir_or_pipe(str[i - 1]))
-        {
-            set_nl_cpy(&str, i);
-            i++;
-			continue ;
-        }
-		else if (i > 0 && str[i] != REDIR_RIGHT && str[i] != REDIR_LEFT && \
-				(str[i - 1] == REDIR_LEFT || str[i - 1] == REDIR_RIGHT))
-		{
-			printf("i: %d\n", i);
-			set_nl_cpy(&str, i);
-		}
 		i++;
 	}
+	return (str);
+}
+
+char			**split_command(const char *str_input)
+{
+	char		**split_by_spaces;
+	char		*str;
+
+	init_globs();
+	str = process_str(str_input);
 	if (is_open_quote())
 		exit_error_message("Quotes are open: split_command()");
 	split_by_spaces = ft_split(str, '\n');
