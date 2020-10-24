@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_mshell.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:39:05 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/24 20:06:00 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/25 01:37:23 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,6 @@
 _Bool		parse_input(char *str, t_mshell *sv);
 char		**split_by_char(char c, char *str);
 int			count_2d_lines(char **arr2d);
-_Bool		is_backslash_pressed(t_parse *state_check);
-void		set_backslash_state(t_parse *state_check, char c);
-void		set_quotes_state(t_parse *state_check, int j, const char *str);
-_Bool		is_any_quote_open(t_parse *state_check);
 char		**split_command(const char *str_input);
 _Bool		is_redir_or_pipe(char c);
 _Bool		is_valid_syntax(char pre, char cur, char next);
@@ -73,6 +69,19 @@ _Bool			check_redirs_only(const char *str);
 _Bool			check_syntax_2d(char **ptr);
 _Bool			check_syntax_by_indexes(const char *str);
 
+/*
+** get_sh_list.c
+*/
+t_dlist_sh		*get_sh_list(char **semicolons2d, int i);
 
+/*
+** alloc_pipe_list.c
+*/
+t_dlist_pipe	*alloc_pipe_list(char **ptr);
+
+/*
+** alloc_token_list
+*/
+t_token			*alloc_token_list(char **ptr);
 
 #endif
