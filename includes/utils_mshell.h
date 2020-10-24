@@ -23,7 +23,6 @@ void				ft_trim_2d(char ***arr_2d);
 char				**ft_trim_2d_cpy(char **arr_2d);
 int					compare_key(t_envar *a, t_envar *b);
 t_token				*token_new(char *content, t_token **prev);
-
 t_dlist_pipe		*pipe_new(t_token *content, t_dlist_pipe **prev);
 t_dlist_sh			*sh_new(t_dlist_pipe *content, t_dlist_sh **prev);
 void 				print_token_list(t_token *token);
@@ -33,5 +32,11 @@ void				print_error(char *str);
 void 				reset_newlines(char *str);
 void				free_all_lists(t_mshell *sv);
 void 				set_heads(t_mshell *sv);
+void 				set_states(char c);
+void				set_backslash_state_new(char c);
+_Bool				is_backslash_active();
+void				set_quotes_state_new(char c);
+_Bool				is_open_quote();
+void				init_globs();
 
 #endif

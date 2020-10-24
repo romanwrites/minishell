@@ -22,8 +22,7 @@ void		init_globs()
 
 _Bool		is_open_quote()
 {
-//	return ((g_squote || g_dquote) && (g_dquote != g_squote));
-	return (g_squote != g_dquote); //xor
+	return (g_squote != g_dquote);
 }
 
 

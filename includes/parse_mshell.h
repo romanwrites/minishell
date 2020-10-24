@@ -37,15 +37,9 @@ void		set_backslash_state(t_parse *state_check, char c);
 void		set_quotes_state(t_parse *state_check, int j, const char *str);
 _Bool		is_any_quote_open(t_parse *state_check);
 char		**split_command(const char *str_input);
-void		set_nl_cpy(char **str, int i);
+//void		set_nl_cpy(char **str, int i);
 _Bool		is_redir_or_pipe(char c);
 _Bool		is_valid_syntax(char pre, char cur, char next);
-
-void		set_backslash_state_new(char c);
-_Bool		is_backslash_active();
-void		set_quotes_state_new(char c);
-_Bool		is_open_quote();
-void		init_globs();
 
 char		*realloc_without_newlines(char **append_this);
 size_t		len_without_newlines(const char *ptr);

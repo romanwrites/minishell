@@ -12,17 +12,6 @@
 
 #include "minishell.h"
 
-_Bool		is_valid_syntax(char pre, char cur, char next)
-{
-	if (cur == '|' && (pre == '|' || next == '|' || pre == '<' ||  pre == '>' ||  next == '<' || next == '>' || !pre || !next))
-		return (0);
-	else if (cur == '>' && (pre == '|' || next == '|' || pre == '<' || next == '<' || !pre || !next))
-		return (0);
-	else if (cur == '<' && (pre == '|' || next == '|' || pre == '>' || next == '>' || !pre || !next))
-		return (0);
-	return (1);
-}
-
 _Bool		is_redir_or_pipe(char c)
 {
 	if (c == '|' || c == '<')
@@ -30,7 +19,7 @@ _Bool		is_redir_or_pipe(char c)
 	return (0);
 }
 
-void		set_nl_cpy(char **str, int i)
+static void		set_nl_cpy(char **str, int i)
 {
 	char 	*tmp;
 	char	*new;
@@ -45,6 +34,8 @@ void		set_nl_cpy(char **str, int i)
 	*str = new;
 }
 
+
+
 char		**split_command(const char *str_input)
 {
 	int 	i;
@@ -57,15 +48,13 @@ char		**split_command(const char *str_input)
 	init_globs();
 	while (str[i])
 	{
-		set_backslash_state_new(str[i]);
-		set_quotes_state_new(str[i]);
+		set_states(str[i]);
 		if (is_open_quote())
 		{
 			i++;
 			while (is_open_quote() && str[i])
 			{
-				set_backslash_state_new(str[i]);
-				set_quotes_state_new(str[i]);
+				set_states(str[i]);
 				i++;
 			}
 
@@ -73,40 +62,42 @@ char		**split_command(const char *str_input)
 		}
 		if ((str[i] == ' ' || str[i] == '\t') && !is_backslash_active())
 			str[i] = '\n';
-		else if (i > 0 && (str[i] == '|' || str[i] == '<' || (str[i] == '>' && str[i + 1] != '>' && str[i - 1] != '>')) && \
-//				(is_valid_syntax(str[i - 1], str[i], str[i + 1])) &&
+		else if (i > 0 && (str[i] == '|' || str[i] == '<' || \
+		(str[i] == '>' && str[i + 1] != '>' && str[i - 1] != '>')) && \
 				(str[i - 1] != '\n'))
         {
 			set_nl_cpy(&str, i);
 			i++;
 			continue ;
 		}
-		else if ((i > 0 && str[i - 1] != '\n') && (str[i] == '>' && str[i + 1] == '>'))
+		else if ((i > 0 && str[i - 1] != '\n') && \
+				(str[i] == '>' && str[i + 1] == '>'))
 		{
 			set_nl_cpy(&str, i);
 			i += 2;
 			continue ;
 		}
 		else if ((i > 1 && str[i] != '>' && str[i] != '<') && \
-				((str[i - 1] == '>' && str[i - 2] == '>') || (str[i - 1] == '>' && str[i - 2] == '\n') || \
+				((str[i - 1] == '>' && str[i - 2] == '>') || \
+				(str[i - 1] == '>' && str[i - 2] == '\n') || \
 				(str[i - 1] == '<' && str[i - 2] == '\n')))
 		{
 			set_nl_cpy(&str, i);
 			i += 1;
 			continue ;
 		}
-		else if (i > 0 && str[i] != ' ' && str[i] != 34 && str[i] != 39 && is_redir_or_pipe(str[i - 1]))
+		else if (i > 0 && str[i] != ' ' && str[i] != 34 && \
+				str[i] != 39 && is_redir_or_pipe(str[i - 1]))
         {
             set_nl_cpy(&str, i);
             i++;
 			continue ;
         }
-		else if (i > 0 && str[i] != REDIR_RIGHT && str[i] != REDIR_LEFT && (str[i - 1] == REDIR_LEFT || str[i - 1] == REDIR_RIGHT))
+		else if (i > 0 && str[i] != REDIR_RIGHT && str[i] != REDIR_LEFT && \
+				(str[i - 1] == REDIR_LEFT || str[i - 1] == REDIR_RIGHT))
 		{
 			printf("i: %d\n", i);
 			set_nl_cpy(&str, i);
-//			i++;
-//			continue ;
 		}
 		i++;
 	}

@@ -31,4 +31,4 @@ add_executable(minishell
         ${PARSER}
         ${UTILS}
         ${BUILTIN}
-        )
+        utils/set_states.c)
