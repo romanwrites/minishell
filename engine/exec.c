@@ -11,7 +11,7 @@ void 	execute(char **cmd)
 	else if (!(strcmp(cmd[0], "echo")))
 		ft_echo(cmd);
 	else if (!(strcmp(cmd[0], "exit")))
-		ft_exit(0);
+		ft_exit(g_exit);
 	else if (!(strcmp(cmd[0], "cd")))
 		ft_cd(cmd[1]);
 	else if (!(strcmp(cmd[0], "unset")))
@@ -82,13 +82,19 @@ void 	execute_command(char **cmd, char *is_redir, int fd)
 		pid = fork();
     	if (pid == 0)
     	{
+			signal(SIGQUIT, handle_child_signal);
+			signal(SIGINT, handle_child_signal);
 			close(fd);
 			execute(cmd);
 			exit(0);
 		}
 		else
 		{
+			signal(SIGQUIT, SIG_IGN);
+			signal(SIGINT, SIG_IGN);
 			wait(NULL);
+			signal(SIGQUIT, handle_parent_signal);
+			signal(SIGINT, handle_parent_signal);
 			close(fd);
 			if (!ft_strcmp(is_redir, "<"))
 				dup2(savestdin, 0);

@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/23 16:55:55 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/23 21:01:50 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,6 @@ void		process_cmd(t_mshell *sv)
 				//print_2d_array(cmd);
 				token = token->next;
 			}
-						//execve("/bin/cat", cat, envp);
-			//в родительском не будет execve, 
-			//просто будут меняться дескрипторы, эта функция должна вызываться в 
-			//цикле и на следующей иттерации выполнять execve для второй части пайпа, 
-			//но нужны два условия чтобы вначале не читать и в конце не менять дескрипторы? 
-			//вроде так, удачи, Илюха из будущего
 			if (i)
 			{
 				cmd[i] = NULL;
@@ -92,6 +86,8 @@ void		process_cmd(t_mshell *sv)
 					{
 						//if(!after_pipe)
 						//{
+							signal(SIGQUIT, handle_child_signal);
+							signal(SIGINT, handle_child_signal);
 							close(fds[0]);
 							dup2(fds[1], 1);
 							close(fds[1]);
@@ -104,7 +100,11 @@ void		process_cmd(t_mshell *sv)
 					}
 					else
 					{
+						signal(SIGQUIT, SIG_IGN);
+						signal(SIGINT, SIG_IGN);
 						wait(NULL);
+						signal(SIGQUIT, handle_parent_signal);
+						signal(SIGINT, handle_parent_signal);
 						//if(!after_pipe)
 						//{
 							close(fds[1]);

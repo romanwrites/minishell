@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/23 16:35:15 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/23 18:39:24 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,14 @@ extern _Bool				g_dquote;
 extern _Bool				g_squote;
 extern _Bool				g_backslash;
 extern int					g_backslash_time;
+extern int					g_isfork;
+extern int					g_exit;
 
 void	handle_cmd(char **cmd);//
 char **list_to_env();//
 void 	execute_command(char **cmd, char *is_redir, int fd);//
 int	handle_redir(char *is_redir, char *file);//
+void    handle_child_signal(int signal);//
+void    handle_parent_signal(int signal);//
 
 #endif

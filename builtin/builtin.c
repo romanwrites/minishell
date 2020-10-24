@@ -6,14 +6,14 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/23 11:28:43 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/24 14:06:04 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //#include "minishell.h"
 #include "../includes/minishell.h"
 
-void	ft_echo(char **cmd) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
+void	ft_echo(char **cmd)
 {
 	int i;
 
@@ -27,7 +27,7 @@ void	ft_echo(char **cmd) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
 			{
 				write(1, cmd[i], ft_strlen(cmd[i]));
 				if (cmd[i + 1])
-					write(0, " ", 1);
+					write(1, " ", 1);
 				i++;
 			}
 		}
@@ -48,11 +48,11 @@ void	ft_echo(char **cmd) //"" '' \n \t \0!!!!!!!!!!!!!!!!!!!!!!!!!
 		write(1, "\n", 1);
 }
 
-void	ft_exit(int exit_code)
+void	ft_exit(int exit_code)//g_exit?
 {
 	//ft_lstclear()
 	write(1, "exit\n", ft_strlen("exit\n"));
-	exit(exit_code);
+	exit(exit_code%256);
 }
 
 void	ft_pwd()

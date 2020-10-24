@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/23 16:37:30 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/23 20:35:02 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_list	*g_env;
 char	*input;
 char	*g_home;
 int		g_isfork;
+int		g_exit;
 //int		g_stdin;
 //int		g_stdout;
 pid_t	g_pid;
@@ -40,7 +41,7 @@ void	init(t_mshell	*sv)
 	ft_alloc_check(sv->state);
 	init_globs();
 }
-
+////
 void ignore()
 {
 	write(0, "\b\b  \b\b", 6);
@@ -57,12 +58,7 @@ void new_line()
 	write(0, "\n", 1);
 	write(0, PROMPT, ft_strlen(PROMPT));
 }
-
-void	handle_parent_signal()
-{
-	
-}
-
+////
 int     main(int ac, char **av, char **envp)
 {
 	t_mshell	*sv;
@@ -72,13 +68,16 @@ int     main(int ac, char **av, char **envp)
 	char		**cmd;
 	char		*str;
 	g_isfork = 0;
+	g_exit = 0;
 	i = 0;
 	str = NULL;
 	(void)ac;
 	(void)av;
 
-	signal(SIGQUIT, ignore);
-	signal(SIGINT, new_line);
+	//signal(SIGQUIT, ignore);
+	//signal(SIGINT, new_line);
+	signal(SIGQUIT, handle_parent_signal);
+	signal(SIGINT, handle_parent_signal);
 	g_env = env_to_list(envp);
 	g_home = get_envar("HOME");
 	g_sv = (t_mshell *)malloc(sizeof(t_mshell));
@@ -110,4 +109,4 @@ int     main(int ac, char **av, char **envp)
 	if (*(str) == '\0')
 		write(0, "exit\n", ft_strlen("exit\n"));
 	return (0);
-}
+}//FREE INPUT!
