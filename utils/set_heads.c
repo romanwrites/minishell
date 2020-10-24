@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void 		set_heads(t_mshell *sv)
+void		set_heads(t_mshell *sv)
 {
 	sv->sh_head = sv->sh;
 	while (sv->sh)
