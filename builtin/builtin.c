@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/23 18:37:31 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/24 14:06:04 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_exit(int exit_code)//g_exit?
 {
 	//ft_lstclear()
 	write(1, "exit\n", ft_strlen("exit\n"));
-	exit(exit_code);
+	exit(exit_code%256);
 }
 
 void	ft_pwd()
