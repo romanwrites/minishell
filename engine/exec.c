@@ -61,8 +61,6 @@ int	handle_redir(char *is_redir, char *file)
 
 void 	execute_command(char **cmd, char *is_redir, int fd)
 {
-	pid_t pid;
-
     int savestdout = dup(1);
     int savestdin = dup(0);
 

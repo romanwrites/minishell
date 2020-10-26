@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/24 19:01:36 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/26 18:40:53 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,15 @@ void	handle_cmd(char **args)
 	i = 0;
 	x = 0;
 	envp = list_to_env();
-	if (args[0][0] == '/')
+	if (args[0][0] == '/' || (args[0][0] == '.' && args[0][1] == '/'))
 	{
+		if (args[0][0] == '.' && args[0][1] == '/' && !ft_isprint((int)args[0][2]))
+		{
+			write(1, PROM, ft_strlen(PROM));//why zero??????
+			write(1, args[0], ft_strlen(args[0]));
+			write(1, ": is a directory\n", ft_strlen(": is a directory\n"));
+			return ;
+		}
 		tmp = args[0];
 		args[0] = find_cmd(tmp);
 		g_pid = fork();
@@ -97,6 +104,7 @@ void	handle_cmd(char **args)
 			signal(SIGQUIT, SIG_DFL);//
 			signal(SIGINT, SIG_DFL);//
 			execve(tmp, args, envp);
+			exit(g_exit);
 		}
 		free(tmp);
 		return ;

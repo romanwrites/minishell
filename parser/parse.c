@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:38:07 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/21 16:59:48 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/26 16:12:48 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ t_dlist_pipe	*alloc_pipe_list(char **ptr)
 	return (head);
 }
 
-t_dlist_sh			*get_sh_list(char **semicolons2d)
+t_dlist_sh			*get_sh_list(char **semicolons2d, t_mshell *sv)
 {
 	t_dlist_pipe	*dlst_pipe;
 	t_dlist_sh		*sh;
@@ -191,7 +191,7 @@ t_dlist_sh			*get_sh_list(char **semicolons2d)
 	tmp_semi = NULL;
 	while (semicolons2d[i])
 	{
-		tmp_semi = split_by_char(PIPE, semicolons2d[i]);//todo alloc
+		tmp_semi = split_by_char(PIPE, semicolons2d[i], sv);//todo alloc
 		ft_alloc_check(tmp_semi);
 		trim_tmp_semi = ft_trim_2d_cpy(tmp_semi);//todo alloc
 		ft_free2d(tmp_semi);
@@ -224,13 +224,13 @@ _Bool		parse_input(char *str, t_mshell *sv)
 		print_error("syntax error");
 		return (1);
 	}
-	semicolons2d = split_by_char(SEMICOLON, input_str);//todo alloc
+	semicolons2d = split_by_char(SEMICOLON, input_str, sv);//todo alloc
 	ft_alloc_check(semicolons2d);
 	free(input_str);
 	trim_semi = ft_trim_2d_cpy(semicolons2d);//todo alloc
 	init_globs();
 //	g_sv->sh = get_sh_list(trim_semi);//todo alloc
-	sv->sh = get_sh_list(trim_semi);//todo alloc
+	sv->sh = get_sh_list(trim_semi, sv);//todo alloc
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
 	return (0);

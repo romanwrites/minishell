@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/24 19:58:05 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/26 16:14:29 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ _Bool	g_dquote;
 _Bool	g_squote;
 _Bool	g_backslash;
 int		g_backslash_time;
-t_mshell *g_sv;
+//t_mshell *g_sv;
 
 t_list	*g_env;
 char	*input;
@@ -82,11 +82,11 @@ int     main(int ac, char **av, char **envp)
 	signal(SIGINT, handle_parent_signal);
 	g_env = env_to_list(envp);
 	g_home = get_envar("HOME");
-	g_sv = (t_mshell *)malloc(sizeof(t_mshell));
+	//g_sv = (t_mshell *)malloc(sizeof(t_mshell));
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
-	ft_alloc_check(g_sv);
-	init(g_sv);
+	//ft_alloc_check(g_sv);
+	init(sv);
 	t_token *token;
 	write(0, PROMPT, ft_strlen(PROMPT));
 	while (get_next_line(0, &str))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_mshell.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:39:05 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/25 19:58:49 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/26 16:08:02 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define REDIR_RIGHT_DOUBLE ">>"
 
 _Bool		parse_input(char *str, t_mshell *sv);
-char		**split_by_char(char c, char *str);
+char		**split_by_char(char c, char *str, t_mshell *sv);
 int			count_2d_lines(char **arr2d);
 _Bool		is_backslash_pressed(t_parse *state_check);
 void		set_backslash_state(t_parse *state_check, char c);

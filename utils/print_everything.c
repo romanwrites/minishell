@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_everything.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 13:20:15 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/20 13:20:17 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/26 16:08:49 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void		print_everything_new(t_mshell *sv)
 		++semi;
 	}
 }
-
+/*
 void		print_everything()
 {
 	t_token *token;
@@ -63,3 +63,4 @@ void		print_everything()
 		++semi;
 	}
 }
+*/

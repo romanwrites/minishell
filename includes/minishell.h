@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/24 16:13:06 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/26 16:03:55 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 
-extern t_mshell				*g_sv;
+//extern t_mshell				*g_sv;
 extern _Bool				g_dquote;
 extern _Bool				g_squote;
 extern _Bool				g_backslash;
