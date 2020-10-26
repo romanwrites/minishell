@@ -99,7 +99,7 @@ int     main(int ac, char **av, char **envp)
 		}
 		set_heads(sv);
 //		print_everything(sv);
-		process_cmd(sv);
+//		process_cmd(sv);
 		write(0, PROMPT, ft_strlen(PROMPT));
 		free_all_lists(sv);
 		free(str);

@@ -67,12 +67,10 @@ _Bool		parse_input(char *str, t_mshell *sv)
 	semicolons2d = split_by_char(SEMICOLON, input_str);
 	ft_alloc_check(semicolons2d);
 	free(input_str);
-	if (check_syntax_2d(semicolons2d))
-		ret_syntax_err();
-	trim_semi = ft_trim_2d_cpy(semicolons2d);
 	init_globs();
-	sv->sh = get_sh_list(trim_semi, 0);
-	ft_free2d(semicolons2d);
+	sv->sh = get_sh_list(semicolons2d, 0);
 	semicolons2d = NULL;
+	if (!sv->sh)
+		return (1);
 	return (0);
 }

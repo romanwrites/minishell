@@ -44,6 +44,7 @@ char		**ft_trim_2d_cpy(char **arr_2d)
 		i++;
 	}
 	new[i] = NULL;
+	ft_free2d(arr_2d);
 	return (new);
 }
 

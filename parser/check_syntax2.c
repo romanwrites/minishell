@@ -17,7 +17,15 @@ _Bool			check_redirs_only(const char *str)
 	if (!(ft_strcmp(">>", str)) || !(ft_strcmp(">", str)) || \
 		!(ft_strcmp("<", str)) || !(ft_strcmp("<", str)))
 	{
-		printf("WTF: [%s]\n", str);
+		return (1);
+	}
+	return (0);
+}
+
+_Bool			check_dot_only(const char *str)
+{
+	if (!(ft_strcmp(".", str)))
+	{
 		return (1);
 	}
 	return (0);
@@ -31,7 +39,18 @@ _Bool			check_syntax_2d(char **ptr)
 	while (ptr[i])
 	{
 		if (check_redirs_only(ptr[i]))
+		{
+			g_exit = 258;
+			print_error("syntax error");
 			return (1);
+		}
+		else if (check_dot_only(ptr[i]))
+		{
+			g_exit = 2;
+			print_error("bash: .: filename argument required");
+			print_error(".: usage: . filename [arguments]");
+			return (1);
+		}
 		i++;
 	}
 	return (0);
