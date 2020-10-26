@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/24 17:18:52 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/24 17:56:18 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,17 @@ void	ft_exit(char **cmd)//g_exit?
 
 	minus = 0;
 	write(1, "exit\n", ft_strlen("exit\n"));
+	if (!cmd || !cmd[1])
+	{
+		//ft_lstclear();
+		exit(g_exit%256);
+	}
 	if (cmd[2])
 	{
 		write(1, "bash: exit: too many arguments\n", ft_strlen("bash: exit: too many arguments\n"));
 		return ;
 	}
 	//ft_lstclear();
-	if (!cmd[1])
-		exit(g_exit%256);
 	ft_atoull(cmd[1], &minus);
 	if(check_numeric(cmd[1]) || ((!minus && ft_atoull(cmd[1], &minus) > __LONG_LONG_MAX__ ) || (minus && ft_atoull(cmd[1], &minus) - 1 > __LONG_LONG_MAX__)))
 	{

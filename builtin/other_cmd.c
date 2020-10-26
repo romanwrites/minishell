@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/23 21:01:51 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/24 19:01:36 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ void	handle_cmd(char **args)
 		}
 		else
 		{
-			signal(SIGQUIT, handle_child_signal);
-			signal(SIGINT, handle_child_signal);
+			signal(SIGQUIT, SIG_DFL);//
+			signal(SIGINT, SIG_DFL);//
 			execve(tmp, args, envp);
 		}
 		free(tmp);
@@ -123,8 +123,8 @@ void	handle_cmd(char **args)
 				}
 				else
 				{
-					signal(SIGQUIT, handle_child_signal);
-					signal(SIGINT, handle_child_signal);
+					signal(SIGQUIT, SIG_DFL);//
+					signal(SIGINT, SIG_DFL);//
 					execve(path[i], args, envp);
 				}
 				free(tmp);

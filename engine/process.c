@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/23 21:01:50 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/24 19:22:22 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void		process_cmd(t_mshell *sv)
 	cmd = (char **)malloc((sizeof(char *) * PATH_MAX));
 	i = 0;
 	fd = -1;
-	after_pipe = 0;
+	fds[0] = -1;
+	fds[1] = -1;
 	last_redir = NULL;
 	while (sv->sh)
 	{
@@ -43,9 +44,6 @@ void		process_cmd(t_mshell *sv)
 			token = sv->sh->tdlst_pipe->token_head;
 			while (token)
 			{
-				//if (token->is_handled)
-				//	continue;
-				//printf("is_diff %s=%d\n", token->content, token->is_diff);//!!!!!!!!!!!!!!!!!!!
 				if (((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && token->next && token->next->content && (ft_strcmp(token->next->content, ">") && ft_strcmp(token->next->content, ">>") && ft_strcmp(token->next->content, "<"))))
 				{
 					//cmd[i] = NULL;
@@ -55,10 +53,7 @@ void		process_cmd(t_mshell *sv)
 					last_redir = token->content;
 					if (fd == -1)
 						return ;
-					//token->next->is_handled = 1;
-					
-					//execute_command(cmd, token->content, token->next->content);
-					token = token->next;//QUESTIONABLE BUT DOESN'T REQUIRE IS_HANDLED
+					token = token->next;//QUESTIONABLE BUT DOESN'T REQUIRE IS_HANDLED !!!NEED TO CLOSE FD
 				}
 				else if ((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && token->next && token->next->content && (!ft_strcmp(token->next->content, ">") || !ft_strcmp(token->next->content, ">>") || !ft_strcmp(token->next->content, "<")))
 				{
@@ -77,26 +72,19 @@ void		process_cmd(t_mshell *sv)
 			{
 				cmd[i] = NULL;
 				i = 0;
-				//execute_command(cmd, last_redir, fd);
 				if (sv->sh->tdlst_pipe->next)
 				{
 					pipe(fds);
 					pid = fork();
 					if (pid == 0)
 					{
-						//if(!after_pipe)
-						//{
-							signal(SIGQUIT, handle_child_signal);
-							signal(SIGINT, handle_child_signal);
-							close(fds[0]);
-							dup2(fds[1], 1);
-							close(fds[1]);
-							after_pipe = 1;
-							execute_command(cmd, last_redir, fd);
-						//}
-						//else
-						//	after_pipe = 0;
-						exit(0);
+						signal(SIGQUIT, SIG_DFL);
+						signal(SIGINT, SIG_DFL);
+						close(fds[0]);
+						dup2(fds[1], 1);
+						close(fds[1]);
+						execute_command(cmd, last_redir, fd);
+						exit((int)g_exit%256);//
 					}
 					else
 					{
@@ -105,15 +93,9 @@ void		process_cmd(t_mshell *sv)
 						wait(NULL);
 						signal(SIGQUIT, handle_parent_signal);
 						signal(SIGINT, handle_parent_signal);
-						//if(!after_pipe)
-						//{
-							close(fds[1]);
-							dup2(fds[0], 0);
-							close(fds[0]);
-							after_pipe = 1;
-						//}
-						//else
-						//	after_pipe = 0;
+						close(fds[1]);
+						dup2(fds[0], 0);
+						close(fds[0]);
 					}
 				}
 				else
