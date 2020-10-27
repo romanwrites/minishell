@@ -41,7 +41,7 @@ char		*realloc_without_newlines(char **append_this);
 size_t		len_without_newlines(const char *ptr);
 
 char		*open_quotes_str(const char *str_src);
-void		open_quotes(t_token **tok);
+void		open_quotes(t_token *token);
 void		open_quotes_new(t_token *token);
 
 void		parse_env();

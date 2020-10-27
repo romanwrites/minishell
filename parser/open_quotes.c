@@ -120,7 +120,7 @@ char		*open_quotes_str(const char *str_src)
 			}
 			else
 			{
-				if (i > save + 1)
+				if (i >= save + 1)
 				{
 					append_this = ft_substr(str, save, i - save);
 					append_line(&new_line, &append_this);
@@ -277,12 +277,13 @@ void		set_token_flag(t_token *token, char *str)
 		token->is_diff = 0;
 }
 
-void		open_quotes(t_token **tok)
+void		open_quotes(t_token *token)
 {
-	t_token 	*token;
+//	t_token 	*token;
 	char 	*tmp;
 
-	token = *(tok);
+//	token = *(tok);
+	tmp = NULL;
 	while (token)
 	{
 		init_globs();

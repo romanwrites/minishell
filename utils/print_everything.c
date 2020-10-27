@@ -25,10 +25,10 @@ void		print_everything(t_mshell *sv)
 		while (sv->sh->tdlst_pipe)
 		{
 			sv->sh->tdlst_pipe->token_head = sv->sh->tdlst_pipe->token;
-			open_quotes(&sv->sh->tdlst_pipe->token);
+			open_quotes(sv->sh->tdlst_pipe->token);
 			token = sv->sh->tdlst_pipe->token_head;
 			print_token_list(token);
-			printf("semi: %d, pipe: %d, tok: %d\n", semi, pipe, ++tok);
+			printf("semi: %d, pipe: %d, tok: %d\n", semi, pipe, ++tok);//todo
 			sv->sh->tdlst_pipe = sv->sh->tdlst_pipe->next;
 			++pipe;
 		}

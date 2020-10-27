@@ -98,7 +98,7 @@ int     main(int ac, char **av, char **envp)
 			continue;
 		}
 		set_heads(sv);
-//		print_everything(sv);
+		print_everything(sv);
 //		process_cmd(sv);
 		write(0, PROMPT, ft_strlen(PROMPT));
 		free_all_lists(sv);
