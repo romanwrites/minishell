@@ -24,10 +24,10 @@ char *get_envar(char *var)
     flag = 0;
     ret = NULL;
     if (!ft_strcmp(var, "?"))
-        return(ft_itoa((int)g_exit%256));
+        return(ft_itoa_and_chk((int)g_exit%256));
     if (!ft_strcmp(var, "~"))
     {
-        var = ft_strdup("HOME");
+        var = ft_strdup_and_check("HOME");
         flag = 1;
     }
     while (env)
@@ -35,7 +35,7 @@ char *get_envar(char *var)
         if (!ft_strncmp(((t_envar *)(env->content))->key, var, ft_strlen(var)))
         {
             value = ((t_envar *)(env->content))->value;
-            ret = ft_strdup(value);
+            ret = ft_strdup_and_check(value);
             if (flag)
                 free(var);
             return (ret);

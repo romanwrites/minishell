@@ -37,7 +37,7 @@ _Bool				is_backslash_active();
 void				set_quotes_state_new(char c);
 _Bool				is_open_quote();
 void				init_globs();
-void				*ft_strdup_and_check(const char *str);
+
 
 /*
 ** states_first_lvl.c
@@ -49,6 +49,11 @@ void	        	set_backslash_state(t_parse *state_check, char c);
 int                 check_numeric(char *str);
 long long		    ft_atoll(char *str);
 unsigned long long  ft_atoull(char *str, int *minus);
+
+//alloc_and_check.c
+char 				*ft_substr_and_chk(char const *str, unsigned int start, size_t len);
+void				*ft_strdup_and_check(const char *str);
+char				*ft_itoa_and_chk(int n);
 
 
 #endif
