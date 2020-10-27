@@ -36,13 +36,14 @@ void		free_all_lists(t_mshell *sv)
 	t_dlist_pipe	*tmp_pipe;
 	t_dlist_sh		*tmp_sh;
 
+    sv->sh = sv->sh_head;
 	while (sv->sh)
 	{
 		pipe = 0;
+		sv->sh->tdlst_pipe = sv->sh->tdlst_pipe_head;
 		while (sv->sh->tdlst_pipe)
 		{
 			free_token_lst(sv->sh->tdlst_pipe->token_head);
-//			printf("semi: %d, pipe: %d, tok: %d\n", semi, pipe, ++tok);
 			tmp_pipe = sv->sh->tdlst_pipe;
 			sv->sh->tdlst_pipe = sv->sh->tdlst_pipe->next;
 			free(tmp_pipe);

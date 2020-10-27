@@ -25,20 +25,18 @@ t_dlist_sh			*get_sh_list(char **semicolons2d, int i, t_mshell *sv)
 	t_dlist_sh		*sh;
 	t_dlist_sh		*sh_head;
 	char			**tmp_semi;
-//	char			**trim_tmp_semi;
 
 	sh = sh_new(NULL, NULL);
 	sh_head = sh;
 	while (semicolons2d[i])
 	{
 		tmp_semi = split_by_char(PIPE, semicolons2d[i], sv);
-//		trim_tmp_semi = ft_trim_2d_cpy(tmp_semi);
-		if (check_syntax_2d(tmp_semi))
+        if (check_syntax_2d(tmp_semi))
 		{
 			ft_free2d(tmp_semi);
 			return (NULL);
 		}
-		dlst_pipe = alloc_pipe_list(tmp_semi);
+        dlst_pipe = alloc_pipe_list(tmp_semi);
 		ft_free2d(tmp_semi);
 		tmp_semi = NULL;
 		sh->tdlst_pipe = dlst_pipe;

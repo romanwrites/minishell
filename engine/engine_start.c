@@ -83,7 +83,7 @@ int     main(int ac, char **av, char **envp)
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
 	init(sv);
-	t_token *token;
+	int br = 0;
 	write(0, PROMPT, ft_strlen(PROMPT));
 	while (get_next_line(0, &str))
 	{

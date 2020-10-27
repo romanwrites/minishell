@@ -137,6 +137,13 @@ char		*open_quotes_str(const char *str_src)
 				{
 					append_this = ft_strdup(env_value);
 				}
+				if (env_value)
+                {
+                    free(env_value);
+                    env_value = NULL;
+                }
+				free(value_to_check);
+				value_to_check = NULL;
 			}
 			append_line(&new_line, &append_this);
 			i += j - 1;
@@ -221,7 +228,14 @@ char		*open_quotes_str(const char *str_src)
 						{
 							append_this = ft_strdup(env_value);
 						}
-					}
+                        if (env_value)
+                        {
+                            free(env_value);
+                            env_value = NULL;
+                        }
+                        free(value_to_check);
+                        value_to_check = NULL;
+                    }
 					append_line(&new_line, &append_this);
 					i += j - 1;
 					save = i + 1;
@@ -263,6 +277,7 @@ char		*open_quotes_str(const char *str_src)
 		ft_alloc_check(append_this);
 		append_line(&new_line, &append_this);
 	}
+	free(str);
 	return (new_line);
 }
 
@@ -281,6 +296,7 @@ void		open_quotes(t_token *token)
 {
 //	t_token 	*token;
 	char 	*tmp;
+	int br = 0;
 
 //	token = *(tok);
 	tmp = NULL;
@@ -300,26 +316,3 @@ void		open_quotes(t_token *token)
 		token = token->next;
 	}
 }
-//
-//void		open_quotes_new(t_token *token)
-//{
-////	t_token 	*token;
-//	char 	*tmp;
-//
-////	token = tok;
-//	while (token)
-//	{
-//		init_globs();
-//		set_token_flag(token, token->content);
-//		if (token->is_diff)
-//		{
-//			token = token->next;
-//			continue ;
-//		}
-//		tmp = token->content;
-//		token->content = open_quotes_str(tmp);
-//		free(tmp);
-//		tmp = NULL;
-//		token = token->next;
-//	}
-//}
