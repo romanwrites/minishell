@@ -12,33 +12,6 @@
 
 #include "minishell.h"
 
-char		*realloc_without_newlines(char **append_this)
-{
-	char	*new_str;
-	char	*ptr;
-	int 	i;
-	int 	j;
-
-	i = 0;
-	j = 0;
-	ptr = *(append_this);
-	new_str = malloc(len_without_newlines(ptr));
-	ft_alloc_check(new_str);
-	while (ptr[i])
-	{
-		if (ptr[i] != '\n')
-		{
-			new_str[j] = ptr[i];
-			j++;
-		}
-		i++;
-	}
-	new_str[j] = '\0';
-	free(ptr);
-	*(append_this) = NULL;
-	return (new_str);
-}
-
 _Bool		is_env_val_after_dollar(char c)
 {
 	return (ft_isdigit(c) || ft_isalpha(c) || c == DOLLAR);
@@ -69,8 +42,7 @@ char		*open_quotes_str(const char *str_src)
 	env_value = NULL;
 	while (str[i])
 	{
-		set_backslash_state_new(str[i]);
-		set_quotes_state_new(str[i]);
+		set_states(str[i]);
 		if (is_backslash_active() && !is_open_quote())
 		{
 			i++;
@@ -159,8 +131,7 @@ char		*open_quotes_str(const char *str_src)
 			save = i;
 			while (is_open_quote() && str[++i])
 			{
-				set_backslash_state_new(str[i]);
-				set_quotes_state_new(str[i]);
+				set_states(str[i]);
 				if (str[i] == BACKSLASH && g_dquote && ft_strchr(tab, str[i + 1]))
 				{
 					i++;
@@ -169,8 +140,7 @@ char		*open_quotes_str(const char *str_src)
 					append_this[0] = str[i];
 					append_line(&new_line, &append_this);
 					save = i;
-					set_backslash_state_new(str[i]);
-					set_quotes_state_new(str[i]);
+					set_states(str[i]);
 				}
 				else if (str[i] == DOLLAR && g_dquote && is_env_val_after_dollar(str[i + 1]))
 				{
@@ -294,11 +264,8 @@ void		set_token_flag(t_token *token, char *str)
 
 void		open_quotes(t_token *token)
 {
-//	t_token 	*token;
 	char 	*tmp;
-	int br = 0;
 
-//	token = *(tok);
 	tmp = NULL;
 	while (token)
 	{

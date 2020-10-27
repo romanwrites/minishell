@@ -30,29 +30,16 @@
 # define REDIR_RIGHT_DOUBLE ">>"
 # define NEWLINE 10
 
-_Bool		parse_input(char *str, t_mshell *sv);
-char		**split_by_char(char c, char *str, t_mshell *sv);
-int			count_2d_lines(char **arr2d);
-char		**split_command(const char *str_input);
-_Bool		is_redir_or_pipe(char c);
-_Bool		is_valid_syntax(char pre, char cur, char next);
 
-char		*realloc_without_newlines(char **append_this);
-size_t		len_without_newlines(const char *ptr);
+/*
+** alloc_pipe_list.c
+*/
+t_dlist_pipe	*alloc_pipe_list(char **ptr, int i);
 
-char		*open_quotes_str(const char *str_src);
-void		open_quotes(t_token *token);
-void		open_quotes_new(t_token *token);
-
-void		parse_env();
-void        append_line(char **ptr, char **append_this);
-size_t		get_dollars_end(const char *str);
-int			get_env_from_str(const char *str);
-_Bool		is_after_redir_semi_check(const char *str, int i);
-_Bool		is_after_redir_or_pipe(const char *str, int i);
-_Bool 		is_after_redir(const char *str, int i);
-_Bool		is_double_redir(const char *str, int i);
-_Bool		is_pipe_or_single_redir(const char *str, int i);
+/*
+** alloc_token_list.c
+*/
+t_token			*alloc_token_list(char **ptr);
 
 /*
 ** check_syntax.c
@@ -74,14 +61,33 @@ _Bool			check_syntax_by_indexes(const char *str);
 */
 t_dlist_sh			*get_sh_list(char **semicolons2d, int i, t_mshell *sv);
 
-/*
-** alloc_pipe_list.c
-*/
-t_dlist_pipe	*alloc_pipe_list(char **ptr);
 
-/*
-** alloc_token_list
-*/
-t_token			*alloc_token_list(char **ptr);
+
+_Bool		parse_input(char *str, t_mshell *sv);
+char		**split_by_char(char c, char *str, t_mshell *sv);
+int			count_2d_lines(char **arr2d);
+char		**split_command(const char *str_input);
+_Bool		is_redir_or_pipe(char c);
+_Bool		is_valid_syntax(char pre, char cur, char next);
+
+size_t		len_without_newlines(const char *ptr);
+
+char		*open_quotes_str(const char *str_src);
+void		open_quotes(t_token *token);
+void		open_quotes_new(t_token *token);
+
+void		parse_env();
+void        append_line(char **ptr, char **append_this);
+size_t		get_dollars_end(const char *str);
+int			get_env_from_str(const char *str);
+_Bool		is_after_redir_semi_check(const char *str, int i);
+_Bool		is_after_redir_or_pipe(const char *str, int i);
+_Bool 		is_after_redir(const char *str, int i);
+_Bool		is_double_redir(const char *str, int i);
+_Bool		is_pipe_or_single_redir(const char *str, int i);
+
+
+
+
 
 #endif

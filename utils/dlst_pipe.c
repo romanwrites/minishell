@@ -16,8 +16,8 @@ t_dlist_pipe		*pipe_new(t_token *content, t_dlist_pipe **prev)
 {
 	t_dlist_pipe	*new;
 
-	if (!(new = malloc(sizeof(t_dlist_pipe))))
-		return (NULL);
+	new = malloc(sizeof(t_dlist_pipe));
+	ft_alloc_check(new);
 	new->token = content;
 	if (prev)
 		new->prev = *prev;
