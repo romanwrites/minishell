@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/26 16:14:29 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/27 11:18:13 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int     main(int ac, char **av, char **envp)
 			write(0, PROMPT, ft_strlen(PROMPT));
 			continue;
 		}
-//		print_everything_new(sv);
+		//print_everything_new(sv);
 		process_cmd(sv);
 		write(0, PROMPT, ft_strlen(PROMPT));
 		free(str);

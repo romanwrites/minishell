@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/26 17:13:14 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/27 11:57:17 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,12 @@ void		process_cmd(t_mshell *sv)
 					fd = handle_redir(token->content, token->next->content);
 					last_redir = token->content;
 					if (fd == -1)
+					{
+						write(1, PROM, ft_strlen(PROM));//why zero??????
+						write(1, token->next->content, ft_strlen(token->next->content));
+						write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 						return ;
+					}
 					token = token->next;//QUESTIONABLE BUT DOESN'T REQUIRE IS_HANDLED
 				}
 				else if ((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && token->next && token->next->content && (!ft_strcmp(token->next->content, ">") || !ft_strcmp(token->next->content, ">>") || !ft_strcmp(token->next->content, "<")))

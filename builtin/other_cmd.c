@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/26 18:40:53 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/27 11:01:51 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	handle_cmd(char **args)
 			signal(SIGQUIT, SIG_IGN);
 			signal(SIGINT, SIG_IGN);
 			wait(NULL);
+			//waitpid()
 			signal(SIGQUIT, handle_parent_signal);
 			signal(SIGINT, handle_parent_signal);
 		}
