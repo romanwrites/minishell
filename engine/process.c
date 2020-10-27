@@ -39,7 +39,7 @@ void		process_cmd(t_mshell *sv)
 		{
 			sv->sh->tdlst_pipe->token_head = sv->sh->tdlst_pipe->token;
 			token = sv->sh->tdlst_pipe->token;
-			open_quotes(&token);
+			open_quotes(token);
 			token = sv->sh->tdlst_pipe->token;
 			while (token)
 			{
