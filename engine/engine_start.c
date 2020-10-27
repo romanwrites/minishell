@@ -80,11 +80,9 @@ int     main(int ac, char **av, char **envp)
 	signal(SIGINT, handle_parent_signal);
 	g_env = env_to_list(envp);
 	g_home = get_envar("HOME");
-	g_sv = (t_mshell *)malloc(sizeof(t_mshell));
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
-	ft_alloc_check(g_sv);
-	init(g_sv);
+	init(sv);
 	t_token *token;
 	write(0, PROMPT, ft_strlen(PROMPT));
 	while (get_next_line(0, &str))
