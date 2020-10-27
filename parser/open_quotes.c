@@ -12,14 +12,102 @@
 
 #include "minishell.h"
 
+typedef struct	s_open_q {
+	int			i;
+	int 		save;
+	char		*new_line;
+	char		*append_this;
+}				t_open_q;
+
 _Bool		is_env_val_after_dollar(char c)
 {
 	return (ft_isdigit(c) || ft_isalpha(c) || c == DOLLAR);
 }
 
+void		handle_dollar_out_of_quotes(char *str, int i, int save, char **new_line)
+{
+	int		j;
+	char 	*append_this;
+	char	*value_to_check;
+	char 	*env_value;
+
+	j = 0;
+	if (str[i + 1] == '$')
+	{
+		j = get_dollars_end(str + i);
+		if (i > save + 2 && is_backslash_active())
+		{
+			append_this = ft_substr(str, save, i - save - 1);
+			append_line(new_line, &append_this);
+		}
+		else if (i > save + 2 && !is_backslash_active())
+		{
+			append_this = ft_substr(str, save, i - save);
+			append_line(new_line, &append_this);
+		}
+		append_this = ft_substr(str, i, j);
+		append_line(new_line, &append_this);
+		i += j;
+		save = i + 2;
+		return ;
+	}
+	else if (ft_isdigit(str[i + 1]))
+	{
+		i += 2;
+		save += 2;
+		return ;
+	}
+	j = get_env_from_str(str + i);
+	if (is_backslash_active())
+	{
+		if (i > save + 2)
+		{
+			append_this = ft_substr(str, save, i - save - 1);
+			append_line(new_line, &append_this);
+		}
+		append_this = ft_substr(str, i, j);
+	}
+	else
+	{
+		if (i >= save + 1)
+		{
+			append_this = ft_substr(str, save, i - save);
+			append_line(new_line, &append_this);
+		}
+		if (j == 2)
+			value_to_check = ft_strdup("");
+		else
+			value_to_check = ft_substr(str, i + 1, j - 1);
+		ft_alloc_check(value_to_check);
+		env_value = get_envar(value_to_check);
+		if (!env_value)
+			append_this = ft_strdup("");
+		else
+		{
+			append_this = ft_strdup(env_value);
+		}
+		if (env_value)
+		{
+			free(env_value);
+			env_value = NULL;
+		}
+		free(value_to_check);
+		value_to_check = NULL;
+	}
+	append_line(new_line, &append_this);
+//	i += j - 1;
+//	save = i + 1;
+//	i++;
+//	continue ;
+}
+
+
+
 char		*open_quotes_str(const char *str_src)
 {
-	char 	*new_line;
+	t_open_q	*o;
+	o = malloc(sizeof(t_open_q));
+//	char 	*new_line;
 	size_t 	i;
 	size_t 	j;
 	size_t 	save;
@@ -35,10 +123,8 @@ char		*open_quotes_str(const char *str_src)
 	j = 0;
 	append_this = NULL;
 	init_globs();
-	new_line = ft_strdup("");
-	ft_alloc_check(new_line);
-	str = ft_strdup(str_src);
-	ft_alloc_check(str);
+	o->new_line = ft_strdup_and_check("");
+	str = ft_strdup_and_check(str_src);
 	env_value = NULL;
 	while (str[i])
 	{
@@ -49,85 +135,19 @@ char		*open_quotes_str(const char *str_src)
 			append_this = ft_strdup(" ");
 			ft_alloc_check(append_this);
 			append_this[0] = str[i];
-			append_line(&new_line, &append_this);
+			append_line(&o->new_line, &append_this);
 			save = i + 1;
 			set_backslash_state_new(str[i]);
 		}
 		else if (str[i] == DOLLAR && is_env_val_after_dollar(str[i + 1]))
 		{
-			if (str[i + 1] == '$')
-			{
-				j = get_dollars_end(str + i);
-				if (i > save + 2 && is_backslash_active())
-				{
-					append_this = ft_substr(str, save, i - save - 1);
-					append_line(&new_line, &append_this);
-				}
-				else if (i > save + 2 && !is_backslash_active())
-				{
-					append_this = ft_substr(str, save, i - save);
-					append_line(&new_line, &append_this);
-				}
-				append_this = ft_substr(str, i, j);
-				append_line(&new_line, &append_this);
-				i += j;
-				save = i + 2;
-				continue ;
-			}
-			else if (ft_isdigit(str[i + 1]))
-			{
-				i += 2;
-				save += 2;
-				continue ;
-			}
-			j = get_env_from_str(str + i);
-			if (is_backslash_active())
-			{
-				if (i > save + 2)
-				{
-					append_this = ft_substr(str, save, i - save - 1);
-					append_line(&new_line, &append_this);
-				}
-				append_this = ft_substr(str, i, j);
-			}
-			else
-			{
-				if (i >= save + 1)
-				{
-					append_this = ft_substr(str, save, i - save);
-					append_line(&new_line, &append_this);
-				}
-				if (j == 2)
-					value_to_check = ft_strdup("");
-				else
-					value_to_check = ft_substr(str, i + 1, j - 1);
-				ft_alloc_check(value_to_check);
-				env_value = get_envar(value_to_check);
-				if (!env_value)
-					append_this = ft_strdup("");
-				else
-				{
-					append_this = ft_strdup(env_value);
-				}
-				if (env_value)
-                {
-                    free(env_value);
-                    env_value = NULL;
-                }
-				free(value_to_check);
-				value_to_check = NULL;
-			}
-			append_line(&new_line, &append_this);
-			i += j - 1;
-			save = i + 1;
-			i++;
-			continue ;
+			handle_dollar_out_of_quotes();
 		}
 		else if (is_open_quote())
 		{
 			append_this = ft_substr(str, save, i - save);
 			ft_alloc_check(append_this);
-			append_line(&new_line, &append_this);
+			append_line(&o->new_line, &append_this);
 			save = i;
 			while (is_open_quote() && str[++i])
 			{
