@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/24 14:06:04 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/24 17:56:18 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,32 @@ void	ft_echo(char **cmd)
 		write(1, "\n", 1);
 }
 
-void	ft_exit(int exit_code)//g_exit?
+void	ft_exit(char **cmd)//g_exit?
 {
-	//ft_lstclear()
+	int minus;
+
+	minus = 0;
 	write(1, "exit\n", ft_strlen("exit\n"));
-	exit(exit_code%256);
+	if (!cmd || !cmd[1])
+	{
+		//ft_lstclear();
+		exit(g_exit%256);
+	}
+	if (cmd[2])
+	{
+		write(1, "bash: exit: too many arguments\n", ft_strlen("bash: exit: too many arguments\n"));
+		return ;
+	}
+	//ft_lstclear();
+	ft_atoull(cmd[1], &minus);
+	if(check_numeric(cmd[1]) || ((!minus && ft_atoull(cmd[1], &minus) > __LONG_LONG_MAX__ ) || (minus && ft_atoull(cmd[1], &minus) - 1 > __LONG_LONG_MAX__)))
+	{
+		write(1, "bash: exit: ", ft_strlen("bash: exit: "));
+		write(1, cmd[1], ft_strlen(cmd[1]));
+		write(1, ": numeric argument required\n", ft_strlen(": numeric argument required\n"));
+		exit(255);
+	}
+	exit(ft_atoll(cmd[1])%256);
 }
 
 void	ft_pwd()

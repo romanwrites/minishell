@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_mshell.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:56:37 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/24 20:05:36 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/27 16:17:00 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,9 @@ _Bool	        	is_any_quote_open(t_parse *state_check);
 void	        	set_quotes_state(t_parse *state_check, int j, const char *str);
 _Bool	        	is_backslash_pressed(t_parse *state_check);
 void	        	set_backslash_state(t_parse *state_check, char c);
+int                 check_numeric(char *str);
+long long		    ft_atoll(char *str);
+unsigned long long  ft_atoull(char *str, int *minus);
+
 
 #endif

@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_everything.c                                 :+:      :+:    :+:   */
+/*   check_numeric.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/20 13:20:15 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/27 16:40:26 by lhelper          ###   ########.fr       */
+/*   Created: 2020/10/24 15:38:39 by lhelper           #+#    #+#             */
+/*   Updated: 2020/10/24 17:07:42 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
-void		print_everything(t_mshell *sv)
+int check_numeric(char *str)
 {
-	t_token	*token;
+    int i;
 
-	while (sv->sh)
-	{
-		while (sv->sh->tdlst_pipe)
-		{
-			open_quotes(sv->sh->tdlst_pipe->token);
-			token = sv->sh->tdlst_pipe->token_head;
-			print_token_list(token);
-			sv->sh->tdlst_pipe = sv->sh->tdlst_pipe->next;
-		}
-		sv->sh = sv->sh->next;
-	}
+    i = 0;
+    if (ft_strlen(str) > 20)
+        return (1);
+    if (str[i] != '-' && !ft_isdigit(str[i]))
+        return (1);
+    i++;
+    while(str[i])
+    {
+        if(!ft_isdigit(str[i]))
+            return (1);
+        i++;
+    }
+    return (0);
 }

@@ -12,6 +12,25 @@
 
 #include "../includes/minishell.h"
 
+void all_to_lower(char **cmd)
+{
+	int i;
+	int x;
+
+	i = 0;
+	x = 0;
+	while(cmd[i])
+	{
+		while(cmd[i][x])
+		{
+			cmd[i][x] = ft_tolower(cmd[i][x]);
+			x++;
+		}
+		i++;
+		x = 0;
+	}
+}
+
 void 	execute(char **cmd)
 {
 	if (!(strcmp(cmd[0], "export")))
@@ -23,13 +42,16 @@ void 	execute(char **cmd)
 	else if (!(strcmp(cmd[0], "echo")))
 		ft_echo(cmd);
 	else if (!(strcmp(cmd[0], "exit")))
-		ft_exit(g_exit);
+		ft_exit(cmd);
 	else if (!(strcmp(cmd[0], "cd")))
 		ft_cd(cmd[1]);
 	else if (!(strcmp(cmd[0], "unset")))
 		ft_unset(cmd[1]);
 	else
+	{
+		all_to_lower(cmd);
 		handle_cmd(cmd);
+	}
 }
 
 int	handle_redir(char *is_redir, char *file)
@@ -49,69 +71,40 @@ int	handle_redir(char *is_redir, char *file)
 	return (fd);
 }
 
-void 	execute_command(char **cmd, char *is_redir, int fd)
+void 	execute_command(char **cmd, char *is_redir, int fd, int filedes)
 {
-	pid_t pid;
-
     int savestdout = dup(1);
     int savestdin = dup(0);
-	/*
-	if (is_redir)
-	{
-		if(!ft_strcmp(is_redir, ">"))
-		{
-			fd = open(file, O_CREAT | O_TRUNC | O_WRONLY | S_IRUSR | S_IWUSR | S_IROTH);
-			if(fd)
-				dup2(fd, 1);
-		}
-		else if(!ft_strcmp(is_redir, "<"))
-		{
-			fd = open(file, O_RDONLY | S_IRUSR | S_IWUSR | S_IROTH);
-			if(fd)
-				dup2(fd, 0);
-		}
-		else
-		{
-			fd = open(file, O_CREAT | O_APPEND | O_WRONLY | S_IRUSR | S_IWUSR | S_IROTH);
-			if(fd)
-				dup2(fd, 1);
-		}
-		if(!fd)
-		{
-			if (!ft_strcmp(is_redir, "<"))
-				dup2(savestdin, 0);
-			else
-				dup2(savestdout, 1);
-			return ;
-		}
-		*/
+
 	if(fd != -1)
 	{
-		if (!ft_strcmp(is_redir, "<"))
-			dup2(fd, 0);
-		else
-			dup2(fd, 1);
-		pid = fork();
-    	if (pid == 0)
-    	{
-			signal(SIGQUIT, handle_child_signal);
-			signal(SIGINT, handle_child_signal);
-			close(fd);
-			execute(cmd);
-			exit(0);
+		if (filedes == -1)
+		{
+			if (!ft_strcmp(is_redir, "<"))
+				dup2(fd, 0);
+			else
+				dup2(fd, 1);
+			execute(cmd);//
+			if (!ft_strcmp(is_redir, "<"))//
+				dup2(savestdin, 0);//
+			else//
+				dup2(savestdout, 1);//
 		}
 		else
 		{
-			signal(SIGQUIT, SIG_IGN);
-			signal(SIGINT, SIG_IGN);
-			wait(NULL);
-			signal(SIGQUIT, handle_parent_signal);
-			signal(SIGINT, handle_parent_signal);
-			close(fd);
 			if (!ft_strcmp(is_redir, "<"))
-				dup2(savestdin, 0);
+			{
+				dup2(fd, 0);
+				dup2(filedes, 1);
+			}
 			else
-				dup2(savestdout, 1);
+			{
+				dup2(fd, 1);
+				dup2(filedes, 0);
+			}
+			execute(cmd);
+			dup2(savestdin, 0);
+			dup2(savestdout, 1);
 		}
 	}
 	else

@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/24 14:11:48 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/27 17:57:40 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,21 +21,30 @@ LIBFT_DIR = ./libft
 GNL = get_next_line.c \
 		get_next_line_utils.c \
 
-PARSE_SRC = open_quotes.c \
+PARSE_SRC = alloc_pipe_list.c \
+			alloc_token_list.c \
+			check_syntax.c \
+			check_syntax2.c \
+			get_sh_list.c \
+			open_quotes.c \
             parse.c \
             parse_env.c \
 			split_by_char.c \
 			split_by_commands.c \
-			states.c \
+			split_by_commands_utils.c \
 
-UTILS_SRC = compare_kv.c \
+UTILS_SRC = alloc_and_check.c \
+			compare_kv.c \
             count_2d_lines.c \
+			check_numeric.c \
             dlst_pipe.c \
             dlst_sh.c \
             exit_error_message.c \
             free_all_lists.c \
             ft_alloc_check.c \
-            ft_trim_2d.c \
+			ft_atoll.c \
+			ft_atoull.c \
+			ft_trim_2d.c \
 			get_envar.c \
 			print_2d_array.c \
 			print_error.c \
@@ -43,7 +52,10 @@ UTILS_SRC = compare_kv.c \
 			print_token.c \
 			reset_newlines.c \
 			set_heads.c \
+			set_states.c \
 			signal.c \
+			states.c \
+			states_first_lvl.c \
 			token.c \
 
 ENGINE_SRC = engine_start.c \
@@ -82,7 +94,7 @@ sh: all
 	#rm -f libft/libft.a
 	rm -f $(OBJ)
 	$(MAKE) clean -C $(LIBFT_DIR)
-	./minishell
+	#./minishell
 
 resh: re
 	rm -f $(OBJ)
