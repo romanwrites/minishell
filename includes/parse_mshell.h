@@ -72,7 +72,7 @@ _Bool			check_syntax_by_indexes(const char *str);
 /*
 ** get_sh_list.c
 */
-t_dlist_sh		*get_sh_list(char **semicolons2d, int i);
+t_dlist_sh			*get_sh_list(char **semicolons2d, int i, t_mshell *sv);
 
 /*
 ** alloc_pipe_list.c

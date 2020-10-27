@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:38:07 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/27 16:39:58 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/27 16:53:34 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,13 @@ _Bool		parse_input(char *str, t_mshell *sv)
 	ft_alloc_check(input_str);
 	if (check_syntax_by_indexes(input_str) || check_syntax_errors(input_str))
 		ret_syntax_err();
+//	printf("BREAK\n");
+//	read(0,0,1);
 	semicolons2d = split_by_char(SEMICOLON, input_str, sv);
 	ft_alloc_check(semicolons2d);
 	free(input_str);
 	init_globs();
-	sv->sh = get_sh_list(semicolons2d, 0);
+	sv->sh = get_sh_list(semicolons2d, 0, sv);
 	semicolons2d = NULL;
 	if (!sv->sh)
 		return (1);

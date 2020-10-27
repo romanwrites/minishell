@@ -19,7 +19,7 @@ t_dlist_sh			*process_new_node(t_dlist_sh *sh)
 	return (sh);
 }
 
-t_dlist_sh			*get_sh_list(char **semicolons2d, int i)
+t_dlist_sh			*get_sh_list(char **semicolons2d, int i, t_mshell *sv)
 {
 	t_dlist_pipe	*dlst_pipe;
 	t_dlist_sh		*sh;
@@ -31,7 +31,7 @@ t_dlist_sh			*get_sh_list(char **semicolons2d, int i)
 	sh_head = sh;
 	while (semicolons2d[i])
 	{
-		tmp_semi = split_by_char(PIPE, semicolons2d[i]);
+		tmp_semi = split_by_char(PIPE, semicolons2d[i], sv);
 //		trim_tmp_semi = ft_trim_2d_cpy(tmp_semi);
 		if (check_syntax_2d(tmp_semi))
 		{

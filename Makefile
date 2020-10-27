@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/27 16:40:28 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/27 16:50:17 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,6 @@ PARSE_SRC = open_quotes.c \
             parse_env.c \
 			split_by_char.c \
 			split_by_commands.c \
-			states.c \
 
 UTILS_SRC = compare_kv.c \
             count_2d_lines.c \
@@ -47,6 +46,7 @@ UTILS_SRC = compare_kv.c \
 			reset_newlines.c \
 			set_heads.c \
 			signal.c \
+			states.c \
 			token.c \
 
 ENGINE_SRC = engine_start.c \
