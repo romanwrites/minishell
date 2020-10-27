@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/27 11:57:17 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/27 15:49:38 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void		process_cmd(t_mshell *sv)
 	char **cmd;
 	char *last_redir;
 	int fd;
+	int filedes;
 	int fds[2];
 	int i;
 	int x;
@@ -29,6 +30,7 @@ void		process_cmd(t_mshell *sv)
 	int com = 0;
 	cmd = (char **)malloc((sizeof(char *) * PATH_MAX));
 	fd = -1;
+	filedes = -1;
 	fds[0] = -1;
 	fds[1] = -1;
 	last_redir = NULL;
@@ -46,7 +48,10 @@ void		process_cmd(t_mshell *sv)
 				if (((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && token->next && token->next->content && (ft_strcmp(token->next->content, ">") && ft_strcmp(token->next->content, ">>") && ft_strcmp(token->next->content, "<"))))
 				{
 					if (fd != -1)
+					{
 						close(fd);
+						fd = -1;
+					}
 					fd = handle_redir(token->content, token->next->content);
 					last_redir = token->content;
 					if (fd == -1)
@@ -55,6 +60,30 @@ void		process_cmd(t_mshell *sv)
 						write(1, token->next->content, ft_strlen(token->next->content));
 						write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 						return ;
+					}
+					if (token->next->next && token->next->next->content && token->next->next->next && token->next->next->next->content && (!ft_strcmp(token->next->next->content, "<") || !ft_strcmp(token->next->next->content, ">") || !ft_strcmp(token->next->next->content, ">>")))
+					{
+						if ((!ft_strcmp(token->next->next->content, "<") && (!ft_strcmp(last_redir, ">") || !ft_strcmp(last_redir, ">>"))) || (!ft_strcmp(token->next->next->content, ">") || (!ft_strcmp(token->next->next->content, ">>") && !ft_strcmp(last_redir, "<"))))
+						{
+							filedes = handle_redir(token->next->next->content, token->next->next->next->content);
+							if (filedes == -1)
+							{
+								write(1, PROM, ft_strlen(PROM));//why zero??????
+								write(1, token->next->next->next->content, ft_strlen(token->next->next->next->content));
+								write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+								return ;
+							}
+							printf("HELP!\n");
+							execute_command(cmd, last_redir, fd, filedes);
+							close(filedes);
+							filedes = -1;
+							token = token->next->next;
+						}
+					}
+					else if (!token->next->next || !token->next->next->content || !token->next->next->next || !token->next->next->next->content || (ft_strcmp(token->next->next->content, "<") && ft_strcmp(token->next->next->content, ">") && ft_strcmp(token->next->next->content, ">>")))
+					{
+						printf("HALLO!\n");
+						execute_command(cmd, last_redir, fd, filedes);
 					}
 					token = token->next;//QUESTIONABLE BUT DOESN'T REQUIRE IS_HANDLED
 				}
@@ -68,12 +97,12 @@ void		process_cmd(t_mshell *sv)
 				}
 				else
 					cmd[i++] = token->content;
+					cmd[i] = NULL;
 				//print_2d_array(cmd);
 				token = token->next;
 			}
 			if (i)
 			{
-				cmd[i] = NULL;
 				if (sv->sh->tdlst_pipe->next)
 				{
 					pipe(fds);
@@ -85,7 +114,7 @@ void		process_cmd(t_mshell *sv)
 						close(fds[0]);
 						dup2(fds[1], 1);
 						close(fds[1]);
-						execute_command(cmd, last_redir, fd);
+						execute_command(cmd, last_redir, fd, filedes);
 						exit((int)g_exit%256);//
 					}
 					else
@@ -100,12 +129,8 @@ void		process_cmd(t_mshell *sv)
 						close(fds[0]);
 					}
 				}
-				else
-				{
-					execute_command(cmd, last_redir, fd);
-					dup2(savestdin, 0);
-					dup2(savestdout, 1);
-				}
+				else if (fd == -1)
+					execute_command(cmd, last_redir, fd, filedes);
 			}
 			token = sv->sh->tdlst_pipe->token_head;
 			sv->sh->tdlst_pipe = sv->sh->tdlst_pipe->next;

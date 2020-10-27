@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/26 16:03:55 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/27 13:37:25 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ extern long long			g_exit;
 
 void	handle_cmd(char **cmd);//
 char **list_to_env();//
-void 	execute_command(char **cmd, char *is_redir, int fd);//
+void 	execute_command(char **cmd, char *is_redir, int fd, int filedes);//
 int	handle_redir(char *is_redir, char *file);//
 void    handle_child_signal(int signal);//
 void    handle_parent_signal(int signal);//

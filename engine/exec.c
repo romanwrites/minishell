@@ -59,22 +59,41 @@ int	handle_redir(char *is_redir, char *file)
 	return (fd);
 }
 
-void 	execute_command(char **cmd, char *is_redir, int fd)
+void 	execute_command(char **cmd, char *is_redir, int fd, int filedes)
 {
     int savestdout = dup(1);
     int savestdin = dup(0);
 
 	if(fd != -1)
 	{
-		if (!ft_strcmp(is_redir, "<"))
-			dup2(fd, 0);
+		if (filedes == -1)
+		{
+			if (!ft_strcmp(is_redir, "<"))
+				dup2(fd, 0);
+			else
+				dup2(fd, 1);
+			execute(cmd);//
+			if (!ft_strcmp(is_redir, "<"))//
+				dup2(savestdin, 0);//
+			else//
+				dup2(savestdout, 1);//
+		}
 		else
-			dup2(fd, 1);
-		execute(cmd);//
-		if (!ft_strcmp(is_redir, "<"))//
-			dup2(savestdin, 0);//
-		else//
-			dup2(savestdout, 1);//
+		{
+			if (!ft_strcmp(is_redir, "<"))
+			{
+				dup2(fd, 0);
+				dup2(filedes, 1);
+			}
+			else
+			{
+				dup2(fd, 1);
+				dup2(filedes, 0);
+			}
+			execute(cmd);
+			dup2(savestdin, 0);
+			dup2(savestdout, 1);
+		}
 	}
 	else
 		execute(cmd);
