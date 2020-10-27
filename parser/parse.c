@@ -64,6 +64,8 @@ _Bool		parse_input(char *str, t_mshell *sv)
 	ft_alloc_check(input_str);
 	if (check_syntax_by_indexes(input_str) || check_syntax_errors(input_str))
 		ret_syntax_err();
+//	printf("BREAK\n");
+//	read(0,0,1);
 	semicolons2d = split_by_char(SEMICOLON, input_str, sv);
 	ft_alloc_check(semicolons2d);
 	free(input_str);
