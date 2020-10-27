@@ -72,7 +72,7 @@ _Bool		is_valid_syntax(char pre, char cur, char next);
 
 size_t		len_without_newlines(const char *ptr);
 
-char		*open_quotes_str(const char *str_src);
+char		*open_quotes_str(t_open_q *o);
 void		open_quotes(t_token *token);
 void		open_quotes_new(t_token *token);
 
