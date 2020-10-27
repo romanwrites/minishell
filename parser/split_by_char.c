@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_by_char.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 00:49:14 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/30 00:49:17 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/27 16:24:25 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ void		set_new_lines_over_char(char c, char *str)
 	}
 }
 
-char		**split_by_char(char c, char *str)
+char		**split_by_char(char c, char *str, t_mshell *sv)
 {
 	char	**semicolon2d;
 	char 	**new_ptr;
 
-	set_new_lines_over_char(c, str);
+	set_new_lines_over_char(c, str, sv);
 	semicolon2d = ft_split(str, '\n');
 	reset_newlines(str);
 	ft_alloc_check(semicolon2d);

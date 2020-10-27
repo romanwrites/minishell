@@ -6,7 +6,11 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2020/10/24 14:11:48 by lhelper          ###   ########.fr        #
+=======
+#    Updated: 2020/10/24 17:34:16 by lhelper          ###   ########.fr        #
+>>>>>>> sig
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,12 +34,15 @@ PARSE_SRC = open_quotes.c \
 
 UTILS_SRC = compare_kv.c \
             count_2d_lines.c \
+			check_numeric.c \
             dlst_pipe.c \
             dlst_sh.c \
             exit_error_message.c \
             free_all_lists.c \
             ft_alloc_check.c \
             ft_trim_2d.c \
+			ft_atoll.c \
+			ft_atoull.c \
 			get_envar.c \
 			print_2d_array.c \
 			print_error.c \
@@ -82,7 +89,7 @@ sh: all
 	#rm -f libft/libft.a
 	rm -f $(OBJ)
 	$(MAKE) clean -C $(LIBFT_DIR)
-	./minishell
+	#./minishell
 
 resh: re
 	rm -f $(OBJ)

@@ -19,7 +19,7 @@ void	free_env(char **env_array, int lines);
 void	ft_cd(char *str);
 void	ft_echo(char **str);
 void	ft_env();
-void	ft_exit(int exit_code);
+void	ft_exit(char **cmd);
 void	ft_export(char *arg);
 void	ft_pwd();
 void	ft_unset(char *arg);
