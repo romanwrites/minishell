@@ -16,15 +16,21 @@ t_token		*alloc_token_list(char **ptr)
 {
 	t_token	*token;
 	t_token	*head;
+	char    *str_dup;
 	int		i;
 
 	i = 0;
-	token = token_new(ptr[i], NULL);
+    str_dup = ft_strdup(ptr[i]);
+    ft_alloc_check(str_dup);
+	token = token_new(str_dup, NULL);
 	ft_alloc_check(token);
 	head = token;
 	while (ptr[++i])
 	{
-		token->next = token_new(ptr[i], &token);
+        str_dup = ft_strdup(ptr[i]);
+        ft_alloc_check(str_dup);
+		token->next = token_new(str_dup, &token);
+		str_dup = NULL;
 		ft_alloc_check(token->next);
 		token = token->next;
 	}

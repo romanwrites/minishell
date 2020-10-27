@@ -33,7 +33,7 @@ t_dlist_pipe	*alloc_pipe_list(char **ptr)
 		trim_cmd = ft_trim_2d_cpy(tmp_cmd);
 		token = alloc_token_list(trim_cmd);
 		ft_alloc_check(token);
-//		ft_free2d(tmp_cmd);
+		ft_free2d(trim_cmd);
 		tmp_cmd = NULL;
 		pipe->token = token;
 		if (ptr[i + 1])
