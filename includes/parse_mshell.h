@@ -31,7 +31,7 @@
 # define NEWLINE 10
 
 _Bool		parse_input(char *str, t_mshell *sv);
-char		**split_by_char(char c, char *str);
+char		**split_by_char(char c, char *str, t_mshell *sv);
 int			count_2d_lines(char **arr2d);
 char		**split_command(const char *str_input);
 _Bool		is_redir_or_pipe(char c);
