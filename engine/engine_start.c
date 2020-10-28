@@ -19,7 +19,7 @@ int		g_backslash_time;
 //t_mshell *g_sv;
 
 t_list	*g_env;
-char	*input;
+char	*g_input;
 char	*g_home;
 int		g_isfork;
 long long g_exit;
@@ -49,10 +49,10 @@ void ignore()
 
 void new_line()
 {
-	if (input)
+	if (g_input)
 	{
-		free(input);
-		input = NULL;
+		free(g_input);
+		g_input = NULL;
 	}
 	write(0, "\b\b  \b\b", 6);
 	write(0, "\n", 1);
@@ -85,7 +85,7 @@ int     main(int ac, char **av, char **envp)
 	init(sv);
 	int br = 0;
 	write(0, PROMPT, ft_strlen(PROMPT));
-	while (get_next_line(0, &str))
+	while (get_next_line(0, &str, 0, 0))
 	{
 		ft_alloc_check(str);
 		if (parse_input(str, sv))

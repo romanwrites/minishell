@@ -17,7 +17,8 @@
 */
 
 #include "get_next_line.h"
-char	*input;
+
+char			*g_input;
 
 static _Bool	append_utils(char **append_this, char **remainder, \
 								char **line, char **newline_ptr_temp)
@@ -76,7 +77,7 @@ static _Bool	append(char **remainder, char **line, _Bool *flag)
 	return (1);
 }
 
-static _Bool	check_input(int fd, char **line, _Bool *flag, char **remainder)
+static _Bool	chck_in(int fd, char **line, _Bool *flag, char **remainder)
 {
 	if (BUFFER_SIZE < 1 || fd < 0)
 		return (0);
@@ -92,7 +93,7 @@ static _Bool	check_input(int fd, char **line, _Bool *flag, char **remainder)
 	return (1);
 }
 
-static _Bool	append_remainder(int i, char **remainder, \
+static _Bool	app_rem(int i, char **remainder, \
 								char **newline_ptr, char **line)
 {
 	char		*temp;
@@ -121,44 +122,31 @@ static _Bool	append_remainder(int i, char **remainder, \
 	return (1);
 }
 
-int				get_next_line(int fd, char **line)
+int				get_next_line(int fd, char **line, _Bool f, ssize_t bytes_read)
 {
-	static char	*remainder;
+	static char	*rem;
 	char		buf[BUFFER_SIZE + 1];
-	char		*newline_ptr;
-	_Bool		flag;
-	ssize_t		bytes_read;
+	char		*nl_ptr;
 
-	if (input)
-	{
-		free(input);
-		input = NULL;
-	}
-	if (!line || (read(fd, buf, 0) < 0) || \
-		!(check_input(fd, line, &flag, &remainder)))
+	process_g_input();
+	if (!line || (read(fd, buf, 0) < 0) || !(chck_in(fd, line, &f, &rem)))
 		return (-1);
-	while (flag && (bytes_read = read(fd, buf, BUFFER_SIZE)) != -1)
+	while (f && (bytes_read = read(fd, buf, BUFFER_SIZE)) != -1)
 	{
-		if (bytes_read == 0 && input)
-		{
-			write(0, "  \b\b", 4);
-			continue;
-		}
+		if (bytes_read == 0 && g_input && write_b_b())
+			continue ;
 		else if (bytes_read == 0)
 			return (0);
 		if (bytes_read < 0)
-			return ((append_remainder(-1, &remainder, &newline_ptr, line)));
+			return ((app_rem(-1, &rem, &nl_ptr, line)));
 		buf[bytes_read] = 0;
-		input = ft_strjoin_gnl(input, buf);
-		if ((newline_ptr = ft_strchr_gnl(buf, '\n')))
+		g_input = ft_strjoin_gnl(g_input, buf);
+		if ((nl_ptr = ft_strchr_gnl(buf, '\n')))
 		{
-			*newline_ptr = '\0';
-			flag = 0;
-			if (!(append_remainder(1, &remainder, &newline_ptr, line)))
+			if (!(f = process_nl(nl_ptr)) && !(app_rem(1, &rem, &nl_ptr, line)))
 				return (-1);
 		}
-		if (!(*line = ft_strjoin_gnl(*line, buf)))
-			return (-1);
+		*line = ft_strjoin_gnl(*line, buf);
 	}
-	return ((!flag) ? 1 : 0);
+	return ((!f) ? 1 : 0);
 }
