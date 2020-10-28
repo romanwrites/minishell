@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void		set_new_lines_over_char(char c, char *str, t_mshell *sv)
+static void	set_new_lines_over_char(char c, char *str, t_mshell *sv)
 {
 	int		j;
 

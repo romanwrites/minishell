@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_mshell.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:39:05 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/27 16:16:18 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/28 19:53:02 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # define REDIR_RIGHT 62
 # define REDIR_RIGHT_DOUBLE ">>"
 # define NEWLINE 10
-
 
 /*
 ** alloc_pipe_list.c
@@ -56,43 +55,61 @@ _Bool			check_syntax_by_indexes(const char *str);
 */
 t_dlist_sh		*get_sh_list(char **semicolons2d, int i, t_mshell *sv);
 
-//handle_dollar.c
+/*
+** handle_dollar.c
+*/
 void			handle_dollar(t_open_q *o, int i);
 void			get_env_val(t_open_q *o, int i, int j);
 void			append_dollar_after_backslash(t_open_q *o, int i, int j);
 void			get_several_dollars(t_open_q *o, int i);
 
-//open_quotes.c
+/*
+** open_quotes.c
+*/
 void			open_quotes(t_token *token);
 
-//open_quotes2.c
+/*
+** open_quotes2.c
+*/
 char			*open_quotes_str(t_open_q *o, size_t i);
 
-//open_quotes_utils.c
+/*
+** open_quotes_utils.c
+*/
 char			*just_tilde(t_open_q *o, int i);
 _Bool			is_env_val_after_dollar(char c);
 
-
+/*
+** parse.c
+*/
 _Bool			parse_input(char *str, t_mshell *sv);
+_Bool			ret_syntax_err(void);
+size_t			len_without_newlines(const char *ptr);
+void			append_line(char **ptr, char **append_this);
+
+/*
+** parse_env.c
+*/
+int				get_env_from_str(const char *str);
+size_t			get_dollars_end(const char *str);
+
+/*
+** split_by_char.c
+*/
 char			**split_by_char(char c, char *str, t_mshell *sv);
-int				count_2d_lines(char **arr2d);
+
+/*
+** split_by_commands.c
+*/
 char			**split_command(const char *str_input);
-_Bool			is_redir_or_pipe(char c);
-_Bool			is_valid_syntax(char pre, char cur, char next);
 
-size_t		len_without_newlines(const char *ptr);
-
-void        append_line(char **ptr, char **append_this);
-size_t		get_dollars_end(const char *str);
-int			get_env_from_str(const char *str);
-_Bool		is_after_redir_semi_check(const char *str, int i);
-_Bool		is_after_redir_or_pipe(const char *str, int i);
-_Bool 		is_after_redir(const char *str, int i);
-_Bool		is_double_redir(const char *str, int i);
-_Bool		is_pipe_or_single_redir(const char *str, int i);
-
-
-
-
+/*
+** split_by_commands_utils.c
+*/
+_Bool			is_after_redir_semi_check(const char *str, int i);
+_Bool			is_after_redir_or_pipe(const char *str, int i);
+_Bool			is_after_redir(const char *str, int i);
+_Bool			is_double_redir(const char *str, int i);
+_Bool			is_pipe_or_single_redir(const char *str, int i);
 
 #endif

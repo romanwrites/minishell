@@ -38,7 +38,7 @@ static int		process_open_q_cmd(char *str, int j)
 	return (j);
 }
 
-char			*process_str(const char *str_input)
+static char		*process_str(const char *str_input)
 {
 	int			i;
 	char		*str;
