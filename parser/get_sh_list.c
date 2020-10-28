@@ -40,7 +40,6 @@ t_dlist_sh			*get_sh_list(char **semicolons2d, int i, t_mshell *sv)
 		if (!(dlst_pipe = alloc_pipe_list(tmp_semi, 0)))
 			return (NULL);
 		ft_free2d(tmp_semi);
-		tmp_semi = NULL;
 		sh->tdlst_pipe = dlst_pipe;
 		if (semicolons2d[i + 1])
 			sh = process_new_node(sh);

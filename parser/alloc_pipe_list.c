@@ -20,7 +20,6 @@ t_dlist_pipe		*alloc_pipe_list(char **ptr, int i)
 	t_dlist_pipe	*pipe;
 	t_dlist_pipe	*head;
 
-	tmp_cmd = NULL;
 	pipe = pipe_new(NULL, NULL);
 	head = pipe;
 	while (ptr[i])
