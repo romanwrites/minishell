@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/27 18:02:25 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/28 17:41:16 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,10 @@ void		process_cmd(t_mshell *sv)
 					return ;
 				}
 				else
+				{
 					cmd[i++] = token->content;
 					cmd[i] = NULL;
+				}
 				//print_2d_array(cmd);
 				token = token->next;
 			}
@@ -125,7 +127,7 @@ void		process_cmd(t_mshell *sv)
 						close(fds[0]);
 					}
 				}
-				else if (fd == -1)
+				else
 					execute_command(cmd, last_redir, fd, filedes);
 			}
 			token = sv->sh->tdlst_pipe->token_head;
