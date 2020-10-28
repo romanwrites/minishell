@@ -22,6 +22,7 @@ typedef struct				s_open_q {
 	char					*new_line;
 	char					*append_this;
 	char 					*str;
+	char 					*tab;
 }							t_open_q;
 
 typedef struct				s_parse {

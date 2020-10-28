@@ -17,10 +17,37 @@ _Bool		is_env_val_after_dollar(char c)
 	return (ft_isdigit(c) || ft_isalpha(c) || c == DOLLAR);
 }
 
+void		free_and_null(char **str)
+{
+	free(*str);
+	*str = NULL;
+}
+
+void		get_several_dollars(t_open_q *o, int i)
+{
+	int		j;
+
+	j = get_dollars_end(o->str + i);
+	if (i > o->save + 2 && is_backslash_active())
+	{
+		o->append_this = ft_substr_and_chk(o->str, o->save, i - o->save - 1);
+		append_line(&o->new_line, &o->append_this);
+	}
+	else if (i > o->save + 2 && !is_backslash_active())
+	{
+		o->append_this = ft_substr_and_chk(o->str, o->save, i - o->save);
+		append_line(&o->new_line, &o->append_this);
+	}
+	o->append_this = ft_substr_and_chk(o->str, i, j);
+	append_line(&o->new_line, &o->append_this);
+	i += j;
+	o->save = i + 2;
+	o->i = ++i;
+}
+
 void		handle_dollar_out_of_quotes(t_open_q *o, int i)
 {
 	int		j;
-	char 	*append_this;
 	char	*value_to_check;
 	char 	*env_value;
 	char 	*str = o->str;
@@ -29,26 +56,13 @@ void		handle_dollar_out_of_quotes(t_open_q *o, int i)
 	j = 0;
 	if (str[i + 1] == '$')
 	{
-		j = get_dollars_end(str + i);
-		if (i > o->save + 2 && is_backslash_active())
-		{
-			o->append_this = ft_substr_and_chk(str, o->save, i - o->save - 1);
-			append_line(&o->new_line, &o->append_this);
-		}
-		else if (i > o->save + 2 && !is_backslash_active())
-		{
-			o->append_this = ft_substr_and_chk(str, o->save, i - o->save);
-			append_line(&o->new_line, &o->append_this);
-		}
-		o->append_this = ft_substr_and_chk(str, i, j);
-		append_line(&o->new_line, &o->append_this);
-		i += j;
-		o->save = i + 2;
+		get_several_dollars(o, i);
 		return ;
 	}
 	else if (ft_isdigit(str[i + 1]))
 	{
 		i += 2;
+		o->i = i;
 		o->save += 2;
 		return ;
 	}
@@ -81,18 +95,13 @@ void		handle_dollar_out_of_quotes(t_open_q *o, int i)
 			o->append_this = ft_strdup_and_check(env_value);
 		}
 		if (env_value)
-		{
-			free(env_value);
-			env_value = NULL;
-		}
-		free(value_to_check);
-		value_to_check = NULL;
+			free_and_null(&env_value);
+		free_and_null(&value_to_check);
 	}
 	append_line(&o->new_line, &o->append_this);
 	i += j - 1;
 	o->save = i + 1;
-	o->i = ++i;
-//	continue ;
+	o->i = i;
 }
 
 
@@ -102,8 +111,6 @@ char		*open_quotes_str(t_open_q	*o)
 	size_t 	i;
 	size_t 	j;
 	char 	*str;
-	static char	tab[] = {DOLLAR, DOUBLE_QUOTE, BACKSLASH, GRAVE_ACCENT, '\0'};
-
 	char	*value_to_check;
 	char 	*env_value;
 
@@ -130,6 +137,7 @@ char		*open_quotes_str(t_open_q	*o)
 		{
 			handle_dollar_out_of_quotes(o, i);
 			i = o->i;
+			continue ;
 		}
 		else if (is_open_quote())
 		{
@@ -139,7 +147,7 @@ char		*open_quotes_str(t_open_q	*o)
 			while (is_open_quote() && str[++i])
 			{
 				set_states(str[i]);
-				if (str[i] == BACKSLASH && g_dquote && ft_strchr(tab, str[i + 1]))
+				if (str[i] == BACKSLASH && g_dquote && ft_strchr(o->tab, str[i + 1]))
 				{
 					i++;
 					o->append_this = ft_strdup_and_check(" ");
@@ -152,21 +160,8 @@ char		*open_quotes_str(t_open_q	*o)
 				{
 					if (str[i + 1] == '$')
 					{
-						j = get_dollars_end(str + i);
-						if (i > o->save + 2 && is_backslash_active())
-						{
-							o->append_this = ft_substr_and_chk(str, o->save, i - o->save - 1);
-							append_line(&o->new_line, &o->append_this);
-						}
-						else if (i > o->save + 2 && !is_backslash_active())
-						{
-							o->append_this = ft_substr_and_chk(str, o->save, i - o->save);
-							append_line(&o->new_line, &o->append_this);
-						}
-						o->append_this = ft_substr_and_chk(str, i, j);
-						append_line(&o->new_line, &o->append_this);
-						i += j;
-						o->save = i + 2;
+						get_several_dollars(o, i);
+						i = o->i;
 						continue ;
 					}
 					else if (ft_isdigit(str[i + 1]))
@@ -236,8 +231,7 @@ char		*open_quotes_str(t_open_q	*o)
 			}
 			append_line(&o->new_line, &o->append_this);
 			o->save = i + 1;
-			free(env_value);
-			env_value = NULL;
+			free_and_null(&env_value);
 			return (o->new_line);
 		}
 		i++;
@@ -285,6 +279,8 @@ void			open_quotes(t_token *token)
 	t_open_q	*o;
 	o = malloc(sizeof(t_open_q));
 	ft_alloc_check(o);
+	static char	tab_[] = {DOLLAR, DOUBLE_QUOTE, BACKSLASH, GRAVE_ACCENT, '\0'};
+	o->tab = tab_;
 	tmp = NULL;
 	while (token)
 	{
