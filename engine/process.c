@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/28 19:15:41 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/28 19:22:44 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ void		process_cmd(t_mshell *sv)
 				else if (fd == -1)
 				{
 					execute_command(cmd, last_redir, fd, filedes);
-					//dup2(savestdin, 0);
-					//dup2(savestdout, 1);
+					dup2(savestdin, 0);
+					dup2(savestdout, 1);
 				}
 			}
 			token = sv->sh->tdlst_pipe->token_head;
