@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/28 19:22:44 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/28 20:13:51 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ void		process_cmd(t_mshell *sv)
 						write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 						return ;
 					}
-					if (token->next->next && token->next->next->content && token->next->next->next && token->next->next->next->content && (!ft_strcmp(token->next->next->content, "<") || !ft_strcmp(token->next->next->content, ">") || !ft_strcmp(token->next->next->content, ">>")))
+					if (token->next->next && token->next->next->content && token->next->next->next && token->next->next->next->content && (!ft_strcmp(token->next->next->content, "<") || !ft_strcmp(token->next->next->content, ">") || !ft_strcmp(token->next->next->content, ">>")) && (ft_strcmp(token->next->next->next->content, ">") && ft_strcmp(token->next->next->next->content, ">>") && ft_strcmp(token->next->next->next->content, "<")))
 					{
-						if ((!ft_strcmp(token->next->next->content, "<") && (!ft_strcmp(last_redir, ">") || !ft_strcmp(last_redir, ">>"))) || (!ft_strcmp(token->next->next->content, ">") || (!ft_strcmp(token->next->next->content, ">>") && !ft_strcmp(last_redir, "<"))))
+						if ((!ft_strcmp(token->next->next->content, "<") && (!ft_strcmp(last_redir, ">") || !ft_strcmp(last_redir, ">>"))) || ((!ft_strcmp(token->next->next->content, ">") || (!ft_strcmp(token->next->next->content, ">>"))) && !ft_strcmp(last_redir, "<")))
 						{
 							filedes = handle_redir(token->next->next->content, token->next->next->next->content);
 							if (filedes == -1)
