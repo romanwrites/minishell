@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/28 18:09:54 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/28 18:18:31 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void		process_cmd(t_mshell *sv)
 						close(fds[0]);
 					}
 				}
-				else
+				else if (fd == -1)
 				{
 					execute_command(cmd, last_redir, fd, filedes);
 					dup2(savestdin, 0);
