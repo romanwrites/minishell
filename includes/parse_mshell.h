@@ -16,15 +16,10 @@
 # define BACKSLASH 92
 # define DOUBLE_QUOTE 34
 # define SINGLE_QUOTE 39
-# define SPACE 32
 # define SEMICOLON 59
 # define PIPE 124
 # define DOLLAR 36
 # define GRAVE_ACCENT 96
-# define EXIT_CODE 63
-# define INPUT 60
-# define OUTPUT 62
-# define AND 38
 # define REDIR_LEFT 60
 # define REDIR_RIGHT 62
 # define REDIR_RIGHT_DOUBLE ">>"
@@ -59,24 +54,34 @@ _Bool			check_syntax_by_indexes(const char *str);
 /*
 ** get_sh_list.c
 */
-t_dlist_sh			*get_sh_list(char **semicolons2d, int i, t_mshell *sv);
+t_dlist_sh		*get_sh_list(char **semicolons2d, int i, t_mshell *sv);
+
+//handle_dollar.c
+void			handle_dollar(t_open_q *o, int i);
+void			get_env_val(t_open_q *o, int i, int j);
+void			append_dollar_after_backslash(t_open_q *o, int i, int j);
+void			get_several_dollars(t_open_q *o, int i);
+
+//open_quotes.c
+void			open_quotes(t_token *token);
+
+//open_quotes2.c
+char			*open_quotes_str(t_open_q *o, size_t i);
+
+//open_quotes_utils.c
+char			*just_tilde(t_open_q *o, int i);
+_Bool			is_env_val_after_dollar(char c);
 
 
-
-_Bool		parse_input(char *str, t_mshell *sv);
-char		**split_by_char(char c, char *str, t_mshell *sv);
-int			count_2d_lines(char **arr2d);
-char		**split_command(const char *str_input);
-_Bool		is_redir_or_pipe(char c);
-_Bool		is_valid_syntax(char pre, char cur, char next);
+_Bool			parse_input(char *str, t_mshell *sv);
+char			**split_by_char(char c, char *str, t_mshell *sv);
+int				count_2d_lines(char **arr2d);
+char			**split_command(const char *str_input);
+_Bool			is_redir_or_pipe(char c);
+_Bool			is_valid_syntax(char pre, char cur, char next);
 
 size_t		len_without_newlines(const char *ptr);
 
-char		*open_quotes_str(t_open_q *o);
-void		open_quotes(t_token *token);
-void		open_quotes_new(t_token *token);
-
-void		parse_env();
 void        append_line(char **ptr, char **append_this);
 size_t		get_dollars_end(const char *str);
 int			get_env_from_str(const char *str);

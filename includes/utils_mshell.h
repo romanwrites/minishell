@@ -56,4 +56,10 @@ void				*ft_strdup_and_check(const char *str);
 char				*ft_itoa_and_chk(int n);
 
 
+//free_and_null.c
+void				free_and_null(char **str);
+
+//chr_join.c
+void				chr_join(char **str, char c);
+
 #endif

@@ -28,7 +28,7 @@ static int		set_nl_cpy(char **str, int i)
 	return (1);
 }
 
-static int		process_open_quotes(char *str, int j)
+static int		process_open_q_cmd(char *str, int j)
 {
 	while (is_open_quote() && str[j])
 	{
@@ -49,7 +49,7 @@ char			*process_str(const char *str_input)
 	{
 		set_states(str[i]);
 		if (is_open_quote())
-			i = process_open_quotes(str, ++i) - 1;
+			i = process_open_q_cmd(str, ++i) - 1;
 		else if (ft_isspace(str[i]) && !is_backslash_active())
 			str[i] = '\n';
 		else if (i > 0 && is_pipe_or_single_redir(str, i))
