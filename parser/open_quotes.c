@@ -45,15 +45,50 @@ void		get_several_dollars(t_open_q *o, int i)
 	o->i = ++i;
 }
 
-void		handle_dollar_out_of_quotes(t_open_q *o, int i)
+void		append_dollar_after_backslash(t_open_q *o, int i, int j)
 {
-	int		j;
+	if (i > o->save + 2)
+	{
+		o->append_this = ft_substr_and_chk(o->str, o->save, i - o->save - 1);
+		append_line(&o->new_line, &o->append_this);
+	}
+	o->append_this = ft_substr_and_chk(o->str, i, j);
+}
+
+void		get_env_val(t_open_q *o, int i, int j)
+{
 	char	*value_to_check;
-	char 	*env_value;
-	char 	*str = o->str;
+	char	*env_value;
 
 	value_to_check = NULL;
-	j = 0;
+	env_value = NULL;
+	if (i >= o->save + 1)
+	{
+		o->append_this = ft_substr_and_chk(o->str, o->save, i - o->save);
+		append_line(&o->new_line, &o->append_this);
+	}
+	if (j == 2)
+		value_to_check = ft_strdup_and_check("");
+	else
+		value_to_check = ft_substr_and_chk(o->str, i + 1, j - 1);
+	env_value = get_envar(value_to_check);
+	if (!env_value)
+		o->append_this = ft_strdup_and_check("");
+	else
+	{
+		o->append_this = ft_strdup_and_check(env_value);
+	}
+	if (env_value)
+		free_and_null(&env_value);
+	free_and_null(&value_to_check);
+}
+
+void		handle_dollar(t_open_q *o, int i)
+{
+	int		j;
+	char	*str;
+
+	str = o->str;
 	if (str[i + 1] == '$')
 	{
 		get_several_dollars(o, i);
@@ -68,43 +103,43 @@ void		handle_dollar_out_of_quotes(t_open_q *o, int i)
 	}
 	j = get_env_from_str(str + i);
 	if (is_backslash_active())
-	{
-		if (i > o->save + 2)
-		{
-			o->append_this = ft_substr_and_chk(str, o->save, i - o->save - 1);
-			append_line(&o->new_line, &o->append_this);
-		}
-		o->append_this = ft_substr_and_chk(str, i, j);
-	}
+		append_dollar_after_backslash(o, i, j);
 	else
-	{
-		if (i >= o->save + 1)
-		{
-			o->append_this = ft_substr_and_chk(str, o->save, i - o->save);
-			append_line(&o->new_line, &o->append_this);
-		}
-		if (j == 2)
-			value_to_check = ft_strdup_and_check("");
-		else
-			value_to_check = ft_substr_and_chk(str, i + 1, j - 1);
-		env_value = get_envar(value_to_check);
-		if (!env_value)
-			o->append_this = ft_strdup_and_check("");
-		else
-		{
-			o->append_this = ft_strdup_and_check(env_value);
-		}
-		if (env_value)
-			free_and_null(&env_value);
-		free_and_null(&value_to_check);
-	}
+		get_env_val(o, i, j);
 	append_line(&o->new_line, &o->append_this);
 	i += j - 1;
 	o->save = i + 1;
-	o->i = i;
+	o->i = ++i;
 }
 
+void		chr_join(char **str, char c)
+{
+	char	append[2];
+	char 	*new_str;
 
+	append[0] = c;
+	append[1] = '\0';
+	new_str = ft_strjoin(*str, append);
+	free(*str);
+	*str = new_str;
+}
+
+char 		*just_tilde(t_open_q *o, int i)
+{
+	char	*env_value;
+
+	env_value = get_envar("~");
+	if (!env_value)
+		o->append_this = ft_strdup_and_check("");
+	else
+	{
+		o->append_this = ft_strdup_and_check(env_value);
+	}
+	append_line(&o->new_line, &o->append_this);
+	o->save = i + 1;
+	free_and_null(&env_value);
+	return (o->new_line);
+}
 
 char		*open_quotes_str(t_open_q	*o)
 {
@@ -115,9 +150,7 @@ char		*open_quotes_str(t_open_q	*o)
 	char 	*env_value;
 
 	i = 0;
-
 	j = 0;
-
 	str = o->str;
 	env_value = NULL;
 	value_to_check = NULL;
@@ -127,22 +160,18 @@ char		*open_quotes_str(t_open_q	*o)
 		if (is_backslash_active() && !is_open_quote())
 		{
 			i++;
-			o->append_this = ft_strdup_and_check(" ");
-			o->append_this[0] = str[i];
-			append_line(&o->new_line, &o->append_this);
+			chr_join(&o->new_line, str[i]);
 			o->save = i + 1;
 			set_backslash_state_new(str[i]);
 		}
-		else if (str[i] == DOLLAR && is_env_val_after_dollar(str[i + 1]))
+		else if (str[i] == DOLLAR && is_env_val_after_dollar(str[i + 1]) && !is_open_quote())
 		{
-			handle_dollar_out_of_quotes(o, i);
+			handle_dollar(o, i);
 			i = o->i;
 			continue ;
 		}
 		else if (is_open_quote())
 		{
-			o->append_this = ft_substr_and_chk(str, o->save, i - o->save);
-			append_line(&o->new_line, &o->append_this);
 			o->save = i;
 			while (is_open_quote() && str[++i])
 			{
@@ -158,57 +187,8 @@ char		*open_quotes_str(t_open_q	*o)
 				}
 				else if (str[i] == DOLLAR && g_dquote && is_env_val_after_dollar(str[i + 1]))
 				{
-					if (str[i + 1] == '$')
-					{
-						get_several_dollars(o, i);
-						i = o->i;
-						continue ;
-					}
-					else if (ft_isdigit(str[i + 1]))
-					{
-						i += 2;
-						o->save += 2;
-						continue ;
-					}
-					j = get_env_from_str(str + i);
-					if (is_backslash_active())
-					{
-						if (i > o->save + 2)
-						{
-							o->append_this = ft_substr_and_chk(str, o->save, i - o->save - 1);
-							append_line(&o->new_line, &o->append_this);
-						}
-						o->append_this = ft_substr_and_chk(str, i, j);
-					}
-					else
-					{
-						if (i > o->save + 1)
-						{
-							o->append_this = ft_substr_and_chk(str, o->save, i - o->save);
-							append_line(&o->new_line, &o->append_this);
-						}
-						if (j == 2)
-							value_to_check = ft_strdup_and_check("");
-						else
-							value_to_check = ft_substr_and_chk(str, i + 1, j - 1);
-						env_value = get_envar(value_to_check);
-						if (!env_value)
-							o->append_this = ft_strdup_and_check("");
-						else
-						{
-							o->append_this = ft_strdup_and_check(env_value);
-						}
-                        if (env_value)
-                        {
-                            free(env_value);
-                            env_value = NULL;
-                        }
-                        free(value_to_check);
-                        value_to_check = NULL;
-                    }
-					append_line(&o->new_line, &o->append_this);
-					i += j - 1;
-					o->save = i + 1;
+					handle_dollar(o, i);
+					i = o->i;
 					continue ;
 				}
 				else if (is_open_quote())
@@ -222,27 +202,14 @@ char		*open_quotes_str(t_open_q	*o)
 		}
 		else if (i == 0 && str[i] == '~' && !str[i + 1])
 		{
-			env_value = get_envar("~");
-			if (!env_value)
-				o->append_this = ft_strdup_and_check("");
-			else
-			{
-				o->append_this = ft_strdup_and_check(env_value);
-			}
-			append_line(&o->new_line, &o->append_this);
+			return (just_tilde(o, i));
+		}
+		else
+		{
+			chr_join(&o->new_line, str[i]);
 			o->save = i + 1;
-			free_and_null(&env_value);
-			return (o->new_line);
 		}
 		i++;
-	}
-	if (i - o->save > 1 || \
-		(i - o->save >= 1 && (str[i - 1] == DOUBLE_QUOTE || str[i - 1] == SINGLE_QUOTE)) || \
-		(str[0] && !str[1]) || \
-		(i - o->save == 1 && (str[o->save] != DOUBLE_QUOTE || str[o->save] != SINGLE_QUOTE)))
-	{
-		o->append_this = ft_substr_and_chk(str, o->save, i - o->save);
-		append_line(&o->new_line, &o->append_this);
 	}
 	return (o->new_line);
 }
