@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_by_commands.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 05:53:19 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/07 05:53:29 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/28 20:00:25 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,11 @@ char			**split_command(const char *str_input)
 	init_globs();
 	str = process_str(str_input);
 	if (is_open_quote())
-		exit_error_message("Quotes are open: split_command()");
+	{
+		ft_putendl_fd("Quotes are open: split_command()", 1);
+		g_exit = 2;
+		return (NULL);
+	}
 	split_by_spaces = ft_split(str, '\n');
 	ft_alloc_check(split_by_spaces);
 	reset_newlines(str);

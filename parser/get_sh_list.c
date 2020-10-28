@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_sh_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 01:23:37 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/25 01:23:38 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/28 20:29:12 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_dlist_sh			*get_sh_list(char **semicolons2d, int i, t_mshell *sv)
 
 	sh = sh_new(NULL, NULL);
 	sh_head = sh;
+	sv->sh_head = sh_head;
 	while (semicolons2d[i])
 	{
 		tmp_semi = split_by_char(PIPE, semicolons2d[i], sv);
@@ -36,7 +37,8 @@ t_dlist_sh			*get_sh_list(char **semicolons2d, int i, t_mshell *sv)
 			ft_free2d(tmp_semi);
 			return (NULL);
 		}
-		dlst_pipe = alloc_pipe_list(tmp_semi, 0);
+		if (!(dlst_pipe = alloc_pipe_list(tmp_semi, 0)))
+			return (NULL);
 		ft_free2d(tmp_semi);
 		tmp_semi = NULL;
 		sh->tdlst_pipe = dlst_pipe;

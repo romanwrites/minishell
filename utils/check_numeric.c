@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check_numeric.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 15:38:39 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/24 17:07:42 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/28 19:55:40 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-int check_numeric(char *str)
+int		check_numeric(char *str)
 {
     int i;
 

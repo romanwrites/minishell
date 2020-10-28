@@ -3,22 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   get_envar.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 10:00:34 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/24 20:01:31 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/28 20:36:18 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "minishell.h"
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-char *get_envar(char *var)
+char		*get_envar(char *var)
 {
-    t_list *env;
-    char *value;
-    char *ret;
-    int    flag;
+    t_list	*env;
+    char	*value;
+    char	*ret;
+    int		flag;
 
     env = g_env;
     flag = 0;

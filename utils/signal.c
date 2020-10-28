@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 18:31:10 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/24 17:52:43 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/28 20:38:49 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 /*
 void	handle_parent_with_child(int signal)
 {

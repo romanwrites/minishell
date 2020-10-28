@@ -6,13 +6,13 @@
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 15:09:09 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/24 15:09:10 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/28 20:32:30 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		free_token_lst(t_token *token)
+static void	free_token_lst(t_token *token)
 {
 	t_token *tmp;
 

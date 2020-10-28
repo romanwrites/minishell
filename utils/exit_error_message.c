@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exit_error_message.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 22:23:06 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/29 22:24:21 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/28 19:58:48 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		exit_error_message(char *str) // maybe set exit_code somewhere here also
+void		exit_error_message(char *str)
 {
-	ft_putstr_fd(str, 2); //2 fd?
-
-//	exit(2);
+	ft_putstr_fd(str, 2);
 }

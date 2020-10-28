@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   alloc_pipe_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/25 01:35:35 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/25 01:35:36 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/28 20:01:05 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ t_dlist_pipe		*alloc_pipe_list(char **ptr, int i)
 	head = pipe;
 	while (ptr[i])
 	{
-		tmp_cmd = split_command(ptr[i]);
+		if (!(tmp_cmd = split_command(ptr[i])))
+			return (NULL);
 		trim_cmd = ft_trim_2d_cpy(tmp_cmd);
 		token = alloc_token_list(trim_cmd);
 		ft_free2d(trim_cmd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   engine_start.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/27 16:55:15 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/28 20:28:21 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ int     main(int ac, char **av, char **envp)
 		ft_alloc_check(str);
 		if (parse_input(str, sv))
 		{
+			if (sv->sh_head)
+				print_everything(sv);
 			free(str);
 			str = NULL;
 			write(0, PROMPT, ft_strlen(PROMPT));

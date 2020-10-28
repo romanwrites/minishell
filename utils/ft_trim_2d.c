@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_trim_2d.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 00:51:06 by mkristie          #+#    #+#             */
-/*   Updated: 2020/09/30 00:51:08 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/28 20:35:30 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t		len_2d(char **ptr)
+static size_t	len_2d(char **ptr)
 {
-	size_t	i;
+	size_t		i;
 
 	i = 0;
 	while (ptr[i])
@@ -24,12 +24,12 @@ size_t		len_2d(char **ptr)
 	return (i);
 }
 
-char		**ft_trim_2d_cpy(char **arr_2d)
+char			**ft_trim_2d_cpy(char **arr_2d)
 {
-	char	**new;
-	char	*tmp;
-	size_t 	len;
-	int 	i;
+	char		**new;
+	char		*tmp;
+	size_t 		len;
+	int			i;
 
 	i = 0;
 	len = len_2d(arr_2d);
@@ -46,24 +46,4 @@ char		**ft_trim_2d_cpy(char **arr_2d)
 	new[i] = NULL;
 	ft_free2d(arr_2d);
 	return (new);
-}
-
-void		ft_trim_2d(char ***arr_2d)
-{
-	char	**tmp_2d;
-	char 	*tmp;
-	int 	i;
-
-	tmp_2d = *(arr_2d);
-	tmp = NULL;
-	i = 0;
-	while (tmp_2d[i])
-	{
-		tmp = tmp_2d[i];
-		tmp_2d[i] = ft_strtrim(tmp, " \t");
-		ft_alloc_check(tmp_2d[i]);
-		free(tmp);
-		tmp = NULL;
-		i++;
-	}
 }
