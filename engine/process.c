@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/28 17:41:16 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/28 18:09:54 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void		process_cmd(t_mshell *sv)
 	int savestdin; 
 	savestdin = dup(0);
 	savestdout = dup(1);
-	int com = 0;
 	cmd = (char **)malloc((sizeof(char *) * PATH_MAX));
 	fd = -1;
 	filedes = -1;
@@ -128,7 +127,11 @@ void		process_cmd(t_mshell *sv)
 					}
 				}
 				else
+				{
 					execute_command(cmd, last_redir, fd, filedes);
+					dup2(savestdin, 0);
+					dup2(savestdout, 1);
+				}//////////////////////////////////////////////////////////////////
 			}
 			token = sv->sh->tdlst_pipe->token_head;
 			sv->sh->tdlst_pipe = sv->sh->tdlst_pipe->next;
