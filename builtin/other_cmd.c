@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/27 11:01:51 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 19:12:48 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,11 @@ void	handle_cmd(char **args)
 	struct dirent *entry;
 	int i;
 	int x;
+	int status;
 
 	i = 0;
 	x = 0;
+
 	envp = list_to_env();
 	if (args[0][0] == '/' || (args[0][0] == '.' && args[0][1] == '/'))
 	{
@@ -86,6 +88,7 @@ void	handle_cmd(char **args)
 			write(1, PROM, ft_strlen(PROM));//why zero??????
 			write(1, args[0], ft_strlen(args[0]));
 			write(1, ": is a directory\n", ft_strlen(": is a directory\n"));
+			g_exit = 126;
 			return ;
 		}
 		tmp = args[0];
@@ -95,18 +98,21 @@ void	handle_cmd(char **args)
 		{
 			signal(SIGQUIT, SIG_IGN);
 			signal(SIGINT, SIG_IGN);
-			wait(NULL);
-			//waitpid()
+			//wait(NULL);
+			waitpid(g_pid, &status, WUNTRACED);
 			signal(SIGQUIT, handle_parent_signal);
 			signal(SIGINT, handle_parent_signal);
+			g_exit = status_return(status);
 		}
 		else
 		{
 			signal(SIGQUIT, SIG_DFL);//
 			signal(SIGINT, SIG_DFL);//
-			execve(tmp, args, envp);
-			exit(g_exit);
+			signal(SIGTERM, SIG_DFL);
+			status = execve(tmp, args, envp);//если execve вернул -1 то 
+			//exit(status);
 		}
+		printf("status = %d\t args[0] = %s\t tmp = %s\n", status);
 		free(tmp);
 		return ;
 	}
@@ -126,15 +132,18 @@ void	handle_cmd(char **args)
 				{
 					signal(SIGQUIT, SIG_IGN);
 					signal(SIGINT, SIG_IGN);
-					wait(NULL);
+					//wait(NULL);
+					waitpid(g_pid, &status, WUNTRACED);
 					signal(SIGQUIT, handle_parent_signal);
 					signal(SIGINT, handle_parent_signal);
+					g_exit = status_return(status);
 				}
 				else
 				{
 					signal(SIGQUIT, SIG_DFL);//
 					signal(SIGINT, SIG_DFL);//
-					execve(path[i], args, envp);
+					signal(SIGTERM, SIG_DFL);
+					status = execve(path[i], args, envp);
 				}
 				free(tmp);
 				free(to_split);
@@ -164,5 +173,6 @@ void	handle_cmd(char **args)
 	}
 	write(1, PROM, ft_strlen(PROM));//why zero??????
 	write(1, args[0], ft_strlen(args[0]));
-	write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+	write(1, ": command not found\n", ft_strlen(": command not found\n"));
+	g_exit = 127;
 }

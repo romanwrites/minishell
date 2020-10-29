@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 06:25:28 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/10 18:50:14 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 15:42:13 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,8 @@ void		btree_apply_suffix(t_btree *root, void (*applyf)(void *));
 void		btree_insert_data(t_btree **root, void *item, \
 								int (*cmpf)(void *, void *));
 void		*btree_search_item(t_btree *root, void *data_ref, \
-                       			 int (*cmpf)(void *, void *));
+                       			int (*cmpf)(void *, void *));
 int			btree_level_count(t_btree *root);
-
-
-
 
 /*
 ** Stdlib

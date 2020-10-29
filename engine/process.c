@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/29 14:29:35 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 18:10:48 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	process_cmd(t_mshell *sv)
 	int fds[2];
 	int i;
 	int x;
+	int status;
 	int pid;
 	int savestdout; 
 	int savestdin; 
@@ -130,7 +131,6 @@ void	process_cmd(t_mshell *sv)
 					pid = fork();
 				   	if (pid == 0)
 					{
-						//printf("FIRST\n");
 						signal(SIGQUIT, SIG_DFL);
 						signal(SIGINT, SIG_DFL);
 						close(fds[0]);
@@ -144,18 +144,19 @@ void	process_cmd(t_mshell *sv)
 						signal(SIGQUIT, SIG_IGN);
 						signal(SIGINT, SIG_IGN);
 						wait(NULL);
+						//waitpid(g_pid, &status, WUNTRACED);
 						signal(SIGQUIT, handle_parent_signal);
 						signal(SIGINT, handle_parent_signal);
+						//g_exit = status_return(status);
 						close(fds[1]);
 						dup2(fds[0], 0);
 						close(fds[0]);
 					}
 				}
-				else if (fd == -1)
+				else if (fd == -1 || g_bp[0])
 				{
-					//ft_pwd();
-					//printf("SECOND\n");
 					execute_command(cmd, last_redir, fd, filedes);
+					//status =
 					dup2(savestdin, 0);
 					dup2(savestdout, 1);
 				}
