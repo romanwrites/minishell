@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/29 23:31:48 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 23:35:13 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void	handle_cmd(char **args)
 	x = 0;
 
 	envp = list_to_env();
-	//if (args[0][0] == '/' || (args[0][0] == '.' && args[0][1] == '/'))
 	if (ft_strchr(args[0], '/'))
 	{
 		if (args[0][0] == '.' && args[0][1] == '/' && !ft_isprint((int)args[0][2]))
