@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/29 18:10:29 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 20:09:46 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,49 +274,46 @@ void	ft_unset(char *arg)
 	t_list *ptr_prev;
 	t_list *ptr_next;
 
-	if (!arg)
+	if (arg)
 	{
-		write(1, "unset: not enough arguments", ft_strlen("unset: not enough arguments"));
-		write(1, "\n", 1);
-	}
-	else if (ft_strchr(arg, '.') || ft_strchr(arg, '~') || ft_strchr(arg, ',') || ft_strchr(arg, '@') || ft_strchr(arg, '#') || ft_strchr(arg, '%') || ft_strchr(arg, '^') || ft_strchr(arg, '-') || ft_strchr(arg, '+') || ft_strchr(arg, '=') || ft_strchr(arg, '{') || ft_strchr(arg, '}') || ft_strchr(arg, '[') || ft_strchr(arg, ']'))
-	{
-		write(1, "unset: ", ft_strlen("unset: "));
-		write(1, arg, ft_strlen("arg"));//HEL.L -> HEL
-		write(1, ": ", ft_strlen(": "));
-		write(1, "invalid parameter name", ft_strlen("invalid parameter name"));
-		write(1, "\n", 1);
-	}
-	else
-	{
-		keys = ft_split(arg, ' ');//FREE
-		while (keys && *keys)
+		if (ft_strchr(arg, '.') || ft_strchr(arg, '~') || ft_strchr(arg, ',') || ft_strchr(arg, '@') || ft_strchr(arg, '#') || ft_strchr(arg, '%') || ft_strchr(arg, '^') || ft_strchr(arg, '-') || ft_strchr(arg, '+') || ft_strchr(arg, '=') || ft_strchr(arg, '{') || ft_strchr(arg, '}') || ft_strchr(arg, '[') || ft_strchr(arg, ']'))
 		{
-			tmp = g_env;
-			first = 1;
-			while (tmp)
+			write(1, "bash: unset: `", ft_strlen("bash: unset: `"));
+			write(1, arg, ft_strlen("arg"));//HEL.L -> HEL
+			write(1, "\': not a valid identifier", ft_strlen("\': not a valid identifier"));
+			write(1, "\n", 1);
+		}
+		else
+		{
+			keys = ft_split(arg, ' ');//FREE
+			while (keys && *keys)
 			{
-				if(!ft_strcmp(((t_envar *)tmp->content)->key, *keys) && !first)
+				tmp = g_env;
+				first = 1;
+				while (tmp)
 				{
-					ptr_next = tmp->next;
-					ft_lstdelone(tmp, free_content);
-					ptr_prev->next = ptr_next;
-					tmp = ptr_prev;	
-				}
-				else if (!ft_strcmp(((t_envar *)tmp->content)->key, *keys) && first)
-				{
+					if(!ft_strcmp(((t_envar *)tmp->content)->key, *keys) && !first)
+					{
+						ptr_next = tmp->next;
+						ft_lstdelone(tmp, free_content);
+						ptr_prev->next = ptr_next;
+						tmp = ptr_prev;	
+					}
+					else if (!ft_strcmp(((t_envar *)tmp->content)->key, *keys) && first)
+					{
+						ptr_prev = tmp;
+						ptr_next = tmp->next;
+						ft_lstdelone(tmp, free_content);
+						tmp = ptr_next;
+						g_env = g_env->next;//COULD BE A LEAK!!!
+					}
 					ptr_prev = tmp;
-					ptr_next = tmp->next;
-					ft_lstdelone(tmp, free_content);
-					tmp = ptr_next;
-					g_env = g_env->next;//COULD BE A LEAK!!!
+					if (!first)
+						tmp = tmp->next;
+					first = 0;
 				}
-				ptr_prev = tmp;
-				if (!first)
-					tmp = tmp->next;
-				first = 0;
+				keys++;
 			}
-			keys++;
 		}
 	}
 }
