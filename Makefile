@@ -103,6 +103,11 @@ $(NAME): $(OBJ)
 clean:
 	$(MAKE) clean -C $(LIBFT_DIR)
 	rm -rf $(OBJ)
+	rm -f get_next_line/*.d
+	rm -f parser/*.d
+	rm -f utils/*.d
+	rm -f builtin/*.d
+	rm -f engine/*.d
 
 fclean: clean
 	$(MAKE) fclean -C $(LIBFT_DIR)

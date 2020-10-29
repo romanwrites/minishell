@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 06:25:28 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/29 15:42:13 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 19:54:33 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,38 +25,17 @@ typedef struct		s_list
 ** My double linked list
 */
 
-typedef struct				s_dlist {
-	void					*content;
-	size_t					len;
-	struct s_dlist			*next;
-	struct s_dlist			*previous;
-}							t_dlist;
+typedef struct		s_dlist {
+	void			*content;
+	size_t			len;
+	struct s_dlist	*next;
+	struct s_dlist	*previous;
+}					t_dlist;
 
-t_dlist						*ft_dlstnew(void *content, t_dlist **prev);
-void						ft_dlstadd_back(t_dlist **lst, t_dlist *new);
-t_dlist						*ft_dlstlast(t_dlist *lst);
-void						ft_dlstiter(t_dlist *lst, void (*f)(void *));
-
-/*
-** Binary trees
-*/
-
-typedef struct				s_btree
-{
-	void					*item;
-	struct s_btree			*left;
-	struct s_btree			*right;
-}							t_btree;
-
-t_btree		*btree_create_node(void *item);
-void		btree_apply_prefix(t_btree *root, void (*applyf)(void *));
-void		btree_apply_infix(t_btree *root, void (*applyf)(void *));
-void		btree_apply_suffix(t_btree *root, void (*applyf)(void *));
-void		btree_insert_data(t_btree **root, void *item, \
-								int (*cmpf)(void *, void *));
-void		*btree_search_item(t_btree *root, void *data_ref, \
-                       			int (*cmpf)(void *, void *));
-int			btree_level_count(t_btree *root);
+t_dlist				*ft_dlstnew(void *content, t_dlist **prev);
+void				ft_dlstadd_back(t_dlist **lst, t_dlist *new);
+t_dlist				*ft_dlstlast(t_dlist *lst);
+void				ft_dlstiter(t_dlist *lst, void (*f)(void *));
 
 /*
 ** Stdlib
@@ -144,11 +123,14 @@ void				ft_strcpy(char *dst, const char *src);
 size_t				ft_two_d_counter(char ***s);
 char				*ft_replace_char(const char *str, char *remove, \
 														char *paste);
-char				*ft_replace(const char *str, const char *rmv, const char *pst);
+char				*ft_replace(const char *str, const char *rmv, \
+								const char *pst);
 void				ft_lstrev(t_list **lst);
 int					ft_strcmp(const char *s1, const char *s2);
 void				ft_putstr(const char *s);
 
-size_t		max_len(size_t len_a, size_t len_b);
+size_t				max_len(size_t len_a, size_t len_b);
+int					first_swap(t_list **iter1, t_list **iter2);
+int					swap(t_list **iter0, t_list **iter1, t_list **iter2);
 
 #endif

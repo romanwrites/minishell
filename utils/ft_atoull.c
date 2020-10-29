@@ -23,7 +23,7 @@ static int				ft_isspace_atoi(int c)
 
 unsigned long long		ft_atoull(char *str, int *minus)
 {
-	int i;
+	int					i;
 	unsigned long long	num;
 
 	i = 0;

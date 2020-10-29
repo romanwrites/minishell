@@ -19,7 +19,7 @@ void		print_2d_array(char **arr2d)
 	i = 0;
 	if (arr2d)
 	{
-		while(arr2d[i])
+		while (arr2d[i])
 		{
 			ft_putendl_fd(arr2d[i], 1);
 			i++;
