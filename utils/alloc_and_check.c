@@ -21,7 +21,7 @@ char		*ft_itoa_and_chk(int n)
 	return (res);
 }
 
-char 		*ft_substr_and_chk(char const *str, unsigned int start, size_t len)
+char		*ft_substr_and_chk(char const *str, unsigned int start, size_t len)
 {
 	char	*new_str;
 

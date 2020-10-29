@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-# include <unistd.h>
 
 void		ft_alloc_check(void *ptr)
 {

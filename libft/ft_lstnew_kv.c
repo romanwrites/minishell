@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /*
 ** Allocates (with malloc(3)) and returns a new element.
@@ -25,15 +25,7 @@ t_list		*ft_lstnew_kv(void *content)
 
 	if (!(new = malloc(sizeof(t_list))))
 		return (NULL);
-
 	new->content = content;
-
-	//new->content = malloc(sizeof(content));
-	//new->content = ft_memcpy(new->content, content, sizeof(content));
-
-	//if (!(((t_envar *)new->content)->key = ft_strdup(((t_envar *)content)->key)))
-	//	return (NULL);
-	//((t_envar *)new->content)->value = ft_strdup(((t_envar *)content)->value);
 	new->next = NULL;
 	return (new);
 }

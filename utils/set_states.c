@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void 		set_states(char c)
+void		set_states(char c)
 {
 	set_backslash_state_new(c);
 	set_quotes_state_new(c);

@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-void 		reset_newlines(char *str)
+void		reset_newlines(char *str)
 {
-	int 	i;
+	int		i;
 
 	i = 0;
 	while (str[i])

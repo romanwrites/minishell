@@ -28,7 +28,7 @@ char			**ft_trim_2d_cpy(char **arr_2d)
 {
 	char		**new;
 	char		*tmp;
-	size_t 		len;
+	size_t		len;
 	int			i;
 
 	i = 0;
