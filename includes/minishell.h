@@ -53,7 +53,6 @@ void	handle_cmd(char **cmd);//
 char **list_to_env();//
 void 	execute_command(char **cmd, char *is_redir, int fd, int filedes);//
 int	handle_redir(char *is_redir, char *file);//
-void    handle_child_signal(int signal);//
-void    handle_parent_signal(int signal);//
+
 
 #endif
