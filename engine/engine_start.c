@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   engine_start.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/28 20:28:21 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/29 16:17:02 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int     main(int ac, char **av, char **envp)
 	//signal(SIGINT, new_line);
 	signal(SIGQUIT, handle_parent_signal);
 	signal(SIGINT, handle_parent_signal);
+	signal(SIGTERM, SIG_IGN);
 	g_env = env_to_list(envp);
 	g_home = get_envar("HOME");
 	sv = (t_mshell *)malloc(sizeof(t_mshell));

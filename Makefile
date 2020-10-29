@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/27 17:57:40 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/29 16:32:44 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,7 @@ UTILS_SRC = alloc_and_check.c \
 			signal.c \
 			states.c \
 			states_first_lvl.c \
+			status.c \
 			token.c \
 
 ENGINE_SRC = engine_start.c \
@@ -109,8 +110,8 @@ fclean: clean
 
 sh: all
 	#rm -f libft/libft.a
-	#rm -f $(OBJ)
-#	$(MAKE) clean -C $(LIBFT_DIR)
+	rm -f $(OBJ)
+	$(MAKE) clean -C $(LIBFT_DIR)
 	#./minishell
 
 resh: re

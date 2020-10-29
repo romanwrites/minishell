@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/27 11:01:51 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 16:17:34 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	handle_cmd(char **args)
 	struct dirent *entry;
 	int i;
 	int x;
+	int status;
 
 	i = 0;
 	x = 0;
@@ -95,17 +96,19 @@ void	handle_cmd(char **args)
 		{
 			signal(SIGQUIT, SIG_IGN);
 			signal(SIGINT, SIG_IGN);
-			wait(NULL);
-			//waitpid()
+			//wait(NULL);
+			waitpid(g_pid, &status, WUNTRACED);
 			signal(SIGQUIT, handle_parent_signal);
 			signal(SIGINT, handle_parent_signal);
+			g_exit = status_return(status);
 		}
 		else
 		{
 			signal(SIGQUIT, SIG_DFL);//
 			signal(SIGINT, SIG_DFL);//
-			execve(tmp, args, envp);
-			exit(g_exit);
+			signal(SIGTERM, SIG_DFL);
+			status = execve(tmp, args, envp);//если execve вернул -1 то 
+			exit(status);
 		}
 		free(tmp);
 		return ;
@@ -126,15 +129,18 @@ void	handle_cmd(char **args)
 				{
 					signal(SIGQUIT, SIG_IGN);
 					signal(SIGINT, SIG_IGN);
-					wait(NULL);
+					//wait(NULL);
+					waitpid(g_pid, &status, WUNTRACED);
 					signal(SIGQUIT, handle_parent_signal);
 					signal(SIGINT, handle_parent_signal);
+					g_exit = status_return(status);
 				}
 				else
 				{
 					signal(SIGQUIT, SIG_DFL);//
 					signal(SIGINT, SIG_DFL);//
-					execve(path[i], args, envp);
+					signal(SIGTERM, SIG_DFL);
+					status = execve(path[i], args, envp);
 				}
 				free(tmp);
 				free(to_split);
