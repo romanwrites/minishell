@@ -6,13 +6,34 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/27 18:02:25 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 14:29:35 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		process_cmd(t_mshell *sv)
+char	**g_bp;
+
+void	fill_before_pipe(char **cmd, int i)
+{
+	int x;
+
+	x = 0;
+	while(g_bp[x])
+	{
+		free(g_bp[x]);
+		x++;
+	}
+	x = 0;
+	while (x < i)
+	{
+		g_bp[x] = ft_strdup(cmd[x]);
+		x++;
+	}
+	g_bp[x] = NULL;
+}
+
+void	process_cmd(t_mshell *sv)
 {
 	t_token *token;
 	char **cmd;
@@ -27,13 +48,14 @@ void		process_cmd(t_mshell *sv)
 	int savestdin; 
 	savestdin = dup(0);
 	savestdout = dup(1);
-	int com = 0;
 	cmd = (char **)malloc((sizeof(char *) * PATH_MAX));
+	g_bp = (char **)malloc((sizeof(char *) * PATH_MAX));
 	fd = -1;
 	filedes = -1;
 	fds[0] = -1;
 	fds[1] = -1;
 	last_redir = NULL;
+	g_bp[0] = NULL;
 	while (sv->sh)
 	{
 		while (sv->sh->tdlst_pipe)
@@ -61,9 +83,9 @@ void		process_cmd(t_mshell *sv)
 						write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 						return ;
 					}
-					if (token->next->next && token->next->next->content && token->next->next->next && token->next->next->next->content && (!ft_strcmp(token->next->next->content, "<") || !ft_strcmp(token->next->next->content, ">") || !ft_strcmp(token->next->next->content, ">>")))
+					if (token->next->next && token->next->next->content && token->next->next->next && token->next->next->next->content && (!ft_strcmp(token->next->next->content, "<") || !ft_strcmp(token->next->next->content, ">") || !ft_strcmp(token->next->next->content, ">>")) && (ft_strcmp(token->next->next->next->content, ">") && ft_strcmp(token->next->next->next->content, ">>") && ft_strcmp(token->next->next->next->content, "<")))
 					{
-						if ((!ft_strcmp(token->next->next->content, "<") && (!ft_strcmp(last_redir, ">") || !ft_strcmp(last_redir, ">>"))) || (!ft_strcmp(token->next->next->content, ">") || (!ft_strcmp(token->next->next->content, ">>") && !ft_strcmp(last_redir, "<"))))
+						if ((!ft_strcmp(token->next->next->content, "<") && (!ft_strcmp(last_redir, ">") || !ft_strcmp(last_redir, ">>"))) || ((!ft_strcmp(token->next->next->content, ">") || (!ft_strcmp(token->next->next->content, ">>"))) && !ft_strcmp(last_redir, "<")))
 						{
 							filedes = handle_redir(token->next->next->content, token->next->next->next->content);
 							if (filedes == -1)
@@ -92,8 +114,10 @@ void		process_cmd(t_mshell *sv)
 					return ;
 				}
 				else
+				{
 					cmd[i++] = token->content;
 					cmd[i] = NULL;
+				}
 				//print_2d_array(cmd);
 				token = token->next;
 			}
@@ -101,10 +125,12 @@ void		process_cmd(t_mshell *sv)
 			{
 				if (sv->sh->tdlst_pipe->next)
 				{
+					fill_before_pipe(cmd, i);
 					pipe(fds);
 					pid = fork();
 				   	if (pid == 0)
 					{
+						//printf("FIRST\n");
 						signal(SIGQUIT, SIG_DFL);
 						signal(SIGINT, SIG_DFL);
 						close(fds[0]);
@@ -126,7 +152,13 @@ void		process_cmd(t_mshell *sv)
 					}
 				}
 				else if (fd == -1)
+				{
+					//ft_pwd();
+					//printf("SECOND\n");
 					execute_command(cmd, last_redir, fd, filedes);
+					dup2(savestdin, 0);
+					dup2(savestdout, 1);
+				}
 			}
 			token = sv->sh->tdlst_pipe->token_head;
 			sv->sh->tdlst_pipe = sv->sh->tdlst_pipe->next;

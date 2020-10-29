@@ -6,12 +6,14 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/24 17:56:18 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 14:06:00 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //#include "minishell.h"
 #include "../includes/minishell.h"
+
+//char	**g_bp;
 
 void	ft_echo(char **cmd)
 {
