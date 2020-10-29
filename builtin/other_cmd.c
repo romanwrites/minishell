@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/29 16:17:34 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 19:12:48 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	handle_cmd(char **args)
 
 	i = 0;
 	x = 0;
+
 	envp = list_to_env();
 	if (args[0][0] == '/' || (args[0][0] == '.' && args[0][1] == '/'))
 	{
@@ -87,6 +88,7 @@ void	handle_cmd(char **args)
 			write(1, PROM, ft_strlen(PROM));//why zero??????
 			write(1, args[0], ft_strlen(args[0]));
 			write(1, ": is a directory\n", ft_strlen(": is a directory\n"));
+			g_exit = 126;
 			return ;
 		}
 		tmp = args[0];
@@ -108,8 +110,9 @@ void	handle_cmd(char **args)
 			signal(SIGINT, SIG_DFL);//
 			signal(SIGTERM, SIG_DFL);
 			status = execve(tmp, args, envp);//если execve вернул -1 то 
-			exit(status);
+			//exit(status);
 		}
+		printf("status = %d\t args[0] = %s\t tmp = %s\n", status);
 		free(tmp);
 		return ;
 	}
@@ -170,5 +173,6 @@ void	handle_cmd(char **args)
 	}
 	write(1, PROM, ft_strlen(PROM));//why zero??????
 	write(1, args[0], ft_strlen(args[0]));
-	write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+	write(1, ": command not found\n", ft_strlen(": command not found\n"));
+	g_exit = 127;
 }

@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/29 17:51:45 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 18:10:48 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,8 @@ void	process_cmd(t_mshell *sv)
 			}
 			if (i)
 			{
-				printf("fd = %d\t last_redir: %s\t g_bp: %s\n", fd, last_redir, g_bp[0]);
 				if (sv->sh->tdlst_pipe->next)
 				{
-					printf("pipe\n");
 					fill_before_pipe(cmd, i);
 					pipe(fds);
 					pid = fork();
@@ -155,9 +153,8 @@ void	process_cmd(t_mshell *sv)
 						close(fds[0]);
 					}
 				}
-				else if (fd == -1 || g_bp[0]) //&& last_redir && ft_strcmp(last_redir, token->content))
+				else if (fd == -1 || g_bp[0])
 				{
-					printf("not pipe\n");
 					execute_command(cmd, last_redir, fd, filedes);
 					//status =
 					dup2(savestdin, 0);

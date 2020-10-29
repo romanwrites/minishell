@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/29 16:17:02 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 18:30:55 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,7 @@ void	init(t_mshell	*sv)
 	ft_alloc_check(sv->state);
 	init_globs();
 }
-////
-void ignore()
-{
-	write(0, "\b\b  \b\b", 6);
-}
 
-void new_line()
-{
-	if (g_input)
-	{
-		free(g_input);
-		g_input = NULL;
-	}
-	write(0, "\b\b  \b\b", 6);
-	write(0, "\n", 1);
-	write(0, PROMPT, ft_strlen(PROMPT));
-}
-////
 int     main(int ac, char **av, char **envp)
 {
 	t_mshell	*sv;
@@ -74,8 +57,6 @@ int     main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 
-	//signal(SIGQUIT, ignore);
-	//signal(SIGINT, new_line);
 	signal(SIGQUIT, handle_parent_signal);
 	signal(SIGINT, handle_parent_signal);
 	signal(SIGTERM, SIG_IGN);
@@ -84,7 +65,6 @@ int     main(int ac, char **av, char **envp)
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
 	init(sv);
-	int br = 0;
 	write(0, PROMPT, ft_strlen(PROMPT));
 	while (get_next_line(0, &str, 0, 0))
 	{

@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/29 14:06:00 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 18:10:29 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 void	ft_echo(char **cmd)
 {
 	int i;
+	char * str;
 
 	i = 1;
 	if (cmd[i])
@@ -25,6 +26,14 @@ void	ft_echo(char **cmd)
 		if (!(ft_strcmp(cmd[i], "-n")))
 		{
 			i++;
+			if (!(ft_strcmp(cmd[i], "$?")))
+			{
+				str = ft_itoa(g_exit);
+				if (str)
+					write(1, str, ft_strlen(str));
+				write(1, "\n", 1);
+				return ;
+			}
 			while(cmd[i])
 			{
 				write(1, cmd[i], ft_strlen(cmd[i]));
@@ -35,6 +44,14 @@ void	ft_echo(char **cmd)
 		}
 		else
 		{
+			if (!(ft_strcmp(cmd[i], "$?")))
+			{
+				str = ft_itoa(g_exit);
+				if (str)
+					write(1, str, ft_strlen(str));
+				write(1, "\n", 1);
+				return ;
+			}
 			while(cmd[i])
 			{
 				write(1, cmd[i], ft_strlen(cmd[i]));
