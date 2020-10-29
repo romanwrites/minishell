@@ -82,7 +82,6 @@ SRCS = ft_atoi.c \
 	  ft_lstiter.c \
 	  ft_lstmap.c \
 	  ft_lstrev.c \
-	  ft_lstnew_kv.c \
 	  ft_lstdelmid.c \
 	  ft_list_sort.c \
 	  ft_list_sort_utils.c \
