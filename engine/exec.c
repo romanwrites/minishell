@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 15:09:27 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/28 18:39:45 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 14:43:42 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,29 @@ void all_to_lower(char **cmd)
 
 void 	execute(char **cmd)
 {
-	if (!(strcmp(cmd[0], "export")))
+	//if (g_bp[0] && ((!ft_strcmp(g_bp[0], "export") && g_bp[1]) || !ft_strcmp(g_bp[0], "exit") || !ft_strcmp(g_bp[0], "cd") || !ft_strcmp(g_bp[0], "unset")))
+	//	return ;//g_exit?
+	if (!(ft_strcmp(cmd[0], "export")))
 		ft_export(cmd[1]);
-	else if (!(strcmp(cmd[0], "env")))
+	else if (!(ft_strcmp(cmd[0], "env")))
 		ft_env();
-	else if (!(strcmp(cmd[0], "pwd")))
+	else if (!(ft_strcmp(cmd[0], "pwd")))
 		ft_pwd();
-	else if (!(strcmp(cmd[0], "echo")))
+	else if (!(ft_strcmp(cmd[0], "echo")))
 		ft_echo(cmd);
-	else if (!(strcmp(cmd[0], "exit")))
-		ft_exit(cmd);
-	else if (!(strcmp(cmd[0], "cd")))
-		ft_cd(cmd[1]);
-	else if (!(strcmp(cmd[0], "unset")))
+	else if (!(ft_strcmp(cmd[0], "exit")))
+	{
+		if (!g_bp[0])
+			ft_exit(cmd);
+		return ;
+	}
+	else if (!(ft_strcmp(cmd[0], "cd")))
+	{
+		if (!g_bp[0])
+			ft_cd(cmd[1]);
+		return ;
+	}
+	else if (!(ft_strcmp(cmd[0], "unset")))
 		ft_unset(cmd[1]);
 	else
 	{
