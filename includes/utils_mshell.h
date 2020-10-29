@@ -84,6 +84,11 @@ long long			ft_atoll(char *str);
 unsigned long long	ft_atoull(char *str, int *minus);
 
 /*
+** ft_lstnew_kv.c
+*/
+t_list		*ft_lstnew_kv(void *content);
+
+/*
 ** ft_trim_2d_cpy.c
 */
 char				**ft_trim_2d_cpy(char **arr_2d);

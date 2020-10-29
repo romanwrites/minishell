@@ -61,6 +61,7 @@ UTILS_SRC = alloc_and_check.c \
             ft_alloc_check.c \
 			ft_atoll.c \
 			ft_atoull.c \
+			ft_lstnew_kv.c \
 			ft_trim_2d.c \
 			get_envar.c \
 			print_2d_array.c \
