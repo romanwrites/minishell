@@ -14,19 +14,19 @@
 
 int		check_numeric(char *str)
 {
-    int i;
+	int i;
 
-    i = 0;
-    if (ft_strlen(str) > 20)
-        return (1);
-    if (str[i] != '-' && !ft_isdigit(str[i]))
-        return (1);
-    i++;
-    while(str[i])
-    {
-        if(!ft_isdigit(str[i]))
-            return (1);
-        i++;
-    }
-    return (0);
+	i = 0;
+	if (ft_strlen(str) > 20)
+		return (1);
+	if (str[i] != '-' && !ft_isdigit(str[i]))
+		return (1);
+	i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (1);
+		i++;
+	}
+	return (0);
 }

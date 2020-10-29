@@ -14,6 +14,6 @@
 
 int		compare_key(t_envar *a, t_envar *b)
 {
-	return(ft_strncmp(a->key, b->key, \
+	return (ft_strncmp(a->key, b->key, \
 			max_len(ft_strlen(a->key), ft_strlen(b->key))));
 }

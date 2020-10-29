@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void		init_globs()
+void		init_globs(void)
 {
 	g_dquote = 0;
 	g_squote = 0;
@@ -20,7 +20,7 @@ void		init_globs()
 	g_backslash_time = 0;
 }
 
-_Bool		is_open_quote()
+_Bool		is_open_quote(void)
 {
 	return (g_squote != g_dquote);
 }
@@ -37,7 +37,7 @@ void		set_quotes_state_new(char c)
 		g_squote = 0;
 }
 
-_Bool		is_backslash_active()
+_Bool		is_backslash_active(void)
 {
 	if (g_backslash_time)
 		return (1);

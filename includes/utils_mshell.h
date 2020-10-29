@@ -131,7 +131,6 @@ void 				set_states(char c);
 /*
 ** signal.c
 */
-void				handle_child_signal(int signal);
 void				handle_parent_signal(int signal);
 
 /*
