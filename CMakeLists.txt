@@ -26,6 +26,7 @@ file(GLOB
 add_executable(minishell
         get_next_line/get_next_line.c
         get_next_line/get_next_line_utils.c
+        get_next_line/get_next_line_utils_2.c
         ${LIBFT}
         ${ENGINE}
         ${PARSER}

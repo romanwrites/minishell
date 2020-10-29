@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoll.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 15:02:53 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/24 16:34:56 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/28 20:33:55 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 static int		ft_isspace_atoi(int c)
 {

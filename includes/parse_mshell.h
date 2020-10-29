@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_mshell.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 17:39:05 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/27 16:16:18 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/28 19:53:02 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,43 +16,24 @@
 # define BACKSLASH 92
 # define DOUBLE_QUOTE 34
 # define SINGLE_QUOTE 39
-# define SPACE 32
 # define SEMICOLON 59
 # define PIPE 124
 # define DOLLAR 36
 # define GRAVE_ACCENT 96
-# define EXIT_CODE 63
-# define INPUT 60
-# define OUTPUT 62
-# define AND 38
 # define REDIR_LEFT 60
 # define REDIR_RIGHT 62
 # define REDIR_RIGHT_DOUBLE ">>"
 # define NEWLINE 10
 
-_Bool		parse_input(char *str, t_mshell *sv);
-char		**split_by_char(char c, char *str, t_mshell *sv);
-int			count_2d_lines(char **arr2d);
-char		**split_command(const char *str_input);
-_Bool		is_redir_or_pipe(char c);
-_Bool		is_valid_syntax(char pre, char cur, char next);
+/*
+** alloc_pipe_list.c
+*/
+t_dlist_pipe	*alloc_pipe_list(char **ptr, int i);
 
-char		*realloc_without_newlines(char **append_this);
-size_t		len_without_newlines(const char *ptr);
-
-char		*open_quotes_str(const char *str_src);
-void		open_quotes(t_token *token);
-void		open_quotes_new(t_token *token);
-
-void		parse_env();
-void        append_line(char **ptr, char **append_this);
-size_t		get_dollars_end(const char *str);
-int			get_env_from_str(const char *str);
-_Bool		is_after_redir_semi_check(const char *str, int i);
-_Bool		is_after_redir_or_pipe(const char *str, int i);
-_Bool 		is_after_redir(const char *str, int i);
-_Bool		is_double_redir(const char *str, int i);
-_Bool		is_pipe_or_single_redir(const char *str, int i);
+/*
+** alloc_token_list.c
+*/
+t_token			*alloc_token_list(char **ptr);
 
 /*
 ** check_syntax.c
@@ -72,16 +53,63 @@ _Bool			check_syntax_by_indexes(const char *str);
 /*
 ** get_sh_list.c
 */
-t_dlist_sh			*get_sh_list(char **semicolons2d, int i, t_mshell *sv);
+t_dlist_sh		*get_sh_list(char **semicolons2d, int i, t_mshell *sv);
 
 /*
-** alloc_pipe_list.c
+** handle_dollar.c
 */
-t_dlist_pipe	*alloc_pipe_list(char **ptr);
+void			handle_dollar(t_open_q *o, int i);
+void			get_env_val(t_open_q *o, int i, int j);
+void			append_dollar_after_backslash(t_open_q *o, int i, int j);
+void			get_several_dollars(t_open_q *o, int i);
 
 /*
-** alloc_token_list
+** open_quotes.c
 */
-t_token			*alloc_token_list(char **ptr);
+void			open_quotes(t_token *token);
+
+/*
+** open_quotes2.c
+*/
+char			*open_quotes_str(t_open_q *o, size_t i);
+
+/*
+** open_quotes_utils.c
+*/
+char			*just_tilde(t_open_q *o, int i);
+_Bool			is_env_val_after_dollar(char c);
+
+/*
+** parse.c
+*/
+_Bool			parse_input(char *str, t_mshell *sv);
+_Bool			ret_syntax_err(void);
+size_t			len_without_newlines(const char *ptr);
+void			append_line(char **ptr, char **append_this);
+
+/*
+** parse_env.c
+*/
+int				get_env_from_str(const char *str);
+size_t			get_dollars_end(const char *str);
+
+/*
+** split_by_char.c
+*/
+char			**split_by_char(char c, char *str, t_mshell *sv);
+
+/*
+** split_by_commands.c
+*/
+char			**split_command(const char *str_input);
+
+/*
+** split_by_commands_utils.c
+*/
+_Bool			is_after_redir_semi_check(const char *str, int i);
+_Bool			is_after_redir_or_pipe(const char *str, int i);
+_Bool			is_after_redir(const char *str, int i);
+_Bool			is_double_redir(const char *str, int i);
+_Bool			is_pipe_or_single_redir(const char *str, int i);
 
 #endif

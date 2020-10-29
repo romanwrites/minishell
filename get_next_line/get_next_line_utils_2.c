@@ -1,32 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_numeric.c                                    :+:      :+:    :+:   */
+/*   get_next_line_utils_2.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/24 15:38:39 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/28 19:55:40 by mkristie         ###   ########.fr       */
+/*   Created: 2020/10/28 21:03:10 by mkristie          #+#    #+#             */
+/*   Updated: 2020/10/28 21:03:13 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "get_next_line.h"
 
-int		check_numeric(char *str)
+char		*gnl_strjoin_free_null_ret(char *s1_holder)
 {
-    int i;
+	free(s1_holder);
+	return (NULL);
+}
 
-    i = 0;
-    if (ft_strlen(str) > 20)
-        return (1);
-    if (str[i] != '-' && !ft_isdigit(str[i]))
-        return (1);
-    i++;
-    while(str[i])
-    {
-        if(!ft_isdigit(str[i]))
-            return (1);
-        i++;
-    }
-    return (0);
+_Bool		write_b_b(void)
+{
+	write(0, "  \b\b", 4);
+	return (1);
+}
+
+void		process_g_input(void)
+{
+	if (g_input)
+		free_and_null(&g_input);
+}
+
+int			process_nl(char *newline_ptr)
+{
+	*newline_ptr = '\0';
+	return (0);
 }

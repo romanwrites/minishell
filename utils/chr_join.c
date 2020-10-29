@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_numeric.c                                    :+:      :+:    :+:   */
+/*   chr_join.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/24 15:38:39 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/28 19:55:40 by mkristie         ###   ########.fr       */
+/*   Created: 2020/10/28 19:40:51 by mkristie          #+#    #+#             */
+/*   Updated: 2020/10/28 19:56:36 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		check_numeric(char *str)
+void			chr_join(char **str, char c)
 {
-    int i;
+	char		append[2];
+	char		*new_str;
 
-    i = 0;
-    if (ft_strlen(str) > 20)
-        return (1);
-    if (str[i] != '-' && !ft_isdigit(str[i]))
-        return (1);
-    i++;
-    while(str[i])
-    {
-        if(!ft_isdigit(str[i]))
-            return (1);
-        i++;
-    }
-    return (0);
+	append[0] = c;
+	append[1] = '\0';
+	new_str = ft_strjoin(*str, append);
+	free(*str);
+	*str = new_str;
 }

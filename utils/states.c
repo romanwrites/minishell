@@ -6,7 +6,7 @@
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 17:59:16 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/15 17:59:18 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/28 20:44:45 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ _Bool		is_open_quote()
 {
 	return (g_squote != g_dquote);
 }
-
 
 void		set_quotes_state_new(char c)
 {

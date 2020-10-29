@@ -13,20 +13,35 @@
 NAME = minishell
 FLAGS = -O2 -g#-Wall -Wextra -Werror
 
-INCLUDES = -Iincludes/ -Iget_next_line/ -Ilibft/
+INCLUDES = -Iincludes/ -Ilibft/
+
+INC = builtin_mshell.h \
+			engine_mshell.h \
+			get_next_line.h \
+			minishell.h \
+			parse_mshell.h \
+			structs_mshell.h \
+			utils_nshell.h
+
+HEADERS = $(addprefix includes/, $(INC))
+HEADERS += libft/libft.h
 
 LIBFT = -L./libft -lft
 LIBFT_DIR = ./libft
 
 GNL = get_next_line.c \
 		get_next_line_utils.c \
+		get_next_line_utils_2.c \
 
-PARSE_SRC = alloc_pipe_list.c \
+PARSER_SRC = alloc_pipe_list.c \
 			alloc_token_list.c \
 			check_syntax.c \
 			check_syntax2.c \
 			get_sh_list.c \
+			handle_dollar.c \
 			open_quotes.c \
+			open_quotes2.c \
+			open_quotes_utils.c \
             parse.c \
             parse_env.c \
 			split_by_char.c \
@@ -34,13 +49,15 @@ PARSE_SRC = alloc_pipe_list.c \
 			split_by_commands_utils.c \
 
 UTILS_SRC = alloc_and_check.c \
+			check_numeric.c \
+			chr_join.c \
 			compare_kv.c \
             count_2d_lines.c \
-			check_numeric.c \
             dlst_pipe.c \
             dlst_sh.c \
             exit_error_message.c \
             free_all_lists.c \
+            free_and_null.c \
             ft_alloc_check.c \
 			ft_atoll.c \
 			ft_atoull.c \
@@ -66,7 +83,7 @@ BUILTIN = builtin.c\
 			other_cmd.c\
 
 SRC = $(addprefix engine/, $(ENGINE_SRC))
-SRC += $(addprefix parser/, $(PARSE_SRC))
+SRC += $(addprefix parser/, $(PARSER_SRC))
 SRC += $(addprefix utils/, $(UTILS_SRC))
 SRC += $(addprefix get_next_line/, $(GNL))
 SRC += $(addprefix builtin/, $(BUILTIN))
@@ -92,8 +109,8 @@ fclean: clean
 
 sh: all
 	#rm -f libft/libft.a
-	rm -f $(OBJ)
-	$(MAKE) clean -C $(LIBFT_DIR)
+	#rm -f $(OBJ)
+#	$(MAKE) clean -C $(LIBFT_DIR)
 	#./minishell
 
 resh: re

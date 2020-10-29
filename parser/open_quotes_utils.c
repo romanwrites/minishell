@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_numeric.c                                    :+:      :+:    :+:   */
+/*   open_quotes_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/24 15:38:39 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/28 19:55:40 by mkristie         ###   ########.fr       */
+/*   Created: 2020/10/28 19:41:05 by mkristie          #+#    #+#             */
+/*   Updated: 2020/10/28 19:43:04 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		check_numeric(char *str)
+_Bool			is_env_val_after_dollar(char c)
 {
-    int i;
+	return (ft_isdigit(c) || ft_isalpha(c) || c == DOLLAR);
+}
 
-    i = 0;
-    if (ft_strlen(str) > 20)
-        return (1);
-    if (str[i] != '-' && !ft_isdigit(str[i]))
-        return (1);
-    i++;
-    while(str[i])
-    {
-        if(!ft_isdigit(str[i]))
-            return (1);
-        i++;
-    }
-    return (0);
+char			*just_tilde(t_open_q *o, int i)
+{
+	char		*env_value;
+
+	env_value = get_envar("~");
+	if (!env_value)
+		o->append_this = ft_strdup_and_check("");
+	else
+	{
+		o->append_this = ft_strdup_and_check(env_value);
+	}
+	append_line(&o->new_line, &o->append_this);
+	o->save = i + 1;
+	free_and_null(&env_value);
+	return (o->new_line);
 }

@@ -16,6 +16,15 @@
 #include "../libft/libft.h"
 #include "minishell.h"
 
+typedef struct				s_open_q {
+	size_t					i;
+	size_t 					save;
+	char					*new_line;
+	char					*append_this;
+	char 					*str;
+	char 					*tab;
+}							t_open_q;
+
 typedef struct				s_parse {
 	_Bool					backslash;
 	_Bool					is_double_quote_open;

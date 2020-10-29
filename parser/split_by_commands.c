@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_by_commands.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <kukinpower@ya.ru>                +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/07 05:53:19 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/07 05:53:29 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/28 20:00:25 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int		set_nl_cpy(char **str, int i)
 	return (1);
 }
 
-static int		process_open_quotes(char *str, int j)
+static int		process_open_q_cmd(char *str, int j)
 {
 	while (is_open_quote() && str[j])
 	{
@@ -38,7 +38,7 @@ static int		process_open_quotes(char *str, int j)
 	return (j);
 }
 
-char			*process_str(const char *str_input)
+static char		*process_str(const char *str_input)
 {
 	int			i;
 	char		*str;
@@ -49,7 +49,7 @@ char			*process_str(const char *str_input)
 	{
 		set_states(str[i]);
 		if (is_open_quote())
-			i = process_open_quotes(str, ++i) - 1;
+			i = process_open_q_cmd(str, ++i) - 1;
 		else if (ft_isspace(str[i]) && !is_backslash_active())
 			str[i] = '\n';
 		else if (i > 0 && is_pipe_or_single_redir(str, i))
@@ -75,7 +75,11 @@ char			**split_command(const char *str_input)
 	init_globs();
 	str = process_str(str_input);
 	if (is_open_quote())
-		exit_error_message("Quotes are open: split_command()");
+	{
+		ft_putendl_fd("Quotes are open: split_command()", 1);
+		g_exit = 2;
+		return (NULL);
+	}
 	split_by_spaces = ft_split(str, '\n');
 	ft_alloc_check(split_by_spaces);
 	reset_newlines(str);

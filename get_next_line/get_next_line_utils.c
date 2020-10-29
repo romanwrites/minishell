@@ -32,8 +32,8 @@ char		*ft_strdup_gnl(const char *s1)
 
 	len = ft_strlen_gnl(s1);
 	i = 0;
-	if (!(str = malloc(len + 1)))
-		return (NULL);
+	str = malloc(len + 1);
+	ft_alloc_check(str);
 	while (i < len)
 	{
 		str[i] = s1[i];
@@ -88,17 +88,12 @@ char		*ft_strjoin_gnl(char *s1, char *s2)
 
 	len = 0;
 	s1_holder = s1;
-	if (!s1 && !s2)
-		return (NULL);
 	if (!s1 && s2)
 		len = ft_strlen_gnl(s2) + 1;
 	else if (s1 && s2)
 		len = ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1;
-	if (!(str = malloc(sizeof(*str) * (len))))
-	{
-		free(s1_holder);
-		return (NULL);
-	}
+	str = malloc(sizeof(*str) * (len));
+	ft_alloc_check(str);
 	save = str;
 	if (s1)
 		while (*s1)

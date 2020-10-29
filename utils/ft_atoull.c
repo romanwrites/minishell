@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoull.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 15:13:20 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/24 15:59:47 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/28 20:34:23 by mkristie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-static int		ft_isspace_atoi(int c)
+static int				ft_isspace_atoi(int c)
 {
 	if (c == ' ' || c == '\t' || c == '\n' ||
 		c == '\r' || c == '\v' || c == '\f')
@@ -21,7 +21,7 @@ static int		ft_isspace_atoi(int c)
 		return (0);
 }
 
-unsigned long long ft_atoull(char *str, int *minus)
+unsigned long long		ft_atoull(char *str, int *minus)
 {
 	int i;
 	unsigned long long	num;
