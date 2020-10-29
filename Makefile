@@ -15,6 +15,17 @@ FLAGS = -O2 -g#-Wall -Wextra -Werror
 
 INCLUDES = -Iincludes/ -Ilibft/
 
+INC = builtin_mshell.h \
+			engine_mshell.h \
+			get_next_line.h \
+			minishell.h \
+			parse_mshell.h \
+			structs_mshell.h \
+			utils_nshell.h
+
+HEADERS = $(addprefix includes/, $(INC))
+HEADERS += libft/libft.h
+
 LIBFT = -L./libft -lft
 LIBFT_DIR = ./libft
 
@@ -87,8 +98,6 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	$(MAKE) -C $(LIBFT_DIR)
 	gcc $(FLAGS) -o $(NAME) $(OBJ) $(LIBFT)
-#	mkdir obj
-#	mv $(OBJ) ./obj/
 
 clean:
 	$(MAKE) clean -C $(LIBFT_DIR)
