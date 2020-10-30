@@ -12,58 +12,6 @@
 
 #include "minishell.h"
 
-void		ft_echo(char **cmd)
-{
-	int i;
-	char * str;
-
-	i = 1;
-	if (cmd[i])
-	{
-		if (!(ft_strcmp(cmd[i], "-n")))
-		{
-			i++;
-			if (!(ft_strcmp(cmd[i], "$?")))
-			{
-				str = ft_itoa(g_exit);
-				if (str)
-					write(1, str, ft_strlen(str));
-				write(1, "\n", 1);
-				return ;
-			}
-			while (cmd[i])
-			{
-				write(1, cmd[i], ft_strlen(cmd[i]));
-				if (cmd[i + 1])
-					write(1, " ", 1);
-				i++;
-			}
-		}
-		else
-		{
-			if (!(ft_strcmp(cmd[i], "$?")))
-			{
-				str = ft_itoa(g_exit);
-				if (str)
-					write(1, str, ft_strlen(str));
-				write(1, "\n", 1);
-				return ;
-			}
-			while (cmd[i])
-			{
-				write(1, cmd[i], ft_strlen(cmd[i]));
-				if (cmd[i + 1])
-					write(1, " ", 1);
-				else
-					write(1, "\n", 1);
-				i++;
-			}
-		}
-	}
-	else
-		write(1, "\n", 1);
-}
-
 void		ft_exit(char **cmd)
 {
 	int		minus;
