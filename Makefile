@@ -37,6 +37,7 @@ PARSER_SRC = alloc_pipe_list.c \
 			alloc_token_list.c \
 			check_syntax.c \
 			check_syntax2.c \
+			check_tokens_syntax.c \
 			get_sh_list.c \
 			handle_dollar.c \
 			open_quotes.c \

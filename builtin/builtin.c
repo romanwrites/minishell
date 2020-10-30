@@ -10,12 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "minishell.h"
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-//char	**g_bp;
-
-void	ft_echo(char **cmd)
+void		ft_echo(char **cmd)
 {
 	int i;
 	char * str;
@@ -34,7 +31,7 @@ void	ft_echo(char **cmd)
 				write(1, "\n", 1);
 				return ;
 			}
-			while(cmd[i])
+			while (cmd[i])
 			{
 				write(1, cmd[i], ft_strlen(cmd[i]));
 				if (cmd[i + 1])
@@ -52,7 +49,7 @@ void	ft_echo(char **cmd)
 				write(1, "\n", 1);
 				return ;
 			}
-			while(cmd[i])
+			while (cmd[i])
 			{
 				write(1, cmd[i], ft_strlen(cmd[i]));
 				if (cmd[i + 1])
@@ -67,35 +64,33 @@ void	ft_echo(char **cmd)
 		write(1, "\n", 1);
 }
 
-void	ft_exit(char **cmd)//g_exit?
+void		ft_exit(char **cmd)
 {
-	int minus;
+	int		minus;
 
 	minus = 0;
 	write(1, "exit\n", ft_strlen("exit\n"));
 	if (!cmd || !cmd[1])
 	{
-		//ft_lstclear();
-		exit(g_exit%256);
+		exit(g_exit % 256);
 	}
 	if (cmd[2])
 	{
 		write(1, "bash: exit: too many arguments\n", ft_strlen("bash: exit: too many arguments\n"));
 		return ;
 	}
-	//ft_lstclear();
 	ft_atoull(cmd[1], &minus);
-	if(check_numeric(cmd[1]) || ((!minus && ft_atoull(cmd[1], &minus) > __LONG_LONG_MAX__ ) || (minus && ft_atoull(cmd[1], &minus) - 1 > __LONG_LONG_MAX__)))
+	if (check_numeric(cmd[1]) || ((!minus && ft_atoull(cmd[1], &minus) > __LONG_LONG_MAX__ ) || (minus && ft_atoull(cmd[1], &minus) - 1 > __LONG_LONG_MAX__)))
 	{
 		write(1, "bash: exit: ", ft_strlen("bash: exit: "));
 		write(1, cmd[1], ft_strlen(cmd[1]));
 		write(1, ": numeric argument required\n", ft_strlen(": numeric argument required\n"));
 		exit(255);
 	}
-	exit(ft_atoll(cmd[1])%256);
+	exit(ft_atoll(cmd[1]) % 256);
 }
 
-void	ft_pwd()
+void		ft_pwd()
 {
 	char path[PATH_MAX];
 
@@ -104,9 +99,9 @@ void	ft_pwd()
 	write(1, "\n", 1);
 }
 
-void	ft_cd(char *str)
+void		ft_cd(char *str)
 {
-	DIR *dir;
+	DIR		*dir;
 
 	if (!str)
 		str = get_envar("~");
@@ -124,9 +119,9 @@ void	ft_cd(char *str)
 	chdir(str);
 }
 
-void free_nothing(void *to_free)
+void		free_nothing(void *to_free)
 {
-	return;
+	return ;
 }
 
 void	free_content(void *to_free) //should be pointed be del() in ft_lstclear()
@@ -138,10 +133,10 @@ void	free_content(void *to_free) //should be pointed be del() in ft_lstclear()
 	free(content->value);
 }
 
-void	ft_env()
+void		ft_env()
 {
-	t_list *env;
-	t_list *exp;
+	t_list	*env;
+	t_list	*exp;
 
 	env = g_env;
 	while(env)
@@ -157,10 +152,10 @@ void	ft_env()
 	}
 }
 
-t_list	*ft_merge_lists(t_list *dst, t_list *src)
+t_list		*ft_merge_lists(t_list *dst, t_list *src)
 {
-	t_list *t_dst;
-	t_list *t_src;
+	t_list	*t_dst;
+	t_list	*t_src;
 
 	if(src == NULL)
 		return(dst);
@@ -177,14 +172,14 @@ t_list	*ft_merge_lists(t_list *dst, t_list *src)
 	return(t_dst);
 }
 
-int		find_key_replace_val(t_list **lst, char *key, char *value)
+int			find_key_replace_val(t_list **lst, char *key, char *value)
 {
-	t_list *tmp;
+	t_list	*tmp;
 
 	tmp = *lst;
 	while (tmp)
 	{
-		if(!ft_strcmp(((t_envar *)tmp->content)->key, key))
+		if (!ft_strcmp(((t_envar *)tmp->content)->key, key))
 		{
 			free(((t_envar *)tmp->content)->value);
 			((t_envar *)tmp->content)->value = ft_strdup(value);
@@ -195,16 +190,16 @@ int		find_key_replace_val(t_list **lst, char *key, char *value)
 	return 0;
 }
 
-void	ft_export(char *arg)
+void		ft_export(char *arg)
 {
 	t_list	*list;
-	t_envar *kv;
+	t_envar	*kv;
 	char	**pair;
 	char	*value;
 	
 	list = NULL;
 	pair = ft_split(arg, ' ');
-	while(pair && *pair)
+	while (pair && *pair)
 	{
 		kv = malloc(sizeof(t_envar));
 		if (!kv)
@@ -245,7 +240,7 @@ void	ft_export(char *arg)
 	}
 	list = ft_merge_lists(list, g_env);
 	ft_list_sort(&list, compare_key);
-	while(list)
+	while (list)
 	{
 		if (!arg)
 		{
@@ -263,16 +258,15 @@ void	ft_export(char *arg)
 		list = list->next;
 	}
 	ft_lstclear(&list, free_nothing);
-	//free_kv(kv, i);
 }
 
-void	ft_unset(char *arg)
+void		ft_unset(char *arg)
 {
-	char **keys;
+	char	**keys;
 	int		first;
-	t_list *tmp;
-	t_list *ptr_prev;
-	t_list *ptr_next;
+	t_list	*tmp;
+	t_list	*ptr_prev;
+	t_list	*ptr_next;
 
 	if (arg)
 	{
@@ -292,7 +286,7 @@ void	ft_unset(char *arg)
 				first = 1;
 				while (tmp)
 				{
-					if(!ft_strcmp(((t_envar *)tmp->content)->key, *keys) && !first)
+					if (!ft_strcmp(((t_envar *)tmp->content)->key, *keys) && !first)
 					{
 						ptr_next = tmp->next;
 						ft_lstdelone(tmp, free_content);
@@ -318,7 +312,7 @@ void	ft_unset(char *arg)
 	}
 }
 
-t_list	*env_to_list(char **envp)
+t_list		*env_to_list(char **envp)
 {
 	char	**env;
 	char	*value;
@@ -347,5 +341,5 @@ t_list	*env_to_list(char **envp)
 			ft_lstadd_back(&list, ft_lstnew((void *)kv));
 		env++;
 	}
-	return(list);
+	return (list);
 }

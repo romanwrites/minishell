@@ -52,6 +52,12 @@ _Bool			check_syntax_2d(char **ptr);
 _Bool			check_syntax_by_indexes(const char *str);
 
 /*
+** check_tokens_syntax.c
+*/
+_Bool		check_tokens_syntax(t_mshell *sv);
+
+
+/*
 ** get_sh_list.c
 */
 t_dlist_sh		*get_sh_list(char **semicolons2d, int i, t_mshell *sv);
