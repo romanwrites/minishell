@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/30 21:58:05 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/31 01:06:26 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,13 +171,13 @@ void	process_cmd(t_mshell *sv)
 						close(fds[1]);
 						dup2(fds[0], 0);
 						close(fds[0]);
-						fd = -1;
-						filedes = -1;
+						fdr = -2;
+						fdl = -2;
 					}
 				}
 				else
 				{
-					execute_command(cmd, last_redir, fd, filedes);
+					execute_command(cmd, last_redir, fdr, fdl);
 					dup2(savestdin, 0);
 					dup2(savestdout, 1);
 				}
