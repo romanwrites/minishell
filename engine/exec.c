@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 15:09:27 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/29 14:43:42 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 14:26:20 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ void all_to_lower(char **cmd)
 
 void 	execute(char **cmd)
 {
-	//if (g_bp[0] && ((!ft_strcmp(g_bp[0], "export") && g_bp[1]) || !ft_strcmp(g_bp[0], "exit") || !ft_strcmp(g_bp[0], "cd") || !ft_strcmp(g_bp[0], "unset")))
-	//	return ;//g_exit?
 	if (!(ft_strcmp(cmd[0], "export")))
 		ft_export(cmd[1]);
 	else if (!(ft_strcmp(cmd[0], "env")))
@@ -115,7 +113,9 @@ void 	execute_command(char **cmd, char *is_redir, int fd, int filedes)
 			execute(cmd);
 			dup2(savestdin, 0);
 			dup2(savestdout, 1);
+			close(filedes);
 		}
+		close(fd);
 	}
 	else
 		execute(cmd);
