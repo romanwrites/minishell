@@ -91,8 +91,13 @@ BUILTIN = builtin.c\
             ft_exit.c \
 			ft_env.c \
 			ft_echo.c \
-			ft_pwd.c \
 			ft_export.c \
+			ft_pwd.c \
+<<<<<<< HEAD
+			ft_export.c \
+=======
+			ft_unset.c \
+>>>>>>> 07c046b2b27f34de4b27e581d191dc9a27316ffd
 
 SRC = $(addprefix engine/, $(ENGINE_SRC))
 SRC += $(addprefix parser/, $(PARSER_SRC))

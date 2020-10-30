@@ -23,9 +23,6 @@ extern  int		g_stdin;
 extern  int		g_stdout;
 
 
-//f
-
-
 /*
 ** builtin_utils.c
 */
@@ -65,15 +62,9 @@ void			ft_exit(char **cmd);
 */
 void			ft_export(char **arg);
 
-
-
-char	**alloc_mem_env(int lines, int max_len, char *arg);
-void	count_lines(int *lines, int *max_len, char *arg);
-void	fill_env(char **env_array, char *arg);
-void	free_env(char **env_array, int lines);
-
-void	ft_unset(char *arg);
-void	print_env(char **env_array);
-void	sort_env(char **env_array, int lines, int max_len);
+/*
+** ft_unset.c
+*/
+void			ft_unset(char *arg);
 
 #endif
