@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/29 23:35:13 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 11:55:49 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	handle_cmd(char **args)
 				signal(SIGQUIT, SIG_DFL);//
 				signal(SIGINT, SIG_DFL);//
 				signal(SIGTERM, SIG_DFL);
-				status = execve(tmp, args, envp);//если execve вернул -1 то 
+				status = execve(tmp, args, envp);
 			}
 		}
 		else
