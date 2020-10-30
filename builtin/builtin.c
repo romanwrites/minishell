@@ -12,23 +12,41 @@
 
 #include "minishell.h"
 
-void		ft_unset(char *arg)
+static _Bool	is_invalid_char_unset(char *arg)
 {
-	char	**keys;
-	int		first;
-	t_list	*tmp;
-	t_list	*ptr_prev;
-	t_list	*ptr_next;
+	size_t		len;
+	size_t		i;
+
+	len = ft_strlen(".~,@#%^-+={}[]");
+	i = 0;
+	while (i < len)
+	{
+		if ((ft_strchr(arg, ".~,@#%^-+={}[]"[i])))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static void		put_not_a_valid_identifier(char *arg)
+{
+	ft_putstr_fd("bash: unset: `", 1);
+	ft_putstr_fd(arg, 1);
+	ft_putendl_fd("\': not a valid identifier", 1);
+}
+
+void			ft_unset(char *arg)
+{
+	char		**keys;
+	int			first;
+	t_list		*tmp;
+	t_list		*ptr_prev;
+	t_list		*ptr_next;
 
 	if (arg)
 	{
-		if (ft_strchr(arg, '.') || ft_strchr(arg, '~') || ft_strchr(arg, ',') || ft_strchr(arg, '@') || ft_strchr(arg, '#') || ft_strchr(arg, '%') || ft_strchr(arg, '^') || ft_strchr(arg, '-') || ft_strchr(arg, '+') || ft_strchr(arg, '=') || ft_strchr(arg, '{') || ft_strchr(arg, '}') || ft_strchr(arg, '[') || ft_strchr(arg, ']'))
-		{
-			write(1, "bash: unset: `", ft_strlen("bash: unset: `"));
-			write(1, arg, ft_strlen("arg"));//HEL.L -> HEL
-			write(1, "\': not a valid identifier", ft_strlen("\': not a valid identifier"));
-			write(1, "\n", 1);
-		}
+		if (is_invalid_char_unset(arg))
+			put_not_a_valid_identifier(arg);
 		else
 		{
 			keys = ft_split(arg, ' ');//FREE
