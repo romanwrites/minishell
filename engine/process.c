@@ -6,14 +6,13 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/30 13:55:05 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 14:26:03 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 char	**g_bp;
-int out;//////////////////////////////////////////
 
 void	fill_before_pipe(char **cmd, int i)
 {
@@ -49,7 +48,6 @@ void	process_cmd(t_mshell *sv)
 	int savestdout; 
 	int savestdin; 
 	savestdin = dup(0);
-	out = dup(1);////////////////////////////////////
 	savestdout = dup(1);
 	cmd = (char **)malloc((sizeof(char *) * PATH_MAX));
 	g_bp = (char **)malloc((sizeof(char *) * PATH_MAX));
@@ -81,7 +79,7 @@ void	process_cmd(t_mshell *sv)
 					last_redir = token->content;
 					if (fd == -1)
 					{
-						write(1, PROM, ft_strlen(PROM));//why zero??????
+						write(1, PROM, ft_strlen(PROM));
 						write(1, token->next->content, ft_strlen(token->next->content));
 						write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 						return ;
@@ -93,7 +91,7 @@ void	process_cmd(t_mshell *sv)
 							filedes = handle_redir(token->next->next->content, token->next->next->next->content);
 							if (filedes == -1)
 							{
-								write(1, PROM, ft_strlen(PROM));//why zero??????
+								write(1, PROM, ft_strlen(PROM));
 								write(1, token->next->next->next->content, ft_strlen(token->next->next->next->content));
 								write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 								return ;
@@ -106,11 +104,10 @@ void	process_cmd(t_mshell *sv)
 					}
 					else if (!sv->sh->tdlst_pipe->next && (!token->next->next || !token->next->next->content || !token->next->next->next || !token->next->next->next->content || (ft_strcmp(token->next->next->content, "<") && ft_strcmp(token->next->next->content, ">") && ft_strcmp(token->next->next->content, ">>"))))
 						execute_command(cmd, last_redir, fd, filedes);
-					token = token->next;//QUESTIONABLE BUT DOESN'T REQUIRE IS_HANDLED
+					token = token->next;
 				}
 				else if ((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && (!token->next || (token->next && (!ft_strcmp(token->next->content, ">") || !ft_strcmp(token->next->content, ">>") || !ft_strcmp(token->next->content, "<")))))
 				{
-					//print_2d_array(cmd);
 					write(0, PROM, ft_strlen(PROM));
 					write(1, "syntax error near unexpected token `", ft_strlen("syntax error near unexpected token `"));
 					if (token->next)
@@ -125,13 +122,10 @@ void	process_cmd(t_mshell *sv)
 					cmd[i++] = token->content;
 					cmd[i] = NULL;
 				}
-				//print_2d_array(cmd);
 				token = token->next;
 			}
 			if (i)
 			{
-				print_2d_array(cmd);
-				//printf("fd = %d\t last redir: %s\n", fd, last_redir);
 				if (sv->sh->tdlst_pipe->next)
 				{
 					fill_before_pipe(cmd, i);
@@ -144,9 +138,7 @@ void	process_cmd(t_mshell *sv)
 						close(fds[0]);
 						dup2(fds[1], 1);
 						close(fds[1]);
-						dprintf(savestdout, "fd = %d\t filedes = %d\t last redir: %s\n", fd, filedes, last_redir);
 						execute_command(cmd, last_redir, fd, filedes);
-						dprintf(savestdout, "fd = %d\t filedes = %d\t last redir: %s\n", fd, filedes, last_redir);
 						exit((int)g_exit%256);//
 					}
 					else
@@ -161,11 +153,12 @@ void	process_cmd(t_mshell *sv)
 						close(fds[1]);
 						dup2(fds[0], 0);
 						close(fds[0]);
+						fd = -1;
+						filedes = -1;
 					}
 				}
 				else if (fd == -1 || g_bp[0])
 				{
-					printf("BEFORE PIPE\n");
 					execute_command(cmd, last_redir, fd, filedes);
 					//status =
 					dup2(savestdin, 0);
