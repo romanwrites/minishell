@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_mshell.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:56:37 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/28 20:45:11 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/30 19:26:34 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void				*malloc_n_chk(size_t size);
 */
 t_list				*ft_lstnew_kv_n_chk(void *content);
 char				**ft_split_n_chk(char *str, char c);
+char		        *ft_strjoin_n_chk(char *s1, char *s2);
 
 /*
 ** check_numeric.c

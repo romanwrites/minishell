@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_mshell.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:14:42 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 18:14:43 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/30 19:28:32 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void			ft_exit(char **cmd);
 /*
 ** ft_export.c
 */
-void			ft_export(char *arg);
+void			ft_export(char **arg);
 
 
 

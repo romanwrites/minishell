@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 15:09:27 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 14:26:20 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 19:42:45 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void all_to_lower(char **cmd)
 void 	execute(char **cmd)
 {
 	if (!(ft_strcmp(cmd[0], "export")))
-		ft_export(cmd[1]);
+		ft_export(cmd);
 	else if (!(ft_strcmp(cmd[0], "env")))
 		ft_env();
 	else if (!(ft_strcmp(cmd[0], "pwd")))

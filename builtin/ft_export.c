@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:21:57 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 19:20:46 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 20:19:13 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void		process_list(t_list *list, const char *arg)
 	ft_list_sort(&list, compare_key);
 	while (list)
 	{
-		if (!arg)
+		if (!arg || *arg == '|' || *arg == '>' || *arg == '<')
 		{
 			ft_putstr_fd("declare -x ", 1);
 			ft_putstr_fd(((t_envar *)list->content)->key, 1);
@@ -66,21 +66,20 @@ void		process_pair(char **pair, t_envar *kv, char *value)
 	}
 }
 
-void		ft_export(char *arg)
+void		ft_export(char **arg)
 {
 	t_list	*list;
 	t_envar	*kv;
 	char	**pair;
 	char	*value;
+	char	**args;
 
 	kv = NULL;
 	value = NULL;
 	list = NULL;
-	if (arg)
-	{
-		pair = ft_split_n_chk(arg, ' ');
-		process_pair(pair, kv, value);
-	}
+	args = arg;
+	args++;
+	process_pair(args, kv, value);
 	list = ft_merge_lists(list, g_env);
-	process_list(list, arg);
+	process_list(list, arg[1]);
 }

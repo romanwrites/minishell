@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/30 17:58:14 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/30 19:47:25 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,6 @@ GNL = get_next_line.c \
 
 PARSER_SRC = alloc_pipe_list.c \
 			alloc_token_list.c \
-			alloc_and_check2.c \
 			check_syntax.c \
 			check_syntax2.c \
 			check_tokens_syntax.c \
@@ -51,6 +50,7 @@ PARSER_SRC = alloc_pipe_list.c \
 			split_by_commands_utils.c \
 
 UTILS_SRC = alloc_and_check.c \
+			alloc_and_check2.c \
 			check_numeric.c \
 			chr_join.c \
 			compare_kv.c \
@@ -85,13 +85,14 @@ ENGINE_SRC = engine_start.c \
 				process.c \
 
 BUILTIN = builtin.c\
+			builtin_utils.c \
 			other_cmd.c\
 			ft_cd.c \
-			ft_pwd.c \
             ft_exit.c \
 			ft_env.c \
 			ft_echo.c \
 			ft_pwd.c \
+			ft_export.c \
 
 SRC = $(addprefix engine/, $(ENGINE_SRC))
 SRC += $(addprefix parser/, $(PARSER_SRC))
