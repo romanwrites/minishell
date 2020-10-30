@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:14:42 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 19:28:32 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 20:29:45 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,6 @@ void			ft_export(char **arg);
 /*
 ** ft_unset.c
 */
-void			ft_unset(char *arg);
+void			ft_unset(char **arg);
 
 #endif

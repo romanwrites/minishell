@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 15:09:27 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 19:42:45 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 20:27:24 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void 	execute(char **cmd)
 		return ;
 	}
 	else if (!(ft_strcmp(cmd[0], "unset")))
-		ft_unset(cmd[1]);
+		ft_unset(cmd);
 	else
 	{
 		all_to_lower(cmd);

@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/30 20:13:34 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 20:29:16 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	process_cmd(t_mshell *sv)
 				{
 					cmd[i++] = token->content;
 					cmd[i] = NULL;
-					print_2d_array(cmd);
+					//print_2d_array(cmd);
 				}
 				token = token->next;
 			}
