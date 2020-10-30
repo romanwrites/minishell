@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/30 20:22:00 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/30 20:24:02 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,8 +84,7 @@ ENGINE_SRC = engine_start.c \
 				exec.c \
 				process.c \
 
-BUILTIN = builtin.c\
-			builtin_utils.c \
+BUILTIN = 	builtin_utils.c \
 			other_cmd.c\
 			ft_cd.c \
             ft_exit.c \
