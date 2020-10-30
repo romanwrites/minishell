@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/10/30 19:47:25 by lhelper          ###   ########.fr        #
+#    Updated: 2020/10/30 20:22:00 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,11 +93,7 @@ BUILTIN = builtin.c\
 			ft_echo.c \
 			ft_export.c \
 			ft_pwd.c \
-<<<<<<< HEAD
-			ft_export.c \
-=======
 			ft_unset.c \
->>>>>>> 07c046b2b27f34de4b27e581d191dc9a27316ffd
 
 SRC = $(addprefix engine/, $(ENGINE_SRC))
 SRC += $(addprefix parser/, $(PARSER_SRC))
