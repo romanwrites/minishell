@@ -48,9 +48,76 @@ size_t		len_without_newlines(const char *ptr)
 
 _Bool		ret_syntax_err(void)
 {
-	print_error("syntax error");
+	print_error(SYNTAX_ERROR);
 	g_exit = 258;
 	return (1);
+}
+
+int				count_tokens(t_token *token)
+{
+	t_token		*ptr;
+	int			i;
+
+	i = 0;
+	ptr = token;
+	while (ptr)
+	{
+		i++;
+		ptr = ptr->next;
+	}
+	return (i);
+}
+
+char			**token_to_2d_array(t_token *token, int len)
+{
+	char		**tokens_2d;
+	t_token		*ptr;
+	int			i;
+
+	i = 0;
+	ptr = token;
+	tokens_2d = malloc(sizeof(char *) * (len + 1));
+	ft_alloc_check(tokens_2d);
+	while (ptr)
+	{
+		tokens_2d[i++] = ft_strdup_and_check(ptr->content);
+		ptr = ptr->next;
+	}
+	tokens_2d[i] = NULL;
+	return (tokens_2d);
+}
+
+_Bool			check_syntax_token(t_token *token)
+{
+	char		**tokens_2d;
+
+	tokens_2d = token_to_2d_array(token, count_tokens(token));
+	if (check_syntax_2d(tokens_2d))
+	{
+		ft_free2d(tokens_2d);
+		return (1);
+	}
+	ft_free2d(tokens_2d);
+	return (0);
+}
+
+
+_Bool		check_tokens_syntax(t_mshell *sv)
+{
+	while (sv->sh)
+	{
+		while (sv->sh->tdlst_pipe)
+		{
+			if (check_syntax_token(sv->sh->tdlst_pipe->token))
+				return (1);
+			sv->sh->tdlst_pipe->token = sv->sh->tdlst_pipe->token_head;
+			sv->sh->tdlst_pipe = sv->sh->tdlst_pipe->next;
+		}
+		sv->sh->tdlst_pipe = sv->sh->tdlst_pipe_head;
+		sv->sh = sv->sh->next;
+	}
+	sv->sh = sv->sh_head;
+	return (0);
 }
 
 _Bool		parse_input(char *str, t_mshell *sv)
@@ -62,7 +129,7 @@ _Bool		parse_input(char *str, t_mshell *sv)
 	input_str = ft_strtrim(str, " ");
 	ft_alloc_check(input_str);
 	if (check_syntax_by_indexes(input_str) || check_syntax_errors(input_str))
-		ret_syntax_err();
+		return (ret_syntax_err());
 	semicolons2d = split_by_char(SEMICOLON, input_str, sv);
 	ft_alloc_check(semicolons2d);
 	free(input_str);
@@ -73,6 +140,9 @@ _Bool		parse_input(char *str, t_mshell *sv)
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
 	if (!sv->sh)
+		return (1);
+	set_heads(sv);
+	if (check_tokens_syntax(sv))
 		return (1);
 	return (0);
 }

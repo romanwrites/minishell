@@ -41,7 +41,7 @@ _Bool			check_syntax_2d(char **ptr)
 		if (check_redirs_only(ptr[i]))
 		{
 			g_exit = 258;
-			print_error("syntax error");
+			print_error(SYNTAX_ERROR);
 			return (1);
 		}
 		else if (check_dot_only(ptr[i]))

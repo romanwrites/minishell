@@ -71,14 +71,11 @@ int     main(int ac, char **av, char **envp)
 		ft_alloc_check(str);
 		if (parse_input(str, sv))
 		{
-			if (sv->sh_head)
-				print_everything(sv);
 			free(str);
 			str = NULL;
 			write(0, PROMPT, ft_strlen(PROMPT));
-			continue;
+			continue ;
 		}
-		set_heads(sv);
 //		print_everything(sv);
 		process_cmd(sv);
 		write(0, PROMPT, ft_strlen(PROMPT));

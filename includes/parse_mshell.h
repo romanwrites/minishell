@@ -24,6 +24,7 @@
 # define REDIR_RIGHT 62
 # define REDIR_RIGHT_DOUBLE ">>"
 # define NEWLINE 10
+# define SYNTAX_ERROR "bash: syntax error near unexpected token"
 
 /*
 ** alloc_pipe_list.c
