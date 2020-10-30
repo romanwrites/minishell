@@ -86,7 +86,7 @@ unsigned long long	ft_atoull(char *str, int *minus);
 /*
 ** ft_lstnew_kv.c
 */
-t_list		*ft_lstnew_kv(void *content);
+t_list				*ft_lstnew_kv(void *content);
 
 /*
 ** ft_trim_2d_cpy.c
@@ -97,6 +97,11 @@ char				**ft_trim_2d_cpy(char **arr_2d);
 ** get_envar.c
 */
 char				*get_envar(char *var);
+
+/*
+** is_str.c
+*/
+_Bool				is_some_redir(char *str);
 
 /*
 ** print_2d_array.c
