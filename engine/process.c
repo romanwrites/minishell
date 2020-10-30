@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/30 14:26:03 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 14:35:31 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void	process_cmd(t_mshell *sv)
 						execute_command(cmd, last_redir, fd, filedes);
 					token = token->next;
 				}
+				/*
 				else if ((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && (!token->next || (token->next && (!ft_strcmp(token->next->content, ">") || !ft_strcmp(token->next->content, ">>") || !ft_strcmp(token->next->content, "<")))))
 				{
 					write(0, PROM, ft_strlen(PROM));
@@ -117,6 +118,7 @@ void	process_cmd(t_mshell *sv)
 					write(1, "'\n", ft_strlen("'\n"));
 					return ;
 				}
+				*/
 				else
 				{
 					cmd[i++] = token->content;

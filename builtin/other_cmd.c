@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/30 11:55:49 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 14:54:43 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	handle_cmd(char **args)
 	struct stat buffer;
 	i = 0;
 	x = 0;
+	dir = NULL;
 
 	envp = list_to_env();
 	if (ft_strchr(args[0], '/'))
@@ -94,7 +95,13 @@ void	handle_cmd(char **args)
 		tmp = args[0];
 		args[0] = find_cmd(tmp);
 		status = stat(tmp, &buffer);
-		if (status != -1)
+		dir = opendir(tmp);
+		if (dir)
+		{
+			closedir(dir);
+			status = 1;
+		}
+		if (status == 0)
 		{
 			g_pid = fork();
 			if (g_pid)
@@ -114,6 +121,13 @@ void	handle_cmd(char **args)
 				signal(SIGTERM, SIG_DFL);
 				status = execve(tmp, args, envp);
 			}
+		}
+		else if (status == 1)
+		{
+			write(1, PROM, ft_strlen(PROM));//why zero??????
+			write(1, tmp, ft_strlen(tmp));
+			write(1, ": is a directory\n", ft_strlen(": is a directory\n"));
+			g_exit = 126;
 		}
 		else
 		{
