@@ -46,14 +46,29 @@ static char		**token_to_2d_array(t_token *token, int len)
 	return (tokens_2d);
 }
 
+static _Bool	check_syntax_token_2d(char **tokens_2d, int l, char **err_str)
+{
+	if (is_some_redir(tokens_2d[0]) || is_some_redir(tokens_2d[0]) || \
+		is_some_redir(tokens_2d[l - 1]) || is_some_redir(tokens_2d[l - 1]))
+	{
+		*err_str = ft_strdup_and_check(SYNTAX_UNEXP_NL);
+		return (1);
+	}
+	return (0);
+}
+
 static _Bool	check_syntax_token(t_token *token)
 {
 	char		**tokens_2d;
+	char		*err_str;
 
+	err_str = NULL;
 	tokens_2d = token_to_2d_array(token, count_tokens(token));
-	if (check_syntax_2d(tokens_2d))
+	if (check_syntax_token_2d(tokens_2d, count_2d_lines(tokens_2d), &err_str))
 	{
 		ft_free2d(tokens_2d);
+		print_error(err_str);
+		g_exit = 258;
 		return (1);
 	}
 	ft_free2d(tokens_2d);
