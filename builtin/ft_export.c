@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:21:57 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 18:22:00 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/30 19:20:46 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,11 @@ void		ft_export(char *arg)
 	kv = NULL;
 	value = NULL;
 	list = NULL;
-	pair = ft_split_n_chk(arg, ' ');
-	process_pair(pair, kv, value);
+	if (arg)
+	{
+		pair = ft_split_n_chk(arg, ' ');
+		process_pair(pair, kv, value);
+	}
 	list = ft_merge_lists(list, g_env);
 	process_list(list, arg);
 }
