@@ -9,6 +9,19 @@ extern	char	*g_home;
 extern  int		g_stdin;
 extern  int		g_stdout;
 
+
+
+/*
+** ft_echo.c
+*/
+void			ft_echo(char **str);
+
+
+
+
+
+
+
 char	**alloc_mem_env(int lines, int max_len, char *arg);
 void	count_lines(int *lines, int *max_len, char *arg);
 t_list	*env_to_list(char **envp);
@@ -16,7 +29,7 @@ void	fill_env(char **env_array, char *arg);
 void	free_content(void *to_free); //should be pointed be del() in ft_lstclear()
 void	free_env(char **env_array, int lines);
 void	ft_cd(char *str);
-void	ft_echo(char **str);
+
 void	ft_env();
 void	ft_exit(char **cmd);
 void	ft_export(char *arg);
