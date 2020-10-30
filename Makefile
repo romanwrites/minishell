@@ -35,6 +35,7 @@ GNL = get_next_line.c \
 
 PARSER_SRC = alloc_pipe_list.c \
 			alloc_token_list.c \
+			alloc_and_check2.c \
 			check_syntax.c \
 			check_syntax2.c \
 			check_tokens_syntax.c \
@@ -85,6 +86,10 @@ ENGINE_SRC = engine_start.c \
 
 BUILTIN = builtin.c\
 			other_cmd.c\
+			ft_cd.c \
+			ft_pwd.c \
+            ft_exit.c \
+			ft_env.c \
 			ft_echo.c \
 			ft_pwd.c \
 

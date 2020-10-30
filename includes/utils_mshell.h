@@ -22,6 +22,14 @@
 char 				*ft_substr_and_chk(char const *str, unsigned int start, size_t len);
 void				*ft_strdup_and_check(const char *str);
 char				*ft_itoa_and_chk(int n);
+t_list				*ft_lstnew_n_chk(void *content);
+void				*malloc_n_chk(size_t size);
+
+/*
+** alloc_and_check2.c
+*/
+t_list				*ft_lstnew_kv_n_chk(void *content);
+char				**ft_split_n_chk(char *str, char c);
 
 /*
 ** check_numeric.c
