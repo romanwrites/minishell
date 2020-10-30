@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/29 18:10:48 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 11:48:20 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,15 @@ void	process_cmd(t_mshell *sv)
 						execute_command(cmd, last_redir, fd, filedes);
 					token = token->next;//QUESTIONABLE BUT DOESN'T REQUIRE IS_HANDLED
 				}
-				else if ((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && token->next && token->next->content && (!ft_strcmp(token->next->content, ">") || !ft_strcmp(token->next->content, ">>") || !ft_strcmp(token->next->content, "<")))
+				else if ((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && (!token->next || (token->next && (!ft_strcmp(token->next->content, ">") || !ft_strcmp(token->next->content, ">>") || !ft_strcmp(token->next->content, "<")))))
 				{
+					//print_2d_array(cmd);
 					write(0, PROM, ft_strlen(PROM));
 					write(1, "syntax error near unexpected token `", ft_strlen("syntax error near unexpected token `"));
-					write(1, token->next->content, ft_strlen(token->next->content));
+					if (token->next)
+						write(1, token->next->content, ft_strlen(token->next->content));
+					else
+						write(1, "newline", ft_strlen("newline"));
 					write(1, "'\n", ft_strlen("'\n"));
 					return ;
 				}

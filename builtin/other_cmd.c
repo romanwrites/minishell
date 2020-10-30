@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/29 19:12:48 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 11:55:49 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,12 @@ void	handle_cmd(char **args)
 	int i;
 	int x;
 	int status;
-
+	struct stat buffer;
 	i = 0;
 	x = 0;
 
 	envp = list_to_env();
-	if (args[0][0] == '/' || (args[0][0] == '.' && args[0][1] == '/'))
+	if (ft_strchr(args[0], '/'))
 	{
 		if (args[0][0] == '.' && args[0][1] == '/' && !ft_isprint((int)args[0][2]))
 		{
@@ -93,27 +93,37 @@ void	handle_cmd(char **args)
 		}
 		tmp = args[0];
 		args[0] = find_cmd(tmp);
-		g_pid = fork();
-		if (g_pid)
+		status = stat(tmp, &buffer);
+		if (status != -1)
 		{
-			signal(SIGQUIT, SIG_IGN);
-			signal(SIGINT, SIG_IGN);
-			//wait(NULL);
-			waitpid(g_pid, &status, WUNTRACED);
-			signal(SIGQUIT, handle_parent_signal);
-			signal(SIGINT, handle_parent_signal);
-			g_exit = status_return(status);
+			g_pid = fork();
+			if (g_pid)
+			{
+				signal(SIGQUIT, SIG_IGN);
+				signal(SIGINT, SIG_IGN);
+				//wait(NULL);
+				waitpid(g_pid, &status, WUNTRACED);
+				signal(SIGQUIT, handle_parent_signal);
+				signal(SIGINT, handle_parent_signal);
+				g_exit = status_return(status);
+			}
+			else
+			{
+				signal(SIGQUIT, SIG_DFL);//
+				signal(SIGINT, SIG_DFL);//
+				signal(SIGTERM, SIG_DFL);
+				status = execve(tmp, args, envp);
+			}
 		}
 		else
 		{
-			signal(SIGQUIT, SIG_DFL);//
-			signal(SIGINT, SIG_DFL);//
-			signal(SIGTERM, SIG_DFL);
-			status = execve(tmp, args, envp);//если execve вернул -1 то 
-			//exit(status);
+			write(1, PROM, ft_strlen(PROM));//why zero??????
+			write(1, tmp, ft_strlen(tmp));
+			write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+			g_exit = 127;
 		}
-		printf("status = %d\t args[0] = %s\t tmp = %s\n", status);
-		free(tmp);
+		//if (tmp)
+		//	free(tmp);
 		return ;
 	}
 	to_split = get_envar("PATH");

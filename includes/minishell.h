@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/29 19:55:36 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/29 23:25:00 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # include <dirent.h>
 # include <signal.h>
 # include <fcntl.h>
+# include <sys/stat.h>
 # include <stdio.h>
 
 //extern t_mshell				*g_sv;
