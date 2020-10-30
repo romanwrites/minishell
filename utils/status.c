@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 15:52:27 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/29 21:48:06 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 17:46:03 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	status_return(int status)
 		}
 		if (WTERMSIG(status) == 3)
 		{
-			write(1, "\n", 1);
+			write(1, "Quit: 3\n", ft_strlen("Quit: 3\n"));
 			return (131);
 		}
         if (WTERMSIG(status) == 15)
