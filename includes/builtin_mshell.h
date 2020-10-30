@@ -11,12 +11,17 @@ extern  int		g_stdout;
 
 
 
+
+
 /*
 ** ft_echo.c
 */
 void			ft_echo(char **str);
 
-
+/*
+** ft_pwd.c
+*/
+void			ft_pwd(void);
 
 
 
