@@ -20,7 +20,7 @@ void		ft_exit(char **cmd)
 	write(1, "exit\n", ft_strlen("exit\n"));
 	if (!cmd || !cmd[1])
 	{
-		exit(g_exit % 256);
+		exit((int)g_exit % 256);
 	}
 	if (cmd[2])
 	{
@@ -35,16 +35,7 @@ void		ft_exit(char **cmd)
 		write(1, ": numeric argument required\n", ft_strlen(": numeric argument required\n"));
 		exit(255);
 	}
-	exit(ft_atoll(cmd[1]) % 256);
-}
-
-void		ft_pwd()
-{
-	char path[PATH_MAX];
-
-	getcwd(path, PATH_MAX);
-	write(1, path, ft_strlen(path));
-	write(1, "\n", 1);
+	exit((int)(ft_atoll(cmd[1]) % 256));
 }
 
 void		ft_cd(char *str)
