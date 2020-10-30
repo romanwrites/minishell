@@ -15,7 +15,7 @@
 _Bool			check_redirs_only(const char *str)
 {
 	if (!(ft_strcmp(">>", str)) || !(ft_strcmp(">", str)) || \
-		!(ft_strcmp("<", str)) || !(ft_strcmp("<", str)))
+		!(ft_strcmp("<", str)))
 	{
 		return (1);
 	}
@@ -58,14 +58,16 @@ _Bool			check_syntax_2d(char **ptr)
 
 _Bool			check_syntax_by_indexes(const char *str)
 {
-	size_t		len;
+	size_t		l;
 
-	len = ft_strlen(str);
-	if (str[0] == PIPE || str[0] == SEMICOLON)
+	l = ft_strlen(str);
+	if (str[0] == PIPE || str[l - 1] == PIPE)
 		return (1);
-	else if (str[len] == REDIR_LEFT && len > 1 && str[len - 1] != BACKSLASH)
+	if ( str[0] == SEMICOLON || str[l - 1] == SEMICOLON)
 		return (1);
-	else if (str[len] == REDIR_RIGHT && len > 1 && str[len - 1] != BACKSLASH)
+	else if (str[l] == REDIR_LEFT && l > 1 && str[l - 1] != BACKSLASH)
+		return (1);
+	else if (str[l] == REDIR_RIGHT && l > 1 && str[l - 1] != BACKSLASH)
 		return (1);
 	return (0);
 }
