@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 15:09:27 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 20:27:24 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 21:57:23 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ int	handle_redir(char *is_redir, char *file)
 	return (fd);
 }
 
-void 	execute_command(char **cmd, char *is_redir, int fd, int filedes)
+void 	execute_command(char **cmd, char *is_redir, int fdr, int fdl)
 {
     int savestdout = dup(1);
     int savestdin = dup(0);
 
-	if(fd != -1)
+	if(fdr != -2)
 	{
 		if (filedes == -1)
 		{
