@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/30 14:54:43 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 16:25:48 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,17 @@ void	handle_cmd(char **args)
 		{
 			closedir(dir);
 			status = 1;
+		}
+		if (status == 0)
+		{
+			if ((buffer.st_mode & S_IXUSR) == 0)
+			{
+				write(1, PROM, ft_strlen(PROM));//why zero??????
+				write(1, args[0], ft_strlen(args[0]));
+				write(1, ": Permission denied\n", ft_strlen(": Permission denied\n"));
+				g_exit = 126;
+				return ;
+			}
 		}
 		if (status == 0)
 		{
