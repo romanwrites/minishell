@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 15:09:27 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/29 14:43:42 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 13:46:57 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void 	execute_command(char **cmd, char *is_redir, int fd, int filedes)
     int savestdout = dup(1);
     int savestdin = dup(0);
 
+	dprintf(savestdout, "fd = %d\t filedes = %d\t last redir: %s\n", fd, filedes, is_redir);
 	if(fd != -1)
 	{
 		if (filedes == -1)
@@ -116,6 +117,7 @@ void 	execute_command(char **cmd, char *is_redir, int fd, int filedes)
 			dup2(savestdin, 0);
 			dup2(savestdout, 1);
 		}
+		ft_putstr_fd("FD!\n", savestdout);
 	}
 	else
 		execute(cmd);

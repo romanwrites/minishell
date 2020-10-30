@@ -6,13 +6,14 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/30 11:48:20 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 13:55:05 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 char	**g_bp;
+int out;//////////////////////////////////////////
 
 void	fill_before_pipe(char **cmd, int i)
 {
@@ -48,6 +49,7 @@ void	process_cmd(t_mshell *sv)
 	int savestdout; 
 	int savestdin; 
 	savestdin = dup(0);
+	out = dup(1);////////////////////////////////////
 	savestdout = dup(1);
 	cmd = (char **)malloc((sizeof(char *) * PATH_MAX));
 	g_bp = (char **)malloc((sizeof(char *) * PATH_MAX));
@@ -102,7 +104,7 @@ void	process_cmd(t_mshell *sv)
 							token = token->next->next;
 						}
 					}
-					else if (!token->next->next || !token->next->next->content || !token->next->next->next || !token->next->next->next->content || (ft_strcmp(token->next->next->content, "<") && ft_strcmp(token->next->next->content, ">") && ft_strcmp(token->next->next->content, ">>")))
+					else if (!sv->sh->tdlst_pipe->next && (!token->next->next || !token->next->next->content || !token->next->next->next || !token->next->next->next->content || (ft_strcmp(token->next->next->content, "<") && ft_strcmp(token->next->next->content, ">") && ft_strcmp(token->next->next->content, ">>"))))
 						execute_command(cmd, last_redir, fd, filedes);
 					token = token->next;//QUESTIONABLE BUT DOESN'T REQUIRE IS_HANDLED
 				}
@@ -128,6 +130,8 @@ void	process_cmd(t_mshell *sv)
 			}
 			if (i)
 			{
+				print_2d_array(cmd);
+				//printf("fd = %d\t last redir: %s\n", fd, last_redir);
 				if (sv->sh->tdlst_pipe->next)
 				{
 					fill_before_pipe(cmd, i);
@@ -140,7 +144,9 @@ void	process_cmd(t_mshell *sv)
 						close(fds[0]);
 						dup2(fds[1], 1);
 						close(fds[1]);
+						dprintf(savestdout, "fd = %d\t filedes = %d\t last redir: %s\n", fd, filedes, last_redir);
 						execute_command(cmd, last_redir, fd, filedes);
+						dprintf(savestdout, "fd = %d\t filedes = %d\t last redir: %s\n", fd, filedes, last_redir);
 						exit((int)g_exit%256);//
 					}
 					else
@@ -159,6 +165,7 @@ void	process_cmd(t_mshell *sv)
 				}
 				else if (fd == -1 || g_bp[0])
 				{
+					printf("BEFORE PIPE\n");
 					execute_command(cmd, last_redir, fd, filedes);
 					//status =
 					dup2(savestdin, 0);
