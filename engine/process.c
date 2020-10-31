@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/30 20:29:16 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/31 01:06:26 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ void	fill_before_pipe(char **cmd, int i)
 	g_bp[x] = NULL;
 }
 
+void	print_no_file_dir(char *str)
+{
+	ft_putstr(PROM);
+	ft_putstr(str);
+	ft_putstr(": No such file or directory\n");
+}
+
 void	process_cmd(t_mshell *sv)
 {
 	t_token *token;
@@ -51,6 +58,8 @@ void	process_cmd(t_mshell *sv)
 	savestdout = dup(1);
 	cmd = (char **)malloc((sizeof(char *) * PATH_MAX));
 	g_bp = (char **)malloc((sizeof(char *) * PATH_MAX));
+	int fdl = -2;
+	int fdr = -2;
 	fd = -1;
 	filedes = -1;
 	fds[0] = -1;
@@ -68,32 +77,37 @@ void	process_cmd(t_mshell *sv)
 			i = 0;
 			while (token)
 			{
-				if (((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && token->next && token->next->content && (ft_strcmp(token->next->content, ">") && ft_strcmp(token->next->content, ">>") && ft_strcmp(token->next->content, "<"))))
+				if ((check_redirs_only(token->content) && token->is_diff && token->next && (!check_redirs_only(token->next->content))))
 				{
-					if (fd != -1)
+					if (token->content[0] == '>')
 					{
-						close(fd);
-						fd = -1;
+						if (fdr != -2)
+							close(fdr);
+						fdr = handle_redir(token->content, token->next->content);
 					}
-					fd = handle_redir(token->content, token->next->content);
-					last_redir = token->content;
-					if (fd == -1)
+					else if (token->content[0] == '<')
 					{
-						write(1, PROM, ft_strlen(PROM));
-						write(1, token->next->content, ft_strlen(token->next->content));
-						write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+						if (fdl != -2)
+							close(fdl);
+						fdl = handle_redir(token->content, token->next->content);
+					}
+					last_redir = token->content;
+					if (fdr == -1 || fdl == -1)
+					{
+						print_no_file_dir(token->next->content);
 						return ;
 					}
-					if (token->next->next && token->next->next->content && token->next->next->next && token->next->next->next->content && (!ft_strcmp(token->next->next->content, "<") || !ft_strcmp(token->next->next->content, ">") || !ft_strcmp(token->next->next->content, ">>")) && (ft_strcmp(token->next->next->next->content, ">") && ft_strcmp(token->next->next->next->content, ">>") && ft_strcmp(token->next->next->next->content, "<")))
+					token->tick = 1;
+					token->next->tick = 1;
+					/*
+					if (token->next->next && token->next->next->next && (!ft_strcmp(token->next->next->content, "<") || !ft_strcmp(token->next->next->content, ">") || !ft_strcmp(token->next->next->content, ">>")) && (ft_strcmp(token->next->next->next->content, ">") && ft_strcmp(token->next->next->next->content, ">>") && ft_strcmp(token->next->next->next->content, "<")))
 					{
 						if ((!ft_strcmp(token->next->next->content, "<") && (!ft_strcmp(last_redir, ">") || !ft_strcmp(last_redir, ">>"))) || ((!ft_strcmp(token->next->next->content, ">") || (!ft_strcmp(token->next->next->content, ">>"))) && !ft_strcmp(last_redir, "<")))
 						{
 							filedes = handle_redir(token->next->next->content, token->next->next->next->content);
 							if (filedes == -1)
 							{
-								write(1, PROM, ft_strlen(PROM));
-								write(1, token->next->next->next->content, ft_strlen(token->next->next->next->content));
-								write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+								print_no_file_dir(token->next->next->next->content);
 								return ;
 							}
 							execute_command(cmd, last_redir, fd, filedes);
@@ -104,6 +118,7 @@ void	process_cmd(t_mshell *sv)
 					}
 					else if (!sv->sh->tdlst_pipe->next && (!token->next->next || !token->next->next->content || !token->next->next->next || !token->next->next->next->content || (ft_strcmp(token->next->next->content, "<") && ft_strcmp(token->next->next->content, ">") && ft_strcmp(token->next->next->content, ">>"))))
 						execute_command(cmd, last_redir, fd, filedes);
+					*/
 					token = token->next;
 				}
 				/*
@@ -141,7 +156,7 @@ void	process_cmd(t_mshell *sv)
 						close(fds[0]);
 						dup2(fds[1], 1);
 						close(fds[1]);
-						execute_command(cmd, last_redir, fd, filedes);
+						execute_command(cmd, last_redir, fdr, fdl);
 						exit((int)g_exit%256);//
 					}
 					else
@@ -156,10 +171,18 @@ void	process_cmd(t_mshell *sv)
 						close(fds[1]);
 						dup2(fds[0], 0);
 						close(fds[0]);
-						fd = -1;
-						filedes = -1;
+						fdr = -2;
+						fdl = -2;
 					}
 				}
+				else
+				{
+					execute_command(cmd, last_redir, fdr, fdl);
+					dup2(savestdin, 0);
+					dup2(savestdout, 1);
+				}
+				
+				/*
 				else if (fd == -1 || g_bp[0])
 				{
 					execute_command(cmd, last_redir, fd, filedes);
@@ -167,6 +190,7 @@ void	process_cmd(t_mshell *sv)
 					dup2(savestdin, 0);
 					dup2(savestdout, 1);
 				}
+				*/
 			}
 			token = sv->sh->tdlst_pipe->token_head;
 			sv->sh->tdlst_pipe = sv->sh->tdlst_pipe->next;

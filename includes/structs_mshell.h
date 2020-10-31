@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:48:38 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/21 19:25:08 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/10/30 21:07:15 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct				s_parse {
 typedef struct				s_token {
 	char 					*content;
 	_Bool					is_diff;
+	_Bool					tick;
 	struct s_token			*next;
 	struct s_token			*prev;
 }							t_token;

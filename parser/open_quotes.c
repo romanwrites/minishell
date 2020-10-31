@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_quotes.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 16:22:57 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/20 16:22:58 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/10/30 21:07:55 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void			open_quotes(t_token *token)
 			token = token->next;
 			continue ;
 		}
+		token->tick = 0;
 		init_t_open_q(o, token->content);
 		tmp = token->content;
 		token->content = open_quotes_str(o, 0);
