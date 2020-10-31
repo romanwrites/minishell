@@ -26,9 +26,9 @@ t_dlist_pipe		*alloc_pipe_list(char **ptr, int i)
 	{
 		if (!(tmp_cmd = split_command(ptr[i])))
 			return (NULL);
-		trim_cmd = ft_trim_2d_cpy(tmp_cmd);
-		token = alloc_token_list(trim_cmd);
-		ft_free2d(trim_cmd);
+//		trim_cmd = ft_trim_2d_cpy(tmp_cmd);
+		token = alloc_token_list(tmp_cmd);
+		ft_free2d(tmp_cmd);
 		tmp_cmd = NULL;
 		pipe->token = token;
 		if (ptr[i + 1])
