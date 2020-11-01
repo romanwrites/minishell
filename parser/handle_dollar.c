@@ -51,7 +51,7 @@ void			get_env_val(t_open_q *o, int i, int j)
 
 	value_to_check = NULL;
 	env_value = NULL;
-	if (i >= o->save + 1)
+	if (i > o->save + 1) //was >=
 	{
 		o->append_this = ft_substr_and_chk(o->str, o->save, i - o->save);
 		append_line(&o->new_line, &o->append_this);
@@ -59,7 +59,7 @@ void			get_env_val(t_open_q *o, int i, int j)
 	if (j == 2)
 		value_to_check = ft_strdup_and_check("");
 	else
-		value_to_check = ft_substr_and_chk(o->str, i + 1, j - 1);
+		value_to_check = ft_substr_and_chk(o->str, i + 1, j > 1 ? j - 1 : j);
 	env_value = get_envar(value_to_check);
 	if (!env_value)
 		o->append_this = ft_strdup_and_check("");
@@ -96,7 +96,7 @@ void			handle_dollar(t_open_q *o, int i)
 	else
 		get_env_val(o, i, j);
 	append_line(&o->new_line, &o->append_this);
-	i += j - 1;
+	i += j > 1 ? j - 1 : j;
 	o->save = i + 1;
 	o->i = ++i;
 }

@@ -52,9 +52,9 @@ void			ft_echo(char **cmd)
 			while (cmd[i])
 			{
 				write(1, cmd[i], ft_strlen(cmd[i]));
-				if (cmd[i + 1])
+				if (cmd[i + 1] && cmd[i + 1][0] != '\0' && cmd[i][0] != '\0')
 					write(1, " ", 1);
-				else
+				else if (cmd[i][0] != '\0')
 					write(1, "\n", 1);
 				i++;
 			}

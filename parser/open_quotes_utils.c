@@ -14,7 +14,7 @@
 
 _Bool			is_env_val_after_dollar(char c)
 {
-	return (ft_isdigit(c) || ft_isalpha(c) || c == DOLLAR);
+	return (ft_isdigit(c) || ft_isalpha(c) || c == DOLLAR || c == '?');
 }
 
 char			*just_tilde(t_open_q *o, int i)
