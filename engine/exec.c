@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 15:09:27 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/31 01:03:40 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/02 17:50:36 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void 	execute_command(char **cmd, char *is_redir, int fdr, int fdl)
 	//printf("fdr %d\t fdl %d\n", fdr, fdl);
 	if (fdr != -2)
 		dup2(fdr, 1);
-	if (fdr != -2)
+	if (fdl != -2)
 		dup2(fdl, 0);
 	execute(cmd);
 	if (fdr != -2)
