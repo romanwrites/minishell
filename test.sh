@@ -53,38 +53,66 @@ function exec_test()
 	sleep 0.1
 }
 
-## SYNTAX ERROR
-#  printf "SYNTAX ERROR\n"
-#  exec_test ';; test'
-#  exec_test '| test'
-#  exec_test 'echo > <'
-#  exec_test 'echo | |'
-#  exec_test '<'
-#  exec_test ';;'
-#  exec_test ';'
-#  exec_test '|'
-#  exec_test '||'
-#  exec_test ';@@;'
-#  exec_test '| |'
-#  exec_test 'ls;;'
-#  exec_test 'ls; ;'
-#  exec_test 'ls||'
-#  exec_test 'ls | |'
-#  exec_test 'echo <'
-#  exec_test 'echo >>'
-#  exec_test 'echo >'
-#  exec_test 'echo > ;'
-#  exec_test 'echo > |'
-#  exec_test '                 echo >                  |                    '
-#  exec_test '         echo         >                                       ;                    '
-#
-#
-## ESC sequences
-#printf "\nESC sequences\n"
-#exec_test echo         \'\"\\
-#exec_test echo \'
-#exec_test 'echo '\'''
-#exec_test echo "'\''"
+# SYNTAX ERROR
+printf "SYNTAX ERROR\n"
+exec_test ';; test'
+exec_test '| test'
+exec_test 'echo > <'
+exec_test 'echo | |'
+exec_test '<'
+exec_test ';;'
+exec_test ';'
+exec_test '|'
+exec_test '||'
+exec_test ';@@;'
+exec_test '| |'
+exec_test 'ls;;'
+exec_test 'ls; ;'
+exec_test 'ls||'
+exec_test 'ls | |'
+exec_test 'echo <'
+exec_test 'echo >>'
+exec_test 'echo >'
+exec_test 'echo > ;'
+exec_test 'echo > |'
+exec_test '                 echo >                  |                    '
+exec_test '         echo         >                                       ;                    '
+exec_test 'echo ||||'
+exec_test '||||||'
+exec_test 'echo|||'
+exec_test 'echo aaa |||'
+exec_test 'wc < Makefile |'
+exec_test 'echo "'
+exec_test "echo ';"
+exec_test "echo '"
+exec_test 'ls ""'
+exec_test 'echo hello      ;;;'
+exec_test 'echo hello      world          ;;;'
+exec_test 'echo hello      ;'
+exec_test 'echo hello, ;               echo                        world'
+exec_test 'echo hello                         , ;               echo                        world '
+exec_test 'echo hello                          ;               echo                        world'
+exec_test "'"
+exec_test '"'
+exec_test 'echo aa >>>'
+exec_test '>>>'
+exec_test 'echo ; ;'
+exec_test ''
+exec_test ''
+
+
+
+
+
+
+
+
+# ESC sequences
+printf "\nESC sequences\n"
+exec_test echo         \'\"\\
+exec_test echo \'
+exec_test 'echo '\'''
+exec_test echo "'\''"
 #exec_test ''
 #exec_test ''
 #exec_test ''
@@ -92,38 +120,49 @@ function exec_test()
 #exec_test ''
 #exec_test ''
 #
-## DOLLARS AND QUOTES
-#printf "\nDOLLARS AND QUOTES\n"
-#exec_test 'echo $ywywtasdt hello'
-#exec_test "e""c""h""o" 'e''c'"h""o" 'e'"c"'h'"o"
-#exec_test echo '"""""""""",         wtf     :""'
-#exec_test echo ~
-#exec_test 'echo "~"'
-#exec_test 'echo ~~'
-#exec_test 'echo \~'
-###these test by hands:
-###exec_test 'echo "~"'
-###exec_test 'echo          $$'
-###exec_test 'echo          $$$$$$'
-#exec_test 'echo -'
-#exec_test ''
-#exec_test ''
-#exec_test ''
+# DOLLARS AND QUOTES
+printf "\nDOLLARS AND QUOTES\n"
+exec_test 'echo $ywywtasdt hello'
+exec_test "e""c""h""o" 'e''c'"h""o" 'e'"c"'h'"o"
+exec_test echo '"""""""""",         wtf     :""'
+exec_test echo ~
+exec_test 'echo "~"'
+exec_test 'echo ~~'
+exec_test 'echo \~'
+exec_test 'ec""""ho kek'
+exec_test 'e"c"ho kek'
+exec_test echo '""'
+##these test by hands:
+##exec_test 'echo "~"'
+##exec_test 'echo          $$'
+##exec_test 'echo          $$$$$$'
+exec_test 'echo -'
+exec_test "echo \'"
+exec_test echo helloworld"'''$USER'''"1234556789
+exec_test 'echo $USER$USER$USER'
+exec_test 'echo "$USER"'
+exec_test "echo '$USER'"
+exec_test 'echo $USER'
+exec_test 'echo -n $USER'
+exec_test ''
+exec_test ''
+exec_test ''
+exec_test ''
+
+
 #
 #
-## ECHO TESTS
-#printf "\nECHO TESTS\n"
-####exec_test 'echo -n -n '-n' "'-n'" -n kek'
-####exec_test 'echo -n -n -n -n -n kek'
-####exec_test 'echo '-n' "-n" -n '-n' "-n" kek -n'
-#exec_test 'echo -n kek'
-#exec_test 'echo                                                kek             '
-##exec_test ''
-##exec_test ''
-##exec_test ''
-##exec_test ''
-##exec_test ''
-##exec_test ''
+# ECHO TESTS
+printf "\nECHO TESTS\n"
+###exec_test 'echo -n -n '-n' "'-n'" -n kek'
+###exec_test 'echo -n -n -n -n -n kek'
+###exec_test 'echo '-n' "-n" -n '-n' "-n" kek -n'
+exec_test 'echo -n kek'
+exec_test 'echo                                                kek             '
+exec_test 'echo -n '
+#exec_test ''
+#exec_test ''
+#exec_test ''
 #
 #
 ### ECHO TESTS
@@ -142,18 +181,20 @@ function exec_test()
 #exec_test 'cd -'
 #exec_test 'cd -; pwd'
 #exec_test 'cd ; cd -; pwd'
-##
-##
-### PIPE TESTS
-##exec_test 'cat tests/lorem.txt | grep arcu | cat -e'
-###exec_test 'echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e'
+
+
+# PIPE TESTS
+exec_test 'cat tests/lorem.txt | grep arcu | cat -e'
+exec_test 'echo -n aa|cat -e'
+exec_test ''
+#exec_test 'echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e'
 ###exec_test 'cat /dev/random | head -c 100 | wc -c'
 ##exec_test 'ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls'
 ##exec_test 'ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls'
 ###
 ## ENV EXPANSIONS + ESCAPE
 exec_test 'echo test     \    test'
-exec_test 'echo \"test'
+exec_test echo \"test
 exec_test 'echo $TEST'
 exec_test 'echo "$TEST"'
 exec_test "echo '$TEST'"
@@ -163,7 +204,7 @@ exec_test 'echo "   $TEST lol $TEST"'
 exec_test 'echo $TEST$TEST$TEST'
 exec_test 'echo $TEST$TEST=lol$TEST""lol'
 exec_test 'echo    $TEST lol $TEST'
-exec_test 'echo test "" test "" test'
+#exec_test 'echo test "" test "" test'
 exec_test 'echo "\$TEST"'
 exec_test 'echo "$=TEST"'
 exec_test 'echo "$"'
@@ -172,6 +213,53 @@ exec_test 'echo $TEST $TEST'
 exec_test 'echo "$1TEST"'
 exec_test 'echo "$T1TEST"'
 exec_test 'echo $?\?'
+
+
+
+## CMD TESTS
+exec_test 'echo $PWD; cd ..; echo $PWD'
+exec_test 'cd .; pwd; echo $PWD'
+exec_test 'cd ..; pwd; echo $PWD'
+exec_test 'cd'
+exec_test 'export kek='
+#exec_test 'export'
+exec_test 'export kek======='
+exec_test 'export kek lol cheburek'
+#exec_test 'export'
+exec_test 'export lol'
+#exec_test 'export'
+exec_test 'export hello="echo hello; echo world" 5d'
+exec_test 'echo $hello'
+exec_test '"/bin/ls" ""includes""'
+exec_test 'echo | cat -e'
+exec_test '/bin/cat <Makefile'
+exec_test '/bin/cat <               Makefile'
+exec_test '/bin/cat'
+exec_test '/bin/ls'
+exec_test 'wc < Makefile | cat -e cat -e cat -e cat -e cat -e cat -e cat -e'
+exec_test 'wc < Makefile | cat -e -e -e -e -e -e'
+exec_test '/bin/ls -la'
+exec_test '/bin/ls includes'
+exec_test '/bin/ls                   includes               '
+exec_test './minishell ; exit'
+exec_test 'exit 12 sdlkfsdkfs' #too many args
+exec_test '$PWD'
+exec_test '$hello'
+exec_test 'export aa="echo hello $bb" bb=USER; $aa'
+exec_test export aa="echo hello '$bb'" bb=USER; $a
+exec_test 'unset 10ls hello'
+exec_test '$hello'
+exec_test 'export lol=kek chebu=rek; $lol$chebu hello'
+exec_test 'unset HOME; cd'
+exec_test 'echo -n aa | cat -e'
+exec_test 'echo -n aa|cat -e'
+
+
+
+
+
+
+
 #
 ## ENV EXPANSIONS
 #ENV_SHOW="env | sort | grep -v SHLVL | grep -v _="
