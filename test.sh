@@ -23,6 +23,7 @@ BOLDWHITE="\033[1m\033[37m"
 #make -C ../ > /dev/null
 #cp ../minishell .
 cp cmake-build-debug/minishell .
+
 chmod 755 minishell
 
 function exec_test()
@@ -334,4 +335,4 @@ exec_test ''
 #exec_test "ls -la | wtf"
 
 rm lol ls test
-rm -f as 'helo l' qwerty t1
+rm -f as 'helo l' qwerty t1 'qwe\r' qwe
