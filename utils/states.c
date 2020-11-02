@@ -27,11 +27,11 @@ _Bool		is_open_quote(void)
 
 void		set_quotes_state_new(char c)
 {
-	if (c == DOUBLE_QUOTE && !is_open_quote())
+	if (c == DOUBLE_QUOTE && !is_open_quote() && !is_backslash_active())
 		g_dquote = 1;
-	else if (c == DOUBLE_QUOTE && g_dquote)
+	else if (c == DOUBLE_QUOTE && g_dquote && !is_backslash_active())
 		g_dquote = 0;
-	else if (c == SINGLE_QUOTE && !is_open_quote())
+	else if (c == SINGLE_QUOTE && !is_open_quote() && !is_backslash_active())
 		g_squote = 1;
 	else if (c == SINGLE_QUOTE && g_squote)
 		g_squote = 0;

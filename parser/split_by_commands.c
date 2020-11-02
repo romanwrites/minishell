@@ -76,7 +76,7 @@ char			**split_command(const char *str_input)
 	str = process_str(str_input);
 	if (is_open_quote())
 	{
-		ft_putendl_fd("Quotes are open: split_command()", 1);
+		print_error("Quotes are open: split_command()");
 		g_exit = 2;
 		return (NULL);
 	}

@@ -17,7 +17,7 @@ void		ft_exit(char **cmd)
 	int		minus;
 
 	minus = 0;
-	write(1, "exit\n", ft_strlen("exit\n"));
+	write(2, "exit\n", ft_strlen("exit\n"));
 	if (!cmd || !cmd[1])
 		exit((int)g_exit % 256);
 	if (cmd[2])

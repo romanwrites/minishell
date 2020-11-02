@@ -35,6 +35,7 @@ static _Bool	process_open_quotes(t_open_q *o, int i)
 		append_line(&o->new_line, &o->append_this);
 		o->save = i;
 	}
+	o->i = i;
 	return (0);
 }
 
@@ -47,13 +48,14 @@ static void		append_chr_and_save(t_open_q *o, int i)
 static void		handle_open_quotes(t_open_q *o, int i)
 {
 	o->save = i;
-	o->i = i;
-	while (is_open_quote() && o->str[++o->i])
+	o->i = i + 1;
+	while (is_open_quote() && o->str[o->i])
 	{
 		if (process_open_quotes(o, o->i))
 			continue ;
+		o->i++;
 	}
-	o->save = o->i + 1;
+	o->save = o->i; // was + 1
 }
 
 static void		join_open_quotes(t_open_q *o, int i)
@@ -82,6 +84,7 @@ char			*open_quotes_str(t_open_q *o, size_t i)
 		{
 			handle_open_quotes(o, i);
 			i = o->i;
+			continue ;
 		}
 		else if (i == 0 && o->str[i] == '~' && !o->str[i + 1])
 			return (just_tilde(o, i));
