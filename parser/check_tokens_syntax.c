@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-static int		count_tokens(t_token *token)
+static int			count_tokens(t_token *token)
 {
-	t_token		*ptr;
-	int			i;
+	t_token			*ptr;
+	int				i;
 
 	i = 0;
 	ptr = token;
@@ -27,11 +27,11 @@ static int		count_tokens(t_token *token)
 	return (i);
 }
 
-static char		**token_to_2d_array(t_token *token, int len)
+static char			**token_to_2d_array(t_token *token, int len)
 {
-	char		**tokens_2d;
-	t_token		*ptr;
-	int			i;
+	char			**tokens_2d;
+	t_token			*ptr;
+	int				i;
 
 	i = 0;
 	ptr = token;
@@ -46,7 +46,8 @@ static char		**token_to_2d_array(t_token *token, int len)
 	return (tokens_2d);
 }
 
-static _Bool	check_syntax_token_2d(char **tokens_2d, int l, char **err_str)
+static _Bool		check_syntax_token_2d(char **tokens_2d, int l, \
+											char **err_str)
 {
 	if (is_some_redir(tokens_2d[0]) || is_some_redir(tokens_2d[0]) || \
 		is_some_redir(tokens_2d[l - 1]) || is_some_redir(tokens_2d[l - 1]))
@@ -57,10 +58,10 @@ static _Bool	check_syntax_token_2d(char **tokens_2d, int l, char **err_str)
 	return (0);
 }
 
-static _Bool	check_syntax_token(t_token *token)
+static _Bool		check_syntax_token(t_token *token)
 {
-	char		**tokens_2d;
-	char		*err_str;
+	char			**tokens_2d;
+	char			*err_str;
 
 	err_str = NULL;
 	tokens_2d = token_to_2d_array(token, count_tokens(token));
@@ -68,6 +69,7 @@ static _Bool	check_syntax_token(t_token *token)
 	{
 		ft_free2d(tokens_2d);
 		print_error(err_str);
+		free(err_str);
 		g_exit = 258;
 		return (1);
 	}
@@ -75,14 +77,17 @@ static _Bool	check_syntax_token(t_token *token)
 	return (0);
 }
 
-_Bool			check_tokens_syntax(t_mshell *sv)
+_Bool				check_tokens_syntax(t_mshell *sv)
 {
 	while (sv->sh)
 	{
 		while (sv->sh->tdlst_pipe)
 		{
 			if (check_syntax_token(sv->sh->tdlst_pipe->token))
+			{
+				free_all_lists(sv);
 				return (1);
+			}
 			sv->sh->tdlst_pipe->token = sv->sh->tdlst_pipe->token_head;
 			sv->sh->tdlst_pipe = sv->sh->tdlst_pipe->next;
 		}

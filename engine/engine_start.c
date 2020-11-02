@@ -76,7 +76,6 @@ int     main(int ac, char **av, char **envp)
 			free(str);
 			str = NULL;
 			write(0, PROMPT, ft_strlen(PROMPT));
-			free_all_lists(sv);
 			continue ;
 		}
 		if (g_exit && !timer)
@@ -94,6 +93,8 @@ int     main(int ac, char **av, char **envp)
 		free_all_lists(sv);
 		free(str);
 		str = NULL;
+		if (str)
+			printf("jej");
 	}
 
 	if (*(str) == '\0')

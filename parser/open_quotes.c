@@ -48,7 +48,6 @@ void			open_quotes(t_token *token)
 	o = malloc(sizeof(t_open_q));
 	ft_alloc_check(o);
 	o->tab = tab_;
-	tmp = NULL;
 	while (token)
 	{
 		init_globs();

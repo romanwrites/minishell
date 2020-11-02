@@ -55,7 +55,7 @@ static void		handle_open_quotes(t_open_q *o, int i)
 			continue ;
 		o->i++;
 	}
-	o->save = o->i; // was + 1
+	o->save = o->i;
 }
 
 static void		join_open_quotes(t_open_q *o, int i)
