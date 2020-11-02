@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef UTILS_MSHELL_H
 # define UTILS_MSHELL_H
 
@@ -19,7 +18,8 @@
 /*
 ** alloc_and_check.c
 */
-char 				*ft_substr_and_chk(char const *str, unsigned int start, size_t len);
+char				*ft_substr_and_chk(char const *str, \
+										unsigned int start, size_t len);
 void				*ft_strdup_and_check(const char *str);
 char				*ft_itoa_and_chk(int n);
 t_list				*ft_lstnew_n_chk(void *content);
@@ -30,7 +30,7 @@ void				*malloc_n_chk(size_t size);
 */
 t_list				*ft_lstnew_kv_n_chk(void *content);
 char				**ft_split_n_chk(char *str, char c);
-char		        *ft_strjoin_n_chk(char *s1, char *s2);
+char				*ft_strjoin_n_chk(char *s1, char *s2);
 
 /*
 ** check_numeric.c
@@ -46,7 +46,7 @@ void				chr_join(char **str, char c);
 ** compare_kv.c
 */
 int					compare_key(t_envar *a, t_envar *b);
-	
+
 /*
 ** count_2d_lines.c
 */
@@ -130,12 +130,12 @@ void				print_everything(t_mshell *sv);
 /*
 ** print_token_list.c
 */
-void 				print_token_list(t_token *token);
+void				print_token_list(t_token *token);
 
 /*
 ** reset_newlines.c
 */
-void 				reset_newlines(char *str);
+void				reset_newlines(char *str);
 
 /*
 ** set_heads.c
@@ -145,7 +145,7 @@ void				set_heads(t_mshell *sv);
 /*
 ** set_states.c
 */
-void 				set_states(char c);
+void				set_states(char c);
 
 /*
 ** signal.c
@@ -164,10 +164,11 @@ _Bool				is_open_quote();
 /*
 ** states_first_lvl.c
 */
-_Bool	        	is_any_quote_open(t_parse *state_check);
-void	        	set_quotes_state(t_parse *state_check, int j, const char *str);
-_Bool	        	is_backslash_pressed(t_parse *state_check);
-void	        	set_backslash_state(t_parse *state_check, char c);
+_Bool				is_any_quote_open(t_parse *state_check);
+void				set_quotes_state(t_parse *state_check, int j, \
+										const char *str);
+_Bool				is_backslash_pressed(t_parse *state_check);
+void				set_backslash_state(t_parse *state_check, char c);
 
 /*
 ** token.c
