@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-static int		count_tokens(t_token *token)
+static int			count_tokens(t_token *token)
 {
-	t_token		*ptr;
-	int			i;
+	t_token			*ptr;
+	int				i;
 
 	i = 0;
 	ptr = token;
@@ -27,11 +27,11 @@ static int		count_tokens(t_token *token)
 	return (i);
 }
 
-static char		**token_to_2d_array(t_token *token, int len)
+static char			**token_to_2d_array(t_token *token, int len)
 {
-	char		**tokens_2d;
-	t_token		*ptr;
-	int			i;
+	char			**tokens_2d;
+	t_token			*ptr;
+	int				i;
 
 	i = 0;
 	ptr = token;
@@ -46,7 +46,8 @@ static char		**token_to_2d_array(t_token *token, int len)
 	return (tokens_2d);
 }
 
-static _Bool	check_syntax_token_2d(char **tokens_2d, int l, char **err_str)
+static _Bool		check_syntax_token_2d(char **tokens_2d, int l, \
+											char **err_str)
 {
 	if (is_some_redir(tokens_2d[0]) || is_some_redir(tokens_2d[0]) || \
 		is_some_redir(tokens_2d[l - 1]) || is_some_redir(tokens_2d[l - 1]))

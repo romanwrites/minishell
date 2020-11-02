@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void			free_prev_pipes(t_dlist_pipe *pipe)
+static void			*free_prev_pipes(t_dlist_pipe *pipe)
 {
 	t_dlist_pipe	*tmp;
 	t_token			*tmp_token;
@@ -35,12 +35,12 @@ static void			free_prev_pipes(t_dlist_pipe *pipe)
 		pipe = pipe->prev;
 		free(tmp);
 	}
+	return (NULL);
 }
 
 t_dlist_pipe		*alloc_pipe_list(char **ptr, int i)
 {
 	char			**tmp_cmd;
-	char			**trim_cmd;
 	t_token			*token;
 	t_dlist_pipe	*pipe;
 	t_dlist_pipe	*head;
@@ -50,10 +50,7 @@ t_dlist_pipe		*alloc_pipe_list(char **ptr, int i)
 	while (ptr[i])
 	{
 		if (!(tmp_cmd = split_command(ptr[i])))
-		{
-			free_prev_pipes(pipe);
-			return (NULL);
-		}
+			return (free_prev_pipes(pipe));
 		token = alloc_token_list(tmp_cmd);
 		ft_free2d(tmp_cmd);
 		tmp_cmd = NULL;
