@@ -32,9 +32,9 @@ static _Bool	is_invalid_char_unset(char *arg)
 
 static void		put_not_a_valid_identifier(char *arg)
 {
-	ft_putstr_fd("bash: unset: `", 1);
-	ft_putstr_fd(arg, 1);
-	ft_putendl_fd("\': not a valid identifier", 1);
+	ft_putstr_fd("bash: unset: `", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putendl_fd("\': not a valid identifier", 2);
 	g_exit = 1;
 }
 

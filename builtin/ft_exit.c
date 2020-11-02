@@ -22,7 +22,7 @@ void		ft_exit(char **cmd)
 		exit((int)g_exit % 256);
 	if (cmd[2])
 	{
-		ft_putendl_fd("bash: exit: too many arguments", 1);
+		ft_putendl_fd("bash: exit: too many arguments", 2);
 		return ;
 	}
 	ft_atoull(cmd[1], &minus);
@@ -30,9 +30,9 @@ void		ft_exit(char **cmd)
 		((!minus && ft_atoull(cmd[1], &minus) > __LONG_LONG_MAX__) || \
 		(minus && ft_atoull(cmd[1], &minus) - 1 > __LONG_LONG_MAX__)))
 	{
-		ft_putstr_fd("bash: exit: ", 1);
-		ft_putstr_fd(cmd[1], 1);
-		ft_putendl_fd(": numeric argument required", 1);
+		ft_putstr_fd("bash: exit: ", 2);
+		ft_putstr_fd(cmd[1], 2);
+		ft_putendl_fd(": numeric argument required", 2);
 		exit(255);
 	}
 	exit((int)(ft_atoll(cmd[1]) % 256));

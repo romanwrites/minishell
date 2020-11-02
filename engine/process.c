@@ -35,9 +35,9 @@ void	fill_before_pipe(char **cmd, int i)
 
 void	print_no_file_dir(char *str)
 {
-	ft_putstr(PROM);
-	ft_putstr(str);
-	ft_putstr(": No such file or directory\n");
+	ft_putstr_fd(PROM, 0);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
 }
 
 void	process_cmd(t_mshell *sv)
