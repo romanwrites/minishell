@@ -21,6 +21,7 @@ BOLDWHITE="\033[1m\033[37m"
 
 # Compile and set executable rights
 #make -C ../ > /dev/null
+#cp ../minishell .
 cp cmake-build-debug/minishell .
 chmod 755 minishell
 
@@ -99,16 +100,16 @@ exec_test '"'
 exec_test 'echo aa >>>'
 exec_test '>>>'
 exec_test 'echo ; ;'
-exec_test ''
-exec_test ''
-
-
-
-
-
-
-
-
+#exec_test ''
+#exec_test ''
+#
+#
+#
+#
+#
+#
+#
+#
 # ESC sequences
 printf "\nESC sequences\n"
 exec_test echo         \'\"\\
@@ -284,7 +285,7 @@ exec_test ''
 
 
 
-
+########################################################################################################
 
 #
 ## ENV EXPANSIONS
@@ -333,3 +334,4 @@ exec_test ''
 #exec_test "ls -la | wtf"
 
 rm lol ls test
+rm -f as 'helo l' qwerty t1

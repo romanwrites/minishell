@@ -46,7 +46,7 @@ char		*get_envar(char *var)
 		flag = handle_if_tilda(&var);
 	while (env)
 	{
-		if (!ft_strncmp(((t_envar *)(env->content))->key, var, ft_strlen(var)))
+		if (!ft_strcmp(((t_envar *)(env->content))->key, var))
 		{
 			ret = ret_value(((t_envar *)(env->content))->value);
 			if (flag)

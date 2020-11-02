@@ -29,6 +29,7 @@ static void		init_t_open_q(t_open_q *o, const char *str)
 	o->save = 0;
 	o->append_this = NULL;
 	o->str = ft_strdup_and_check(str);
+	o->i = 0;
 }
 
 static void		free_o(t_open_q *o)

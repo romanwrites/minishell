@@ -56,7 +56,7 @@ void			get_env_val(t_open_q *o, int i, int j)
 		o->append_this = ft_substr_and_chk(o->str, o->save, i - o->save);
 		append_line(&o->new_line, &o->append_this);
 	}
-	if (j == 2)
+	if (j == 1)
 		value_to_check = ft_strdup_and_check("");
 	else
 		value_to_check = ft_substr_and_chk(o->str, i + 1, j > 1 ? j - 1 : j);

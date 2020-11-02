@@ -87,7 +87,7 @@ void 	execute_command(char **cmd, char *is_redir, int fdr, int fdl)
 	//printf("fdr %d\t fdl %d\n", fdr, fdl);
 	if (fdr != -2)
 		dup2(fdr, 1);
-	if (fdr != -2)
+	if (fdl != -2)
 		dup2(fdl, 0);
 	execute(cmd);
 	if (fdr != -2)
