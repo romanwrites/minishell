@@ -11,18 +11,18 @@
 /* ************************************************************************** */
 
 #ifndef STRUCTS_MSHELL_H
-#define STRUCTS_MSHELL_H
+# define STRUCTS_MSHELL_H
 
-#include "../libft/libft.h"
-#include "minishell.h"
+# include "../libft/libft.h"
+# include "minishell.h"
 
 typedef struct				s_open_q {
 	size_t					i;
-	size_t 					save;
+	size_t					save;
 	char					*new_line;
 	char					*append_this;
-	char 					*str;
-	char 					*tab;
+	char					*str;
+	char					*tab;
 }							t_open_q;
 
 typedef struct				s_parse {
@@ -33,7 +33,7 @@ typedef struct				s_parse {
 }							t_parse;
 
 typedef struct				s_token {
-	char 					*content;
+	char					*content;
 	_Bool					is_diff;
 	_Bool					tick;
 	struct s_token			*next;
@@ -62,8 +62,8 @@ typedef struct				s_mshell {
 
 typedef struct				s_envar
 {
-    char					*key;
-    char					*value;
+	char					*key;
+	char					*value;
 }							t_envar;
 
 #endif
