@@ -16,8 +16,8 @@ t_token		*token_new(char *content, t_token **prev)
 {
 	t_token	*new;
 
-	if (!(new = malloc(sizeof(t_token))))
-		return (NULL);
+	new = malloc(sizeof(t_token));
+	ft_alloc_check(new);
 	new->content = content;
 	if (prev)
 		new->prev = *prev;

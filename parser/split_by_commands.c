@@ -78,6 +78,7 @@ char			**split_command(const char *str_input)
 	{
 		print_error("bad syntax: quotes are open");
 		g_exit = 2;
+		free(str);
 		return (NULL);
 	}
 	split_by_spaces = ft_split(str, '\n');

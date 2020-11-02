@@ -56,21 +56,20 @@ _Bool		ret_syntax_err(void)
 _Bool		parse_input(char *str, t_mshell *sv)
 {
 	char	**semicolons2d;
-	char	*input_str;
 
 	init_globs();
-	input_str = ft_strdup_and_check(str);
-//	input_str = ft_strtrim(str, " ");
-//	ft_alloc_check(input_str);
-	if (check_syntax_by_indexes(input_str) || check_syntax_errors(input_str))
+	if (check_syntax_by_indexes(str) || check_syntax_errors(str))
+	{
 		return (ret_syntax_err());
-	semicolons2d = split_by_char(SEMICOLON, input_str);
+	}
+	semicolons2d = split_by_char(SEMICOLON, str);
 	ft_alloc_check(semicolons2d);
-	free(input_str);
-	input_str = NULL;
 	init_globs();
 	if (!(sv->sh = get_sh_list(semicolons2d, 0, sv)))
+	{
+		ft_free2d(semicolons2d);
 		return (1);
+	}
 	ft_free2d(semicolons2d);
 	semicolons2d = NULL;
 	if (!sv->sh)

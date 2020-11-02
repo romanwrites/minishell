@@ -104,7 +104,7 @@ exec_test '"'
 exec_test 'echo aa >>>'
 exec_test '>>>'
 exec_test 'echo ; ;'
-#exec_test ''
+exec_test 'lol kek > ; kek'
 #exec_test ''
 #
 #

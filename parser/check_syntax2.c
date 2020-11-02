@@ -63,7 +63,7 @@ _Bool			check_syntax_by_indexes(const char *str)
 	l = ft_strlen(str);
 	if (str[0] == PIPE || str[l - 1] == PIPE)
 		return (1);
-	if ( str[0] == SEMICOLON || str[l - 1] == SEMICOLON)
+	if ( str[0] == SEMICOLON)
 		return (1);
 	else if (str[l] == REDIR_LEFT && l > 1 && str[l - 1] != BACKSLASH)
 		return (1);

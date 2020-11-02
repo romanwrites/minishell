@@ -19,6 +19,37 @@ t_dlist_sh			*process_new_node(t_dlist_sh *sh)
 	return (sh);
 }
 
+void				free_sh(t_dlist_sh *sh)
+{
+	t_dlist_sh		*tmp_sh;
+	t_dlist_pipe	*tmp_pipe;
+	t_token			*tmp_token;
+
+	while (sh)
+	{
+		while (sh->tdlst_pipe)
+		{
+			while (sh->tdlst_pipe_head->token)
+			{
+				if (sh->tdlst_pipe_head->token->content)
+					free(sh->tdlst_pipe_head->token_head->content);
+				tmp_token = sh->tdlst_pipe_head->token;
+				sh->tdlst_pipe_head->token = sh->tdlst_pipe_head->token->next;
+				free(tmp_token);
+				tmp_token = NULL;
+			}
+			tmp_pipe = sh->tdlst_pipe_head;
+			sh->tdlst_pipe_head = sh->tdlst_pipe_head->next;
+			free(tmp_pipe);
+			tmp_pipe = NULL;
+		}
+		tmp_sh = sh;
+		sh = sh->prev;
+		free(tmp_sh);
+		tmp_sh = NULL;
+	}
+}
+
 t_dlist_sh			*get_sh_list(char **semicolons2d, int i, t_mshell *sv)
 {
 	t_dlist_pipe	*dlst_pipe;
@@ -38,7 +69,11 @@ t_dlist_sh			*get_sh_list(char **semicolons2d, int i, t_mshell *sv)
 			return (NULL);
 		}
 		if (!(dlst_pipe = alloc_pipe_list(tmp_semi, 0)))
+		{
+			ft_free2d(tmp_semi);
+			free_sh(sh);
 			return (NULL);
+		}
 		ft_free2d(tmp_semi);
 		sh->tdlst_pipe = dlst_pipe;
 		if (semicolons2d[i + 1])
