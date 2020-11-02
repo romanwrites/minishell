@@ -76,9 +76,9 @@ int     main(int ac, char **av, char **envp)
 			free(str);
 			str = NULL;
 			write(0, PROMPT, ft_strlen(PROMPT));
+			free_all_lists(sv);
 			continue ;
 		}
-//		print_everything(sv);
 		if (g_exit && !timer)
 			timer = 2;
 		if (timer)
@@ -87,6 +87,7 @@ int     main(int ac, char **av, char **envp)
 			if (!timer)
 				g_exit = 0;
 		}
+//		print_everything(sv);
 		process_cmd(sv);
 		//printf("\nEXIT %lld\t TIMER %d\n", g_exit, timer);
 		write(0, PROMPT, ft_strlen(PROMPT));
@@ -96,6 +97,6 @@ int     main(int ac, char **av, char **envp)
 	}
 
 	if (*(str) == '\0')
-		write(0, "exit\n", ft_strlen("exit\n"));
+		write(2, "exit\n", ft_strlen("exit\n"));
 	return (0);
 }//FREE INPUT!

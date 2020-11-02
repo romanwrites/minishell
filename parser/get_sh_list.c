@@ -31,7 +31,7 @@ t_dlist_sh			*get_sh_list(char **semicolons2d, int i, t_mshell *sv)
 	sv->sh_head = sh_head;
 	while (semicolons2d[i])
 	{
-		tmp_semi = split_by_char(PIPE, semicolons2d[i], sv);
+		tmp_semi = split_by_char(PIPE, semicolons2d[i]);
 		if (check_syntax_2d(tmp_semi))
 		{
 			ft_free2d(tmp_semi);

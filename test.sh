@@ -260,7 +260,7 @@ exec_test './minishell ; exit'
 exec_test 'exit 12 sdlkfsdkfs' #too many args
 exec_test '$PWD'
 exec_test '$hello'
-exec_test 'export aa="echo hello $bb" bb=USER; $aa'
+#exec_test 'export aa="echo hello $bb" bb=USER; $aa' #too much
 exec_test export aa="echo hello '$bb'" bb=USER; $a
 exec_test 'unset 10ls hello'
 exec_test '$hello'

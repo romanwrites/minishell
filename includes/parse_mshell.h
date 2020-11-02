@@ -104,7 +104,7 @@ size_t			get_dollars_end(const char *str);
 /*
 ** split_by_char.c
 */
-char			**split_by_char(char c, char *str, t_mshell *sv);
+char			**split_by_char(char c, char *str);
 
 /*
 ** split_by_commands.c

@@ -76,7 +76,7 @@ char			**split_command(const char *str_input)
 	str = process_str(str_input);
 	if (is_open_quote())
 	{
-		print_error("Quotes are open: split_command()");
+		print_error("bad syntax: quotes are open");
 		g_exit = 2;
 		return (NULL);
 	}
