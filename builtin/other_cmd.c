@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/30 16:25:48 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/03 14:56:31 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	handle_cmd(char **args)
 		if (args[0][0] == '.' && args[0][1] == '/' && !ft_isprint((int)args[0][2]))
 		{
 			write(0, PROM, ft_strlen(PROM));//why zero??????
-			write(1, args[0], ft_strlen(args[0]));
+			write(2, args[0], ft_strlen(args[0]));
 			write(2, ": is a directory\n", ft_strlen(": is a directory\n"));
 			g_exit = 126;
 			return ;
@@ -135,7 +135,7 @@ void	handle_cmd(char **args)
 		else if (status == 1)
 		{
 			write(0, PROM, ft_strlen(PROM));//why zero??????
-			write(1, tmp, ft_strlen(tmp));
+			write(2, tmp, ft_strlen(tmp));
 			write(2, ": is a directory\n", ft_strlen(": is a directory\n"));
 			g_exit = 126;
 		}
