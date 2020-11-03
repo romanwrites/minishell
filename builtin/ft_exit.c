@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:52:36 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/03 14:15:18 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/03 14:19:15 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void		ft_exit(char **cmd)
 		((!minus && ft_atoull(cmd[1], &minus) > __LONG_LONG_MAX__) || \
 		(minus && ft_atoull(cmd[1], &minus) - 1 > __LONG_LONG_MAX__)))
 	{
-		ft_putstr_fd("bash: exit: ", 1);
-		ft_putstr_fd(cmd[1], 1);
+		ft_putstr_fd("bash: exit: ", 2);
+		ft_putstr_fd(cmd[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
 		exit(255);
 	}

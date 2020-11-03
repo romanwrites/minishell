@@ -31,7 +31,9 @@ int			get_env_from_str(const char *str)
 	i = 1;
 	while (str[i])
 	{
-		if (!ft_isdigit(str[i]) && !ft_isalpha(str[i]))
+		if (!ft_isdigit(str[i]) && !ft_isalpha(str[i]) && str[i] != '?')
+			break ;
+		else if (i > 1 && str[i - 1] == '?')
 			break ;
 		i++;
 	}

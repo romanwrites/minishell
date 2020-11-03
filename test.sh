@@ -20,9 +20,10 @@ BOLDCYAN="\033[1m\033[36m"
 BOLDWHITE="\033[1m\033[37m"
 
 # Compile and set executable rights
-make -C ../ > /dev/null
-cp ../minishell .
-#cp cmake-build-debug/minishell .
+#make -C ../ > /dev/null
+#cp ../minishell .
+cp cmake-build-debug/minishell .
+
 chmod 755 minishell
 
 function exec_test()
@@ -53,6 +54,9 @@ function exec_test()
 	echo
 	sleep 0.1
 }
+
+exec_test 'echo \"\|\;\"\| cat -e > \q\w\e\r\t\y ; cat qwerty'
+
 
 # SYNTAX ERROR
 printf "SYNTAX ERROR\n"
@@ -100,16 +104,16 @@ exec_test '"'
 exec_test 'echo aa >>>'
 exec_test '>>>'
 exec_test 'echo ; ;'
-exec_test ''
-exec_test ''
-
-
-
-
-
-
-
-
+exec_test 'lol kek > ; kek'
+#exec_test ''
+#
+#
+#
+#
+#
+#
+#
+#
 # ESC sequences
 printf "\nESC sequences\n"
 exec_test echo         \'\"\\
@@ -125,7 +129,6 @@ exec_test echo hello '\' ';' "   '\' \" " \" "$PWD\\\"\~\;"\; >> t1 \' \ \ \\ ; 
 #
 # DOLLARS AND QUOTES
 printf "\nDOLLARS AND QUOTES\n"
-exec_test 'echo $ywywtasdt hello'
 exec_test "e""c""h""o" 'e''c'"h""o" 'e'"c"'h'"o"
 exec_test echo '"""""""""",         wtf     :""'
 exec_test echo ~
@@ -135,6 +138,7 @@ exec_test 'echo \~'
 exec_test 'ec""""ho kek'
 exec_test 'e"c"ho kek'
 exec_test echo '""'
+exec_test 'echo "$?TEST"'
 ##these test by hands:
 ##exec_test 'echo "~"'
 ##exec_test 'echo          $$'
@@ -200,7 +204,6 @@ exec_test 'cat tests/lorem.txt | grep arcu | cat -e'
 exec_test 'echo -n aa|cat -e'
 exec_test ''
 exec_test 'pwd >a1>a2>a3; echo s1 >q1 s2>q2 s3; cat a2; cat a3; cat q1; cat q2; '
-exec_test 'echo \"\|\;\"\| cat -e > \q\w\e\r\t\y ; cat qwerty'
 #exec_test 'echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e'
 ###exec_test 'cat /dev/random | head -c 100 | wc -c'
 ##exec_test 'ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls'
@@ -217,13 +220,10 @@ exec_test 'echo "$TEST$TEST=lol$TEST"'
 exec_test 'echo "   $TEST lol $TEST"'
 exec_test 'echo $TEST$TEST$TEST'
 exec_test 'echo $TEST$TEST=lol$TEST""lol'
-exec_test 'echo    $TEST lol $TEST'
 #exec_test 'echo test "" test "" test'
 exec_test 'echo "\$TEST"'
 exec_test 'echo "$=TEST"'
 exec_test 'echo "$"'
-exec_test 'echo "$?TEST"'
-exec_test 'echo $TEST $TEST'
 exec_test 'echo "$1TEST"'
 exec_test 'echo "$T1TEST"'
 exec_test 'echo $?\?'
@@ -231,9 +231,7 @@ exec_test 'echo $?\?'
 
 
 ## CMD TESTS
-exec_test 'echo $PWD; cd ..; echo $PWD'
 exec_test 'cd .; pwd; echo $PWD'
-exec_test 'cd ..; pwd; echo $PWD'
 exec_test 'cd'
 exec_test 'export kek='
 #exec_test 'export'
@@ -257,10 +255,9 @@ exec_test '/bin/ls includes'
 exec_test '/bin/ls                   includes               '
 exec_test './minishell ; exit'
 exec_test 'exit 12 sdlkfsdkfs' #too many args
-exec_test '$PWD'
 exec_test '$hello'
-exec_test 'export aa="echo hello $bb" bb=USER; $aa'
-exec_test export aa="echo hello '$bb'" bb=USER; $a
+#exec_test 'export aa="echo hello $bb" bb=USER; $aa' #too much
+#exec_test export aa="echo hello '$bb'" bb=USER; $a #too much
 exec_test 'unset 10ls hello'
 exec_test '$hello'
 exec_test 'export lol=kek chebu=rek; $lol$chebu hello'
@@ -269,19 +266,32 @@ exec_test 'echo -n aa | cat -e'
 exec_test 'echo -n aa|cat -e'
 exec_test 'echo $PWD > as ; cat as'
 exec_test 'export a=l d=s; $a$d'
-exec_test echo -$t "-n" '-''n' '-n;'         -n hello
-exec_test export t=n; echo -$t -n "-"'n' hello
-exec_test 'cd ; echo $PWD; echo $OLDPWD'
-exec_test 'cd; echo $OLDPWD'
-exec_test 'ls "-la" ; cd -'
+exec_test "echo -$t '-n' '-''n' '-n;'         -n hello"
 exec_test 'ls -la'
-exec_test 'cd -'
 exec_test 'echo $PWD; echo $OLDPWD'
 exec_test 'unset OLDPWD; echo $OLDPWD'
-exec_test 'cd; echo $PWD; cd -'
 exec_test 'pwd; echo $PWD'
 exec_test ''
 
+
+
+
+########################################################################################################
+printf "\n\nHANDLE THEM\n"
+exec_test '$PWD'
+exec_test 'echo $TEST $TEST'
+exec_test 'export t=n; echo -$t -n "-"n hello'
+exec_test 'cd; echo $PWD; cd -'
+exec_test 'cd -'
+exec_test 'ls "-la" ; cd -'
+exec_test 'cd ; echo $PWD; echo $OLDPWD'
+exec_test 'cd; echo $OLDPWD'
+exec_test 'cd ..; pwd; echo $PWD'
+exec_test 'echo $PWD; cd ..; echo $PWD'
+exec_test 'echo    $TEST lol $TEST'
+exec_test 'echo $ywywtasdt hello'
+
+###########################################################################################################
 
 
 
@@ -334,3 +344,4 @@ exec_test ''
 #exec_test "ls -la | wtf"
 
 rm lol ls test
+rm -f as 'helo l' qwerty t1 'qwe\r' qwe

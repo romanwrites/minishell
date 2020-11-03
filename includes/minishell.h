@@ -42,20 +42,19 @@
 # include <sys/stat.h>
 # include <stdio.h>
 
-//extern t_mshell				*g_sv;
 extern _Bool				g_dquote;
 extern _Bool				g_squote;
 extern _Bool				g_backslash;
 extern int					g_backslash_time;
 extern int					g_isfork;
 extern long long			g_exit;
-extern char                 **g_bp;
+extern char					**g_bp;
 
-void	handle_cmd(char **cmd);//
-char **list_to_env();//
-void 	execute_command(char **cmd, char *is_redir, int fd, int filedes);//
-int        handle_redir(char *is_redir, char *file);//
-int	status_return(int status);
-
+void						handle_cmd(char **cmd);
+char						**list_to_env();
+void						execute_command(char **cmd, char *is_redir, \
+											int fd, int filedes);
+int							handle_redir(char *is_redir, char *file);
+int							status_return(int status);
 
 #endif

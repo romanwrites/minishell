@@ -15,13 +15,11 @@
 
 # include "minishell.h"
 
-
-extern  t_list	*g_env;
-extern	pid_t	g_pid;
-extern	char	*g_home;
-extern  int		g_stdin;
-extern  int		g_stdout;
-
+extern t_list	*g_env;
+extern pid_t	g_pid;
+extern char		*g_home;
+extern int		g_stdin;
+extern int		g_stdout;
 
 /*
 ** builtin_utils.c

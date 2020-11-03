@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "minishell.h"
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 char **list_to_env()
 {
@@ -86,9 +85,9 @@ void	handle_cmd(char **args)
 	{
 		if (args[0][0] == '.' && args[0][1] == '/' && !ft_isprint((int)args[0][2]))
 		{
-			write(1, PROM, ft_strlen(PROM));//why zero??????
+			write(0, PROM, ft_strlen(PROM));//why zero??????
 			write(1, args[0], ft_strlen(args[0]));
-			write(1, ": is a directory\n", ft_strlen(": is a directory\n"));
+			write(2, ": is a directory\n", ft_strlen(": is a directory\n"));
 			g_exit = 126;
 			return ;
 		}
@@ -105,9 +104,9 @@ void	handle_cmd(char **args)
 		{
 			if ((buffer.st_mode & S_IXUSR) == 0)
 			{
-				write(1, PROM, ft_strlen(PROM));//why zero??????
+				write(0, PROM, ft_strlen(PROM));//why zero??????
 				write(1, args[0], ft_strlen(args[0]));
-				write(1, ": Permission denied\n", ft_strlen(": Permission denied\n"));
+				write(2, ": Permission denied\n", ft_strlen(": Permission denied\n"));
 				g_exit = 126;
 				return ;
 			}
@@ -135,16 +134,16 @@ void	handle_cmd(char **args)
 		}
 		else if (status == 1)
 		{
-			write(1, PROM, ft_strlen(PROM));//why zero??????
+			write(0, PROM, ft_strlen(PROM));//why zero??????
 			write(1, tmp, ft_strlen(tmp));
-			write(1, ": is a directory\n", ft_strlen(": is a directory\n"));
+			write(2, ": is a directory\n", ft_strlen(": is a directory\n"));
 			g_exit = 126;
 		}
 		else
 		{
-			write(1, PROM, ft_strlen(PROM));//why zero??????
+			write(0, PROM, ft_strlen(PROM));//why zero??????
 			write(1, tmp, ft_strlen(tmp));
-			write(1, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
+			write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
 			g_exit = 127;
 		}
 		//if (tmp)
@@ -206,8 +205,8 @@ void	handle_cmd(char **args)
 		free(path);
 		free(to_split);
 	}
-	write(1, PROM, ft_strlen(PROM));//why zero??????
-	write(1, args[0], ft_strlen(args[0]));
-	write(1, ": command not found\n", ft_strlen(": command not found\n"));
+	write(0, PROM, ft_strlen(PROM));
+	write(2, args[0], ft_strlen(args[0]));
+	write(2, ": command not found\n", ft_strlen(": command not found\n"));
 	g_exit = 127;
 }

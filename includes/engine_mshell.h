@@ -12,7 +12,8 @@
 
 #ifndef ENGINE_MSHELL_H
 # define ENGINE_MSHELL_H
-#include "structs_mshell.h"
+
+# include "structs_mshell.h"
 
 void	process_cmd(t_mshell *sv);
 

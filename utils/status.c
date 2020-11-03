@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-int	status_return(int status)
+int		status_return(int status)
 {
 	if (WIFSIGNALED(status))
 	{
@@ -26,7 +26,7 @@ int	status_return(int status)
 			write(1, "Quit: 3\n", ft_strlen("Quit: 3\n"));
 			return (131);
 		}
-        if (WTERMSIG(status) == 15)
+		if (WTERMSIG(status) == 15)
 			return (143);
 	}
 	return (WEXITSTATUS(status));

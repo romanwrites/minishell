@@ -55,8 +55,7 @@ _Bool			check_syntax_by_indexes(const char *str);
 /*
 ** check_tokens_syntax.c
 */
-_Bool		check_tokens_syntax(t_mshell *sv);
-
+_Bool			check_tokens_syntax(t_mshell *sv);
 
 /*
 ** get_sh_list.c
@@ -104,7 +103,7 @@ size_t			get_dollars_end(const char *str);
 /*
 ** split_by_char.c
 */
-char			**split_by_char(char c, char *str, t_mshell *sv);
+char			**split_by_char(char c, char *str);
 
 /*
 ** split_by_commands.c
