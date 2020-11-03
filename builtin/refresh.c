@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 12:22:06 by lhelper           #+#    #+#             */
-/*   Updated: 2020/11/03 17:35:00 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/03 18:35:52 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,15 @@ static void	set_pwd(char *old, char **test)
 	}
 }
 
-void	refresh_env(void)
+void		refresh_env(void)
 {
 	char	*pwd;
 	char	*old;
-	char	*test[] = {"unset", "OLDPWD", NULL};
+	char	*test[3];
 
+	test[0] = "command";
+	test[1] = "OLDPWD";
+	test[2] = NULL;
 	pwd = get_envar("PWD");
 	if (!pwd)
 		pwd = ft_strdup("");
