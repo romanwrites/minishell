@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 16:28:24 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/02 19:44:01 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/03 11:37:47 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,26 @@ static _Bool	put_g_exit(void)
 
 static void		process_with_flag(char **cmd, int i)
 {
+	int is_n;
+
 	if (cmd[i])
 	{
 		if (!(ft_strcmp(cmd[i], "$?")) && put_g_exit())
 			return ;
+		is_n = i;
 		while (cmd[i])
 		{
 			write(1, cmd[i], ft_strlen(cmd[i]));
-			if (cmd[i + 1] && (cmd[i + 1][0] == 0 || cmd[i][0] == 0))
+			if ((cmd[i + 1] && cmd[i + 1][0] == 0) || (cmd[i][0] == 0 && is_n == i))
 			{
 				i++;
 				continue;
 			}
-			if (cmd[i + 1] && cmd[i + 1][0] != 0 && cmd[i][0] != 0)
+			if (cmd[i + 1])
 				write(1, " ", 1);
 			i++;
 		}
 	}
-	else
-		write(1, "\n", 1);
 }
 
 void			ft_echo(char **cmd)
@@ -65,11 +66,17 @@ void			ft_echo(char **cmd)
 		{
 			if (!(ft_strcmp(cmd[i], "$?")) && put_g_exit())
 				return ;
+			is_n = i;
 			while (cmd[i])
 			{
 				write(1, cmd[i], ft_strlen(cmd[i]));
-				if ((cmd[i + 1] && cmd[i + 1][0] == 0) || cmd[i][0] == 0)
+				if ((cmd[i + 1] && cmd[i + 1][0] == 0) || (cmd[i][0] == 0 && is_n == i))
 				{
+					if(!cmd[i + 1])
+					{
+						write(1, "\n", 1);
+						return ;
+					}
 					i++;
 					continue;
 				}

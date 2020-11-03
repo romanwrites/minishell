@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 17:37:51 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/03 14:01:12 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int     main(int ac, char **av, char **envp)
 	int			timer;
 	char		**cmd;
 	char		*str;
+	char    *test[] = {"unset", "OLDPWD", NULL};
 	g_isfork = 0;
 	g_exit = 0;
 	i = 0;
@@ -64,6 +65,7 @@ int     main(int ac, char **av, char **envp)
 	signal(SIGTERM, SIG_IGN);
 	g_env = env_to_list(envp);
 	g_home = get_envar("HOME");
+	ft_unset(test);
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
 	init(sv);
