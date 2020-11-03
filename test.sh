@@ -21,8 +21,8 @@ BOLDWHITE="\033[1m\033[37m"
 
 # Compile and set executable rights
 #make -C ../ > /dev/null
-#cp ../minishell .
-cp cmake-build-debug/minishell .
+cp ../minishell .
+#cp cmake-build-debug/minishell .
 
 chmod 755 minishell
 
