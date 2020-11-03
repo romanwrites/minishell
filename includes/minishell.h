@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 14:28:20 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/03 14:28:53 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ extern int					g_isfork;
 extern long long			g_exit;
 extern char					**g_bp;
 
-void						handle_cmd(char **cmd);
-char						**list_to_env();
-void						execute_command(char **cmd, char *is_redir, \
-											int fd, int filedes);
-int							handle_redir(char *is_redir, char *file);
-int							status_return(int status);
+void	handle_cmd(char **cmd);//
+char **list_to_env();//
+void 	execute_command(char **cmd, char *is_redir, int fd, int filedes);//
+int        handle_redir(char *is_redir, char *file);//
+int	status_return(int status);
+void    refresh_env(void);
 
 #endif
