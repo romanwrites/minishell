@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/03 14:01:12 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/03 18:29:46 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int		g_isfork;
 long long g_exit;
 //int		g_stdin;
 //int		g_stdout;
+int		g_timer;
 pid_t	g_pid;
 
 void	state_bzero(t_parse *state)
@@ -55,7 +56,7 @@ int     main(int ac, char **av, char **envp)
 	g_isfork = 0;
 	g_exit = 0;
 	i = 0;
-	timer = 0;
+	g_timer = 0;
 	str = NULL;
 	(void)ac;
 	(void)av;
@@ -80,6 +81,7 @@ int     main(int ac, char **av, char **envp)
 			write(0, PROMPT, ft_strlen(PROMPT));
 			continue ;
 		}
+		/*
 		if (g_exit && !timer)
 			timer = 2;
 		if (timer)
@@ -88,6 +90,7 @@ int     main(int ac, char **av, char **envp)
 			if (!timer)
 				g_exit = 0;
 		}
+		*/
 //		print_everything(sv);
 		process_cmd(sv);
 		//printf("\nEXIT %lld\t TIMER %d\n", g_exit, timer);

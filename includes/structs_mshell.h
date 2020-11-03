@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:48:38 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 21:07:15 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/03 16:07:50 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,13 @@ typedef struct				s_envar
 	char					*key;
 	char					*value;
 }							t_envar;
+
+typedef struct				s_prevnext
+{
+	t_list		*tmp;
+	t_list		*ptr_prev;
+	t_list		*ptr_next;
+	int			first;
+}							t_prevnext;
 
 #endif

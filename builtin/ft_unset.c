@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/30 20:57:01 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/03 16:42:17 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,57 +38,66 @@ static void		put_not_a_valid_identifier(char *arg)
 	g_exit = 1;
 }
 
+static	int		check_args(char **arg)
+{
+	int i;
+
+	i = 1;
+	while (arg[i])
+	{
+		if (is_invalid_char_unset(arg[i]))
+		{
+			put_not_a_valid_identifier(arg[i]);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+static void		del_node(t_prevnext *pn, char **keys)
+{
+	if (!ft_strcmp(((t_envar *)pn->tmp->content)->key, *keys) && !pn->first)
+	{
+		pn->ptr_next = pn->tmp->next;
+		ft_lstdelone(pn->tmp, free_content);
+		pn->ptr_prev->next = pn->ptr_next;
+		pn->tmp = pn->ptr_prev;
+	}
+	else if (!ft_strcmp(((t_envar *)pn->tmp->content)->key, *keys) && pn->first)
+	{
+		pn->ptr_prev = pn->tmp;
+		pn->ptr_next = pn->tmp->next;
+		ft_lstdelone(pn->tmp, free_content);
+		pn->tmp = pn->ptr_next;
+		g_env = g_env->next;
+	}
+	pn->ptr_prev = pn->tmp;
+	if (!pn->first)
+		pn->tmp = pn->tmp->next;
+	pn->first = 0;
+}
+
 void			ft_unset(char **arg)
 {
 	char		**keys;
-	int			first;
-	t_list		*tmp;
-	t_list		*ptr_prev;
-	t_list		*ptr_next;
-	int		i;
+	t_prevnext	*pn;
 
+	pn = malloc(sizeof(t_prevnext));
 	keys = arg;
 	keys++;
-	i = 1;
 	if (arg[1])
 	{
-		while(arg[i])
-		{
-			if (is_invalid_char_unset(arg[i]))
-			{
-				put_not_a_valid_identifier(arg[i]);
-				return ;
-			}
-			i++;
-		}
-		//keys = ft_split(arg, ' ');//FREE
+		if (check_args(arg))
+			return ;
 		while (keys && *keys)
 		{
-			tmp = g_env;
-			first = 1;
-			while (tmp)
-			{
-				if (!ft_strcmp(((t_envar *)tmp->content)->key, *keys) && !first)
-				{
-					ptr_next = tmp->next;
-					ft_lstdelone(tmp, free_content);
-					ptr_prev->next = ptr_next;
-					tmp = ptr_prev;	
-				}
-				else if (!ft_strcmp(((t_envar *)tmp->content)->key, *keys) && first)
-				{
-					ptr_prev = tmp;
-					ptr_next = tmp->next;
-					ft_lstdelone(tmp, free_content);
-					tmp = ptr_next;
-					g_env = g_env->next;//COULD BE A LEAK!!!
-				}
-				ptr_prev = tmp;
-				if (!first)
-					tmp = tmp->next;
-				first = 0;
-			}
+			pn->tmp = g_env;
+			pn->first = 1;
+			while (pn->tmp)
+				del_node(pn, keys);
 			keys++;
 		}
 	}
+	free(pn);
 }

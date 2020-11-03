@@ -6,13 +6,38 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:59:28 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/03 14:08:42 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/03 17:31:22 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		ft_cd(char *str)
+static void		throw_error(char *str)
+{
+	write(2, "cd: ", ft_strlen("cd: "));
+	write(2, strerror(errno), ft_strlen(strerror(errno)));
+	write(2, ": ", ft_strlen(": "));
+	write(2, str, ft_strlen(str));
+	write(2, "\n", 1);
+	g_exit = 1;
+}
+
+static void		pwd_error(void)
+{
+	ft_putstr_fd("bash: cd: OLDPWD not set\n", 2);
+	g_exit = 1;
+}
+
+static void		close_change_refresh(DIR *dir, char *str, int flag)
+{
+	closedir(dir);
+	chdir(str);
+	refresh_env();
+	if (flag)
+		ft_pwd();
+}
+
+void			ft_cd(char *str)
 {
 	DIR		*dir;
 	int		flag;
@@ -25,8 +50,7 @@ void		ft_cd(char *str)
 		str = get_envar("OLDPWD");
 		if (!str)
 		{
-			write(2, "bash: cd: OLDPWD not set\n", ft_strlen("bash: cd: OLDPWD not set\n"));
-			g_exit = 1;
+			pwd_error();
 			return ;
 		}
 		flag = 1;
@@ -34,16 +58,8 @@ void		ft_cd(char *str)
 	dir = opendir(str);
 	if (!dir)
 	{
-		write(2, "cd: ", ft_strlen("cd: "));
-		write(2, strerror(errno), ft_strlen(strerror(errno)));
-		write(2, ": ", ft_strlen(": "));
-		write(2, str, ft_strlen(str));
-		write(2, "\n", 1);
+		throw_error(str);
 		return ;
 	}
-	closedir(dir);
-	chdir(str);
-	refresh_env();
-	if (flag)
-		ft_pwd();
+	close_change_refresh(dir, str, flag);
 }

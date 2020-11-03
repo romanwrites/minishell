@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/10/31 01:06:26 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/03 18:57:40 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	process_cmd(t_mshell *sv)
 	int pid;
 	int savestdout; 
 	int savestdin; 
+	//int timer;
 	savestdin = dup(0);
 	savestdout = dup(1);
 	cmd = (char **)malloc((sizeof(char *) * PATH_MAX));
@@ -64,10 +65,19 @@ void	process_cmd(t_mshell *sv)
 	filedes = -1;
 	fds[0] = -1;
 	fds[1] = -1;
+	//timer = 0;
 	last_redir = NULL;
 	g_bp[0] = NULL;
 	while (sv->sh)
 	{
+		if (g_exit && !g_timer)
+			g_timer = 2;
+		if (g_timer)
+		{
+			g_timer--;
+			if (!g_timer)
+				g_exit = 0;
+		}
 		while (sv->sh->tdlst_pipe)
 		{
 			sv->sh->tdlst_pipe->token_head = sv->sh->tdlst_pipe->token;
@@ -99,41 +109,8 @@ void	process_cmd(t_mshell *sv)
 					}
 					token->tick = 1;
 					token->next->tick = 1;
-					/*
-					if (token->next->next && token->next->next->next && (!ft_strcmp(token->next->next->content, "<") || !ft_strcmp(token->next->next->content, ">") || !ft_strcmp(token->next->next->content, ">>")) && (ft_strcmp(token->next->next->next->content, ">") && ft_strcmp(token->next->next->next->content, ">>") && ft_strcmp(token->next->next->next->content, "<")))
-					{
-						if ((!ft_strcmp(token->next->next->content, "<") && (!ft_strcmp(last_redir, ">") || !ft_strcmp(last_redir, ">>"))) || ((!ft_strcmp(token->next->next->content, ">") || (!ft_strcmp(token->next->next->content, ">>"))) && !ft_strcmp(last_redir, "<")))
-						{
-							filedes = handle_redir(token->next->next->content, token->next->next->next->content);
-							if (filedes == -1)
-							{
-								print_no_file_dir(token->next->next->next->content);
-								return ;
-							}
-							execute_command(cmd, last_redir, fd, filedes);
-							close(filedes);
-							filedes = -1;
-							token = token->next->next;
-						}
-					}
-					else if (!sv->sh->tdlst_pipe->next && (!token->next->next || !token->next->next->content || !token->next->next->next || !token->next->next->next->content || (ft_strcmp(token->next->next->content, "<") && ft_strcmp(token->next->next->content, ">") && ft_strcmp(token->next->next->content, ">>"))))
-						execute_command(cmd, last_redir, fd, filedes);
-					*/
 					token = token->next;
 				}
-				/*
-				else if ((!ft_strcmp(token->content, ">") || !ft_strcmp(token->content, ">>") || !ft_strcmp(token->content, "<")) && token->is_diff && (!token->next || (token->next && (!ft_strcmp(token->next->content, ">") || !ft_strcmp(token->next->content, ">>") || !ft_strcmp(token->next->content, "<")))))
-				{
-					write(0, PROM, ft_strlen(PROM));
-					write(1, "syntax error near unexpected token `", ft_strlen("syntax error near unexpected token `"));
-					if (token->next)
-						write(1, token->next->content, ft_strlen(token->next->content));
-					else
-						write(1, "newline", ft_strlen("newline"));
-					write(1, "'\n", ft_strlen("'\n"));
-					return ;
-				}
-				*/
 				else
 				{
 					cmd[i++] = token->content;
@@ -181,16 +158,6 @@ void	process_cmd(t_mshell *sv)
 					dup2(savestdin, 0);
 					dup2(savestdout, 1);
 				}
-				
-				/*
-				else if (fd == -1 || g_bp[0])
-				{
-					execute_command(cmd, last_redir, fd, filedes);
-					//status =
-					dup2(savestdin, 0);
-					dup2(savestdout, 1);
-				}
-				*/
 			}
 			token = sv->sh->tdlst_pipe->token_head;
 			sv->sh->tdlst_pipe = sv->sh->tdlst_pipe->next;
