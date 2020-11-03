@@ -20,7 +20,7 @@ BOLDCYAN="\033[1m\033[36m"
 BOLDWHITE="\033[1m\033[37m"
 
 # Compile and set executable rights
-#make -C ../ > /dev/null
+make -C ../ > /dev/null
 cp ../minishell .
 #cp cmake-build-debug/minishell .
 
