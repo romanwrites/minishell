@@ -71,7 +71,7 @@ char			*open_quotes_str(t_open_q *o, size_t i)
 	while (o->str[i])
 	{
 		set_states(o->str[i]);
-		if (is_backslash_active() && !is_open_quote())
+		if (is_bs_active() && !is_open_quote())
 			join_open_quotes(o, i++);
 		else if (o->str[i] == DOLLAR && is_env_val_after_dollar(o->str[i + 1]) \
 				&& !is_open_quote())

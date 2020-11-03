@@ -50,17 +50,17 @@ static char		*process_str(const char *str_input)
 		set_states(str[i]);
 		if (is_open_quote())
 			i = process_open_q_cmd(str, ++i) - 1;
-		else if (ft_isspace(str[i]) && !is_backslash_active())
+		else if (ft_isspace(str[i]) && !is_bs_active())
 			str[i] = '\n';
-		else if (i > 0 && is_pipe_or_single_redir(str, i))
+		else if (i > 0 && is_pipe_or_single_redir(str, i) && !is_bs_active())
 			i += set_nl_cpy(&str, i);
-		else if (i > 0 && is_double_redir(str, i))
+		else if (i > 0 && is_double_redir(str, i) && !is_bs_active())
 			i += set_nl_cpy(&str, i) + 1;
-		else if (i > 1 && is_after_redir(str, i))
+		else if (i > 1 && is_after_redir(str, i) && !is_bs_active())
 			i += set_nl_cpy(&str, i);
-		else if (i > 0 && is_after_redir_or_pipe(str, i))
+		else if (i > 0 && is_after_redir_or_pipe(str, i) && !is_bs_active())
 			i += set_nl_cpy(&str, i);
-		else if (i > 0 && is_after_redir_semi_check(str, i))
+		else if (i > 0 && is_after_redir_semi_check(str, i) && !is_bs_active())
 			set_nl_cpy(&str, i);
 		i++;
 	}

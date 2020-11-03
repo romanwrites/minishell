@@ -21,7 +21,7 @@ static void	set_new_lines_over_char(char c, char *str)
 	{
 		set_backslash_state_new(str[j]);
 		set_quotes_state_new(str[j]);
-		if (str[j] == c && !is_open_quote() && !is_backslash_active())
+		if (str[j] == c && !is_open_quote() && !is_bs_active())
 		{
 			str[j] = '\n';
 		}

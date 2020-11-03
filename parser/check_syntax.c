@@ -42,8 +42,8 @@ _Bool			check_sequence_full(char c1, char c2)
 
 _Bool			other_conditions(const char *str, int i)
 {
-	if (!is_open_quote() && i > 0 && !is_backslash_active() \
-						&& check_sequence_semi(str[i - 1], str[i]))
+	if (!is_open_quote() && i > 0 && !is_bs_active() \
+				&& check_sequence_semi(str[i - 1], str[i]))
 		return (1);
 	else if (str[i] == REDIR_RIGHT && str[i + 1] == REDIR_RIGHT && \
 					str[i + 2] == REDIR_RIGHT)

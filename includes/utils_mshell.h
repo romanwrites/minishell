@@ -157,7 +157,7 @@ void				handle_parent_signal(int signal);
 */
 void				init_globs();
 void				set_backslash_state_new(char c);
-_Bool				is_backslash_active();
+_Bool				is_bs_active();
 void				set_quotes_state_new(char c);
 _Bool				is_open_quote();
 

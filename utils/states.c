@@ -27,17 +27,17 @@ _Bool		is_open_quote(void)
 
 void		set_quotes_state_new(char c)
 {
-	if (c == DOUBLE_QUOTE && !is_open_quote() && !is_backslash_active())
+	if (c == DOUBLE_QUOTE && !is_open_quote() && !is_bs_active())
 		g_dquote = 1;
-	else if (c == DOUBLE_QUOTE && g_dquote && !is_backslash_active())
+	else if (c == DOUBLE_QUOTE && g_dquote && !is_bs_active())
 		g_dquote = 0;
-	else if (c == SINGLE_QUOTE && !is_open_quote() && !is_backslash_active())
+	else if (c == SINGLE_QUOTE && !is_open_quote() && !is_bs_active())
 		g_squote = 1;
 	else if (c == SINGLE_QUOTE && g_squote)
 		g_squote = 0;
 }
 
-_Bool		is_backslash_active(void)
+_Bool		is_bs_active(void)
 {
 	if (g_backslash_time)
 		return (1);

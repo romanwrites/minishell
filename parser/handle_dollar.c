@@ -17,12 +17,12 @@ void			get_several_dollars(t_open_q *o, int i)
 	int			j;
 
 	j = get_dollars_end(o->str + i);
-	if (i > o->save + 2 && is_backslash_active())
+	if (i > o->save + 2 && is_bs_active())
 	{
 		o->append_this = ft_substr_and_chk(o->str, o->save, i - o->save - 1);
 		append_line(&o->new_line, &o->append_this);
 	}
-	else if (i > o->save + 2 && !is_backslash_active())
+	else if (i > o->save + 2 && !is_bs_active())
 	{
 		o->append_this = ft_substr_and_chk(o->str, o->save, i - o->save);
 		append_line(&o->new_line, &o->append_this);
@@ -91,7 +91,7 @@ void			handle_dollar(t_open_q *o, int i)
 		return ;
 	}
 	j = get_env_from_str(str + i);
-	if (is_backslash_active())
+	if (is_bs_active())
 		append_dollar_after_backslash(o, i, j);
 	else
 		get_env_val(o, i, j);
