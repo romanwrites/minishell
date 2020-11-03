@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/11/03 16:07:34 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/03 16:42:17 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void		del_node(t_prevnext *pn, char **keys)
 		pn->ptr_next = pn->tmp->next;
 		ft_lstdelone(pn->tmp, free_content);
 		pn->tmp = pn->ptr_next;
-		g_env = g_env->next;//COULD BE A LEAK!!!
+		g_env = g_env->next;
 	}
 	pn->ptr_prev = pn->tmp;
 	if (!pn->first)
@@ -83,6 +83,7 @@ void			ft_unset(char **arg)
 	char		**keys;
 	t_prevnext	*pn;
 
+	pn = malloc(sizeof(t_prevnext));
 	keys = arg;
 	keys++;
 	if (arg[1])
@@ -98,4 +99,5 @@ void			ft_unset(char **arg)
 			keys++;
 		}
 	}
+	free(pn);
 }
