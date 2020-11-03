@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 17:52:36 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 17:52:39 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/11/03 14:15:18 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void		ft_exit(char **cmd)
 		exit((int)g_exit % 256);
 	if (cmd[2])
 	{
-		ft_putendl_fd("bash: exit: too many arguments", 1);
+		ft_putendl_fd("bash: exit: too many arguments", 2);
 		return ;
 	}
 	ft_atoull(cmd[1], &minus);
@@ -32,7 +32,7 @@ void		ft_exit(char **cmd)
 	{
 		ft_putstr_fd("bash: exit: ", 1);
 		ft_putstr_fd(cmd[1], 1);
-		ft_putendl_fd(": numeric argument required", 1);
+		ft_putendl_fd(": numeric argument required", 2);
 		exit(255);
 	}
 	exit((int)(ft_atoll(cmd[1]) % 256));
