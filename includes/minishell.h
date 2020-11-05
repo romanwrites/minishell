@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/05 17:18:09 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/05 18:28:32 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ extern _Bool				g_dquote;
 extern _Bool				g_squote;
 extern _Bool				g_backslash;
 extern int					g_backslash_time;
-extern int					g_isfork;
 extern long long			g_exit;
 extern int					g_timer;
 extern _Bool				g_bp;

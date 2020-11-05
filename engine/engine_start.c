@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/05 16:52:36 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/05 18:38:29 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,40 +33,39 @@ void	state_bzero(t_parse *state)
 	state->backslash_time = 0;
 }
 
-void	init(t_mshell	*sv)
+void	init(t_mshell *sv)
 {
 	sv->state = (t_parse *)malloc(sizeof(t_parse) * 1);
 	ft_alloc_check(sv->state);
 	init_globs();
 }
 
-int     main(int ac, char **av, char **envp)
+t_mshell	*init_gvars_sig_sv(char *str, char **envp)
 {
 	t_mshell	*sv;
-	int 		read_res;
-	char		*line;
-	int			i;
-	int			timer;
-	char		**cmd;
-	char		*str;
-	char    *test[] = {"unset", "OLDPWD", NULL};
-	g_isfork = 0;
-	g_exit = 0;
-	i = 0;
-	g_timer = 0;
-	str = NULL;
-	(void)ac;
-	(void)av;
 
+	g_exit = 0;
+	g_timer = 0;
+	g_env = env_to_list(envp);
+	g_home = get_envar("HOME");
+	str = NULL;
 	signal(SIGQUIT, handle_parent_signal);
 	signal(SIGINT, handle_parent_signal);
 	signal(SIGTERM, SIG_IGN);
-	g_env = env_to_list(envp);
-	g_home = get_envar("HOME");
-	ft_unset(test);
+	ft_unset((char*[3]){"unset", "OLDPWD", NULL});
 	sv = (t_mshell *)malloc(sizeof(t_mshell));
 	ft_alloc_check(sv);
 	init(sv);
+	return (sv);
+}
+
+int		main(int ac, char **av, char **envp)
+{
+	t_mshell	*sv;
+	char		**cmd;
+	char		*str;
+
+	sv = init_gvars_sig_sv(str, envp);
 	write(0, PROMPT, ft_strlen(PROMPT));
 	while (get_next_line(0, &str, 0, 0))
 	{
@@ -78,27 +77,13 @@ int     main(int ac, char **av, char **envp)
 			write(0, PROMPT, ft_strlen(PROMPT));
 			continue ;
 		}
-		/*
-		if (g_exit && !timer)
-			timer = 2;
-		if (timer)
-		{
-			timer--;
-			if (!timer)
-				g_exit = 0;
-		}
-		*/
 		process_cmd(sv);
-		//printf("\nEXIT %lld\t TIMER %d\n", g_exit, timer);
 		write(0, PROMPT, ft_strlen(PROMPT));
 		free_all_lists(sv);
 		free(str);
 		str = NULL;
-		if (str)
-			printf("jej");
 	}
-
 	if (*(str) == '\0')
 		write(2, "exit\n", ft_strlen("exit\n"));
 	return (0);
-}//FREE INPUT!
+}
