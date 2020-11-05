@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/10 17:53:17 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/05 14:59:21 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/05 17:18:09 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ void		execute_command(char **cmd, int fd, int filedes);
 int			handle_redir(char *is_redir, char *file);
 int			status_return(int status);
 void		refresh_env(void);
-void        timer(void);
+void		timer(void);
 
 #endif

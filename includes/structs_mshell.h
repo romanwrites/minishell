@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:48:38 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/05 16:37:28 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/05 17:19:12 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,16 @@ typedef struct				s_norm
 
 typedef struct				s_norma
 {
-	char **cmd;
-	int fds[2];
-	int fdl;
-	int fdr;
-	int	savestdout;
-	int	savestdin; 
-	int i;
-	int x;
-	int status;
-	int pid;
+	char	**cmd;
+	int		fds[2];
+	int		fdl;
+	int		fdr;
+	int		savestdout;
+	int		savestdin;
+	int		i;
+	int		x;
+	int		status;
+	int		pid;
 }							t_norma;
 
 #endif

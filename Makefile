@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/11/05 13:24:30 by lhelper          ###   ########.fr        #
+#    Updated: 2020/11/05 17:12:15 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,8 @@ UTILS_SRC = alloc_and_check.c \
 			print_error.c \
 			print_everything.c \
 			print_token.c \
+			process_cmd1.c \
+			process_cmd2.c \
 			reset_newlines.c \
 			set_heads.c \
 			set_states.c \

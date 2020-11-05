@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/05 13:39:38 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/05 16:52:36 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	state_bzero(t_parse *state)
 
 void	init(t_mshell	*sv)
 {
-	sv->state = (t_parse *)malloc(sizeof(t_parse) * 1); //todo free after parse
+	sv->state = (t_parse *)malloc(sizeof(t_parse) * 1);
 	ft_alloc_check(sv->state);
 	init_globs();
 }
