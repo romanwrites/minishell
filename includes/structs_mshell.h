@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:48:38 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/03 16:07:50 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/05 17:19:12 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../libft/libft.h"
 # include "minishell.h"
+# include <dirent.h>
 
 typedef struct				s_open_q {
 	size_t					i;
@@ -35,7 +36,6 @@ typedef struct				s_parse {
 typedef struct				s_token {
 	char					*content;
 	_Bool					is_diff;
-	_Bool					tick;
 	struct s_token			*next;
 	struct s_token			*prev;
 }							t_token;
@@ -73,5 +73,30 @@ typedef struct				s_prevnext
 	t_list		*ptr_next;
 	int			first;
 }							t_prevnext;
+
+typedef struct				s_norm
+{
+	char			*to_split;
+	char			*tmp;
+	char			**path;
+	char			**envp;
+	DIR				*dir;
+	struct dirent	*entry;
+	int				status;
+}							t_norm;
+
+typedef struct				s_norma
+{
+	char	**cmd;
+	int		fds[2];
+	int		fdl;
+	int		fdr;
+	int		savestdout;
+	int		savestdin;
+	int		i;
+	int		x;
+	int		status;
+	int		pid;
+}							t_norma;
 
 #endif

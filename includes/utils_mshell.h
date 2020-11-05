@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:56:37 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 19:26:34 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/05 17:17:10 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,25 @@ char				**ft_trim_2d_cpy(char **arr_2d);
 char				*get_envar(char *var);
 
 /*
+** handle_cmd1.c
+*/
+void				myclosedir(t_norm *n);
+void				get_paths(t_norm *n);
+void				init_envp(int *i, t_norm **n);
+void				cmd_not_found(t_norm *n, char **args);
+void				command_found(int i, t_norm *n, char **args);
+
+/*
+** handle_cmd2.c
+*/
+void				free_splitted(t_norm *n);
+void				process_slash(int status, char *tmp, \
+									char **args, char **envp);
+char				*find_cmd(char *path);
+int					list_size(void);
+char				**list_to_env(void);
+
+/*
 ** is_str.c
 */
 _Bool				is_some_redir(char *str);
@@ -131,6 +150,24 @@ void				print_everything(t_mshell *sv);
 ** print_token_list.c
 */
 void				print_token_list(t_token *token);
+
+/*
+** process_cmd1.c
+*/
+void				add_token(t_norma *n, t_token *token);
+t_token				*next_pipe(t_mshell *sv);
+void				next_semicolon(t_mshell *sv);
+void				execute_child(t_norma *n);
+void				execute_parent(t_norma *n);
+
+/*
+** process_cmd2.c
+*/
+t_token				*zero_index_quotes(t_mshell *sv, t_norma *n);
+void				left_or_right(t_norma *n, t_token *token);
+void				preexecute_pipe(t_norma *n);
+void				fill_before_pipe(t_norma *n);
+void				print_no_file_dir(char *str);
 
 /*
 ** reset_newlines.c
