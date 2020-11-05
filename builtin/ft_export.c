@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:21:57 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 20:19:13 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/05 10:19:51 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@ void		process_list(t_list *list, const char *arg)
 	ft_lstclear(&list, free_nothing);
 }
 
+void		add_kv_to_env(t_envar *kv)
+{
+	if (!g_env)
+		g_env = ft_lstnew_kv_n_chk((void *)kv);
+	else if (!find_key_replace_val(&g_env, kv->key, kv->value))
+		ft_lstadd_back(&g_env, ft_lstnew_kv_n_chk((void *)kv));
+}
+
 void		process_pair(char **pair, t_envar *kv, char *value)
 {
 	while (pair && *pair)
@@ -58,10 +66,7 @@ void		process_pair(char **pair, t_envar *kv, char *value)
 			kv->key = malloc_n_chk(ft_strlen(*pair) - ft_strlen(kv->value));
 			ft_strlcpy(kv->key, *pair, ft_strlen(*pair) - ft_strlen(kv->value));
 		}
-		if (!g_env)
-			g_env = ft_lstnew_kv_n_chk((void *)kv);
-		else if (!find_key_replace_val(&g_env, kv->key, kv->value))
-			ft_lstadd_back(&g_env, ft_lstnew_kv_n_chk((void *)kv));
+		add_kv_to_env(kv);
 		pair++;
 	}
 }

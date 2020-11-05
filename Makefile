@@ -6,7 +6,7 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/11/03 12:49:47 by lhelper          ###   ########.fr        #
+#    Updated: 2020/11/05 13:24:30 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,6 +66,8 @@ UTILS_SRC = alloc_and_check.c \
 			ft_lstnew_kv.c \
 			ft_trim_2d.c \
 			get_envar.c \
+			handle_cmd1.c \
+			handle_cmd2.c \
 			is_str.c \
 			print_2d_array.c \
 			print_error.c \

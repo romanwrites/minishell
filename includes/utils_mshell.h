@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:56:37 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 19:26:34 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/05 13:35:47 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,5 +174,24 @@ void				set_backslash_state(t_parse *state_check, char c);
 ** token.c
 */
 t_token				*token_new(char *content, t_token **prev);
+
+/*
+** handle_cmd1.c
+*/
+void				myclosedir(t_norm *n);
+void				get_paths(t_norm *n);
+void				init_envp(int *i, t_norm **n);
+void				cmd_not_found(t_norm *n, char **args);
+void				command_found(int i, t_norm *n, char **args);
+
+/*
+** handle_cmd2.c
+*/
+void				free_splitted(t_norm *n);
+void				process_slash(int status, char *tmp, \
+									char **args, char **envp);
+char				*find_cmd(char *path);
+int					list_size(void);
+char				**list_to_env(void);
 
 #endif

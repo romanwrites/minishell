@@ -6,207 +6,84 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/11/03 14:56:31 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/05 13:33:53 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char **list_to_env()
+void	handle_err(int status, char *tmp, struct stat buffer)
 {
-	t_list *list;
-	char **envp;
-	char *tmp;
-	char *str;
-	int i;
-	int len;
-
-	i = 0;
-	len = 0;
-	list = g_env;
-	while(list)
+	if (status == 0 && (buffer.st_mode & S_IXUSR) == 0)
 	{
-		i++;
-		list = list->next;
+		write(0, PROM, ft_strlen(PROM));
+		write(2, tmp, ft_strlen(tmp));
+		ft_putstr_fd(": Permission denied\n", 2);
+		g_exit = 126;
 	}
-	list = g_env;
-	envp = (char **)malloc(sizeof(char*) * i + 1);
-	while(len < i)
+	else if (status == 1)
 	{
-		envp[len] = (char *)malloc(PATH_MAX);
-		str = ft_strjoin(((t_envar *)(list->content))->key, "=");
-		tmp = str;
-		str = ft_strjoin(str, ((t_envar *)(list->content))->value);
-		free(tmp);
-		envp[len] = ft_memcpy(envp[len], str, ft_strlen(str));
-		free(str);
-		len++;
-		list = list->next;
+		write(0, PROM, ft_strlen(PROM));
+		write(2, tmp, ft_strlen(tmp));
+		ft_putstr_fd(": is a directory\n", 2);
+		g_exit = 126;
 	}
-	envp[len] = NULL;
-	return(envp);
+	else
+	{
+		write(0, PROM, ft_strlen(PROM));
+		write(2, tmp, ft_strlen(tmp));
+		ft_putstr_fd(": No such file or directory\n", 2);
+		g_exit = 127;
+	}
 }
 
-char	*find_cmd(char *path)
+void	execute_slash(char **envp, char **args)
 {
-	int len;
-	int i;
-	char *cmd;
+	struct stat		buffer;
+	DIR				*dir;
+	char			*tmp;
+	int				status;
 
-	len = ft_strlen(path);
-	i = len;
-	while(len > 0 && path[len] != '/')
-		len--;
-	i = i - len;
-	cmd = malloc(i);
-	if (cmd)
-		ft_memcpy(cmd, &path[++len], i);
-	return(cmd);
+	tmp = args[0];
+	args[0] = find_cmd(tmp);
+	status = stat(tmp, &buffer);
+	dir = opendir(tmp);
+	if (dir)
+	{
+		closedir(dir);
+		status = 1;
+	}
+	if (status == 0 && (buffer.st_mode & S_IXUSR) != 0)
+		process_slash(status, tmp, args, envp);
+	else
+		handle_err(status, tmp, buffer);
 }
 
 void	handle_cmd(char **args)
 {
-	char *to_split;
-	char *tmp;
-	char **path;
-	char **envp;
-	DIR *dir;
-	struct dirent *entry;
-	int i;
-	int x;
-	int status;
-	struct stat buffer;
-	i = 0;
-	x = 0;
-	dir = NULL;
+	t_norm	*n;
+	int		i;
 
-	envp = list_to_env();
+	init_envp(&i, &n);
 	if (ft_strchr(args[0], '/'))
 	{
-		if (args[0][0] == '.' && args[0][1] == '/' && !ft_isprint((int)args[0][2]))
-		{
-			write(0, PROM, ft_strlen(PROM));//why zero??????
-			write(2, args[0], ft_strlen(args[0]));
-			write(2, ": is a directory\n", ft_strlen(": is a directory\n"));
-			g_exit = 126;
-			return ;
-		}
-		tmp = args[0];
-		args[0] = find_cmd(tmp);
-		status = stat(tmp, &buffer);
-		dir = opendir(tmp);
-		if (dir)
-		{
-			closedir(dir);
-			status = 1;
-		}
-		if (status == 0)
-		{
-			if ((buffer.st_mode & S_IXUSR) == 0)
-			{
-				write(0, PROM, ft_strlen(PROM));//why zero??????
-				write(1, args[0], ft_strlen(args[0]));
-				write(2, ": Permission denied\n", ft_strlen(": Permission denied\n"));
-				g_exit = 126;
-				return ;
-			}
-		}
-		if (status == 0)
-		{
-			g_pid = fork();
-			if (g_pid)
-			{
-				signal(SIGQUIT, SIG_IGN);
-				signal(SIGINT, SIG_IGN);
-				//wait(NULL);
-				waitpid(g_pid, &status, WUNTRACED);
-				signal(SIGQUIT, handle_parent_signal);
-				signal(SIGINT, handle_parent_signal);
-				g_exit = status_return(status);
-			}
-			else
-			{
-				signal(SIGQUIT, SIG_DFL);//
-				signal(SIGINT, SIG_DFL);//
-				signal(SIGTERM, SIG_DFL);
-				status = execve(tmp, args, envp);
-			}
-		}
-		else if (status == 1)
-		{
-			write(0, PROM, ft_strlen(PROM));//why zero??????
-			write(2, tmp, ft_strlen(tmp));
-			write(2, ": is a directory\n", ft_strlen(": is a directory\n"));
-			g_exit = 126;
-		}
-		else
-		{
-			write(0, PROM, ft_strlen(PROM));//why zero??????
-			write(1, tmp, ft_strlen(tmp));
-			write(2, ": No such file or directory\n", ft_strlen(": No such file or directory\n"));
-			g_exit = 127;
-		}
-		//if (tmp)
-		//	free(tmp);
+		execute_slash(n->envp, args);
 		return ;
 	}
-	to_split = get_envar("PATH");
-	path = ft_split(to_split, ':');
-	while(path && path[i])
+	get_paths(n);
+	while (n->path && n->path[i])
 	{
-		dir = opendir(path[i]);
-		while(dir && (entry = readdir(dir)))
+		n->dir = opendir(n->path[i]);
+		while (n->dir && (n->entry = readdir(n->dir)))
 		{
-			if(!ft_strcmp(args[0], entry->d_name))
+			if (!ft_strcmp(args[0], n->entry->d_name))
 			{
-				tmp = ft_strjoin("/", args[0]);
-				path[i] = ft_strjoin_free_s1(path[i], tmp);
-				g_pid = fork();
-				if (g_pid)
-				{
-					signal(SIGQUIT, SIG_IGN);
-					signal(SIGINT, SIG_IGN);
-					//wait(NULL);
-					waitpid(g_pid, &status, WUNTRACED);
-					signal(SIGQUIT, handle_parent_signal);
-					signal(SIGINT, handle_parent_signal);
-					g_exit = status_return(status);
-				}
-				else
-				{
-					signal(SIGQUIT, SIG_DFL);//
-					signal(SIGINT, SIG_DFL);//
-					signal(SIGTERM, SIG_DFL);
-					status = execve(path[i], args, envp);
-				}
-				free(tmp);
-				free(to_split);
-				while (path[x])
-				{
-					free(path[x]);
-					x++;
-				}
-				free(path);
-				closedir(dir);
+				command_found(i, n, args);
 				return ;
 			}
 		}
-		if (dir)
-			closedir(dir);
+		myclosedir(n);
 		i++;
 	}
-	if (path)
-	{
-		while (path[x])
-		{
-			free(path[x]);
-			x++;
-		}
-		free(path);
-		free(to_split);
-	}
-	write(0, PROM, ft_strlen(PROM));
-	write(2, args[0], ft_strlen(args[0]));
-	write(2, ": command not found\n", ft_strlen(": command not found\n"));
-	g_exit = 127;
+	cmd_not_found(n, args);
 }
