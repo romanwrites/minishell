@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/03 18:29:46 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/05 13:39:38 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,12 @@ _Bool	g_dquote;
 _Bool	g_squote;
 _Bool	g_backslash;
 int		g_backslash_time;
-//t_mshell *g_sv;
 
 t_list	*g_env;
 char	*g_input;
 char	*g_home;
 int		g_isfork;
 long long g_exit;
-//int		g_stdin;
-//int		g_stdout;
 int		g_timer;
 pid_t	g_pid;
 
@@ -91,7 +88,6 @@ int     main(int ac, char **av, char **envp)
 				g_exit = 0;
 		}
 		*/
-//		print_everything(sv);
 		process_cmd(sv);
 		//printf("\nEXIT %lld\t TIMER %d\n", g_exit, timer);
 		write(0, PROMPT, ft_strlen(PROMPT));

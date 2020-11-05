@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:48:38 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/05 12:44:18 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/05 16:37:28 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ typedef struct				s_parse {
 typedef struct				s_token {
 	char					*content;
 	_Bool					is_diff;
-	_Bool					tick;
 	struct s_token			*next;
 	struct s_token			*prev;
 }							t_token;
@@ -85,5 +84,19 @@ typedef struct				s_norm
 	struct dirent	*entry;
 	int				status;
 }							t_norm;
+
+typedef struct				s_norma
+{
+	char **cmd;
+	int fds[2];
+	int fdl;
+	int fdr;
+	int	savestdout;
+	int	savestdin; 
+	int i;
+	int x;
+	int status;
+	int pid;
+}							t_norma;
 
 #endif

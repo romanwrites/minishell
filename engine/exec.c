@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 15:09:27 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/03 19:11:55 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/05 15:04:28 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ void	execute(char **cmd)
 		ft_echo(cmd);
 	else if (!(ft_strcmp(cmd[0], "exit")))
 	{
-		if (!g_bp[0])
+		if (!g_bp)
 			ft_exit(cmd);
 		return ;
 	}
 	else if (!(ft_strcmp(cmd[0], "cd")))
 	{
-		if (!g_bp[0])
+		if (!g_bp)
 			ft_cd(cmd[1]);
 		return ;
 	}
@@ -84,7 +84,7 @@ int		handle_redir(char *is_redir, char *file)
 	return (fd);
 }
 
-void	execute_command(char **cmd, char *is_redir, int fdr, int fdl)
+void	execute_command(char **cmd, int fdr, int fdl)
 {
 	int	savestdout;
 	int	savestdin;
