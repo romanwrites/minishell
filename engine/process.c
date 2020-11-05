@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/11/05 16:43:51 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/05 16:48:42 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,12 @@ t_token		*next_pipe(t_mshell *sv)
 	return (tmp);
 }
 
+void		next_semicolon(t_mshell *sv)
+{
+	sv->sh->tdlst_pipe = sv->sh->tdlst_pipe_head;
+	sv->sh = sv->sh->next;
+}
+
 void		process_cmd(t_mshell *sv)
 {
 	t_token *token;
@@ -179,8 +185,7 @@ void		process_cmd(t_mshell *sv)
 				execute_pipe(n, sv);
 			token = next_pipe(sv);
 		}
-		sv->sh->tdlst_pipe = sv->sh->tdlst_pipe_head;
-		sv->sh = sv->sh->next;
+		next_semicolon(sv);
 	}
 	sv->sh = sv->sh_head;
 	free(n);
