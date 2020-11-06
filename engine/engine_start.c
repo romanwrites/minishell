@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:39:20 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/05 18:38:29 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/06 13:01:41 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ long long g_exit;
 int		g_timer;
 pid_t	g_pid;
 
-void	state_bzero(t_parse *state)
+void		state_bzero(t_parse *state)
 {
 	state->is_double_quote_open = 0;
 	state->is_single_quote_open = 0;
@@ -33,22 +33,23 @@ void	state_bzero(t_parse *state)
 	state->backslash_time = 0;
 }
 
-void	init(t_mshell *sv)
+void		init(t_mshell *sv)
 {
 	sv->state = (t_parse *)malloc(sizeof(t_parse) * 1);
 	ft_alloc_check(sv->state);
 	init_globs();
 }
 
-t_mshell	*init_gvars_sig_sv(char *str, char **envp)
+t_mshell	*init_gvars_sig_sv(int argc, char **argv, char **envp)
 {
 	t_mshell	*sv;
 
+	(void)argc;
+	(void)argv;
 	g_exit = 0;
 	g_timer = 0;
 	g_env = env_to_list(envp);
 	g_home = get_envar("HOME");
-	str = NULL;
 	signal(SIGQUIT, handle_parent_signal);
 	signal(SIGINT, handle_parent_signal);
 	signal(SIGTERM, SIG_IGN);
@@ -59,13 +60,13 @@ t_mshell	*init_gvars_sig_sv(char *str, char **envp)
 	return (sv);
 }
 
-int		main(int ac, char **av, char **envp)
+int			main(int argc, char **argv, char **envp)
 {
 	t_mshell	*sv;
-	char		**cmd;
 	char		*str;
 
-	sv = init_gvars_sig_sv(str, envp);
+	str = NULL;
+	sv = init_gvars_sig_sv(argc, argv, envp);
 	write(0, PROMPT, ft_strlen(PROMPT));
 	while (get_next_line(0, &str, 0, 0))
 	{
