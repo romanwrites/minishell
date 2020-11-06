@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/11/06 12:51:56 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/06 14:14:27 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,6 @@ void		process_cmd(t_mshell *sv)
 		next_semicolon(sv);
 	}
 	sv->sh = sv->sh_head;
+	free(n->cmd);
 	free(n);
 }

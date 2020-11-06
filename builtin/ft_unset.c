@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/11/03 16:42:17 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/06 15:54:13 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ static	int		check_args(char **arg)
 
 static void		del_node(t_prevnext *pn, char **keys)
 {
+	t_list *temp;
+
 	if (!ft_strcmp(((t_envar *)pn->tmp->content)->key, *keys) && !pn->first)
 	{
 		pn->ptr_next = pn->tmp->next;
@@ -70,7 +72,9 @@ static void		del_node(t_prevnext *pn, char **keys)
 		pn->ptr_next = pn->tmp->next;
 		ft_lstdelone(pn->tmp, free_content);
 		pn->tmp = pn->ptr_next;
+		temp = g_env;
 		g_env = g_env->next;
+		free(temp);
 	}
 	pn->ptr_prev = pn->tmp;
 	if (!pn->first)
@@ -89,7 +93,10 @@ void			ft_unset(char **arg)
 	if (arg[1])
 	{
 		if (check_args(arg))
+		{
+			free(pn);
 			return ;
+		}
 		while (keys && *keys)
 		{
 			pn->tmp = g_env;

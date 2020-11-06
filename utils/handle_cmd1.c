@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/05 13:14:13 by lhelper           #+#    #+#             */
-/*   Updated: 2020/11/05 13:26:14 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/06 15:14:06 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	command_found(int i, t_norm *n, char **args)
 		n->status = execve((n->path)[i], args, n->envp);
 	}
 	free(n->tmp);
+	free_envp(n->envp);
 	free_splitted(n);
 	closedir(n->dir);
 	free(n);
@@ -43,6 +44,7 @@ void	cmd_not_found(t_norm *n, char **args)
 {
 	if (n->path)
 		free_splitted(n);
+	free_envp(n->envp);
 	free(n);
 	write(0, PROM, ft_strlen(PROM));
 	write(2, args[0], ft_strlen(args[0]));

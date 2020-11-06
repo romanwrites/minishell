@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/14 23:39:30 by lhelper           #+#    #+#             */
-/*   Updated: 2020/11/05 13:33:53 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/06 15:14:26 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	handle_err(int status, char *tmp, struct stat buffer)
 	}
 }
 
-void	execute_slash(char **envp, char **args)
+void	execute_slash(t_norm *n, char **args)
 {
 	struct stat		buffer;
 	DIR				*dir;
@@ -54,9 +54,12 @@ void	execute_slash(char **envp, char **args)
 		status = 1;
 	}
 	if (status == 0 && (buffer.st_mode & S_IXUSR) != 0)
-		process_slash(status, tmp, args, envp);
+		process_slash(status, tmp, args, n->envp);
 	else
 		handle_err(status, tmp, buffer);
+	free_envp(n->envp);
+	free(n);
+	free(args[0]);
 }
 
 void	handle_cmd(char **args)
@@ -67,7 +70,7 @@ void	handle_cmd(char **args)
 	init_envp(&i, &n);
 	if (ft_strchr(args[0], '/'))
 	{
-		execute_slash(n->envp, args);
+		execute_slash(n, args);
 		return ;
 	}
 	get_paths(n);
