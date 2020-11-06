@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 12:22:06 by lhelper           #+#    #+#             */
-/*   Updated: 2020/11/03 18:35:52 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/06 10:55:44 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	set_oldpwd(char *old, char *pwd, char **test)
 	free(pwd);
 }
 
-static void	set_pwd(char *old, char **test)
+static void	set_pwd(char *old)
 {
 	t_list	*env;
 
@@ -65,6 +65,7 @@ void		refresh_env(void)
 	char	*old;
 	char	*test[3];
 
+	old = NULL;
 	test[0] = "command";
 	test[1] = "OLDPWD";
 	test[2] = NULL;
@@ -72,5 +73,5 @@ void		refresh_env(void)
 	if (!pwd)
 		pwd = ft_strdup("");
 	set_oldpwd(old, pwd, test);
-	set_pwd(old, test);
+	set_pwd(old);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_trim_2d.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 00:51:06 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/28 20:35:30 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/11/06 13:08:08 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char			**ft_trim_2d_cpy(char **arr_2d)
 {
 	char		**new;
 	char		*tmp;
-	size_t		len;
+	int			len;
 	int			i;
 
 	i = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkristie <mkristie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:11:41 by mkristie          #+#    #+#             */
-/*   Updated: 2020/10/30 18:11:43 by mkristie         ###   ########.fr       */
+/*   Updated: 2020/11/06 10:54:07 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void		free_nothing(void *to_free)
 {
+	t_envar *content;
+
+	content = to_free;
 }
 
 void		free_content(void *to_free)

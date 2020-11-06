@@ -6,12 +6,12 @@
 #    By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/09/27 14:53:03 by mkristie          #+#    #+#              #
-#    Updated: 2020/11/05 17:12:15 by lhelper          ###   ########.fr        #
+#    Updated: 2020/11/06 11:56:32 by lhelper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-FLAGS = -O2 -g#-Wall -Wextra -Werror
+FLAGS = -O2 -g -Wall -Wextra -Werror
 
 INCLUDES = -Iincludes/ -Ilibft/
 

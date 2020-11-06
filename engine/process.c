@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 17:30:21 by lhelper           #+#    #+#             */
-/*   Updated: 2020/11/05 17:14:00 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/06 12:51:56 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ _Bool	g_bp;
 void		timer(void)
 {
 	if (g_exit && !g_timer)
-		g_timer = 2;
+		g_timer = 1;
 	if (g_timer)
 	{
 		g_timer--;
@@ -86,7 +86,6 @@ void		process_cmd(t_mshell *sv)
 	init_vars(n);
 	while (sv->sh)
 	{
-		timer();
 		while (sv->sh->tdlst_pipe)
 		{
 			token = zero_index_quotes(sv, n);

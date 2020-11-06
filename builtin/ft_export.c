@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:21:57 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/05 10:19:51 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/06 10:54:26 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void		ft_export(char **arg)
 {
 	t_list	*list;
 	t_envar	*kv;
-	char	**pair;
 	char	*value;
 	char	**args;
 

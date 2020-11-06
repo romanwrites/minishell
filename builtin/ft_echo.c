@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 16:28:24 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/03 18:53:23 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/06 12:47:22 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void			ft_echo(char **cmd)
 
 	i = 1;
 	is_n = 0;
+	timer();
 	if (cmd[i])
 	{
 		if ((is_n = skip_repeat(cmd, &i)))

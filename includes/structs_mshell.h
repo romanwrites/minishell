@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:48:38 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/05 17:19:12 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/06 13:06:39 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <dirent.h>
 
 typedef struct				s_open_q {
-	size_t					i;
-	size_t					save;
+	int						i;
+	int						save;
 	char					*new_line;
 	char					*append_this;
 	char					*str;
