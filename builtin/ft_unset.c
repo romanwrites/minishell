@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 13:33:29 by lhelper           #+#    #+#             */
-/*   Updated: 2020/11/03 16:42:17 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/06 15:54:13 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,35 +55,43 @@ static	int		check_args(char **arg)
 	return (0);
 }
 
-static void		del_node(t_prevnext *pn, char **keys)
+static void		del_node(t_list **env_key_value, char **keys, \
+									int *first, t_list **prev)
 {
-	if (!ft_strcmp(((t_envar *)pn->tmp->content)->key, *keys) && !pn->first)
+	t_list *temp;
+
+	temp = *env_key_value;
+	if (!ft_strcmp(((t_envar *)temp->content)->key, *keys) && !*first)
 	{
-		pn->ptr_next = pn->tmp->next;
-		ft_lstdelone(pn->tmp, free_content);
-		pn->ptr_prev->next = pn->ptr_next;
-		pn->tmp = pn->ptr_prev;
+		*env_key_value = (*env_key_value)->next;
+		free(((t_envar *)(temp->content))->key);
+		free(((t_envar *)(temp->content))->value);
+		free(temp->content);
+		free(temp);
+		(*prev)->next = *env_key_value;
 	}
-	else if (!ft_strcmp(((t_envar *)pn->tmp->content)->key, *keys) && pn->first)
+	else if (!ft_strcmp(((t_envar *)temp->content)->key, *keys) && *first)
 	{
-		pn->ptr_prev = pn->tmp;
-		pn->ptr_next = pn->tmp->next;
-		ft_lstdelone(pn->tmp, free_content);
-		pn->tmp = pn->ptr_next;
-		g_env = g_env->next;
+		*env_key_value = (*env_key_value)->next;
+		free(((t_envar *)(temp->content))->key);
+		free(((t_envar *)(temp->content))->value);
+		free(temp->content);
+		free(temp);
 	}
-	pn->ptr_prev = pn->tmp;
-	if (!pn->first)
-		pn->tmp = pn->tmp->next;
-	pn->first = 0;
+	if (!*first)
+		*prev = *env_key_value;
+	*first = 0;
+	if (*env_key_value)
+		*env_key_value = (*env_key_value)->next;
 }
 
 void			ft_unset(char **arg)
 {
 	char		**keys;
-	t_prevnext	*pn;
+	t_list		*env_key_value;
+	t_list		*prev;
+	int			first;
 
-	pn = malloc(sizeof(t_prevnext));
 	keys = arg;
 	keys++;
 	if (arg[1])
@@ -92,12 +100,12 @@ void			ft_unset(char **arg)
 			return ;
 		while (keys && *keys)
 		{
-			pn->tmp = g_env;
-			pn->first = 1;
-			while (pn->tmp)
-				del_node(pn, keys);
+			env_key_value = g_env;
+			prev = env_key_value;
+			first = 1;
+			while (env_key_value)
+				del_node(&env_key_value, keys, &first, &prev);
 			keys++;
 		}
 	}
-	free(pn);
 }

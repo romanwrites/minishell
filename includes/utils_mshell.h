@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/25 19:56:37 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/05 17:17:10 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/06 14:57:55 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,10 @@ char				*find_cmd(char *path);
 int					list_size(void);
 char				**list_to_env(void);
 
+/*
+** handle_cmd3.c
+*/
+void				free_envp(char **envp);
 /*
 ** is_str.c
 */

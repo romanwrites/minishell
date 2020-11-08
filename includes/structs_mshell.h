@@ -66,14 +66,6 @@ typedef struct				s_envar
 	char					*value;
 }							t_envar;
 
-typedef struct				s_prevnext
-{
-	t_list		*tmp;
-	t_list		*ptr_prev;
-	t_list		*ptr_next;
-	int			first;
-}							t_prevnext;
-
 typedef struct				s_norm
 {
 	char			*to_split;

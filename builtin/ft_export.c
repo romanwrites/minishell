@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:21:57 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/06 10:54:26 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/06 14:09:16 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 void		process_list(t_list *list, const char *arg)
 {
+	t_list *to_free;
+
 	ft_list_sort(&list, compare_key);
+	to_free = list;
 	while (list)
 	{
 		if (!arg || *arg == '|' || *arg == '>' || *arg == '<')
@@ -32,7 +35,7 @@ void		process_list(t_list *list, const char *arg)
 		}
 		list = list->next;
 	}
-	ft_lstclear(&list, free_nothing);
+	ft_lstclear(&to_free, free_nothing);
 }
 
 void		add_kv_to_env(t_envar *kv)
