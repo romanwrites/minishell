@@ -30,6 +30,7 @@ static void		init_t_open_q(t_open_q *o, const char *str)
 	o->append_this = NULL;
 	o->str = ft_strdup_and_check(str);
 	o->i = 0;
+	o->is_tilda = 0;
 }
 
 static void		free_o(t_open_q *o)
@@ -37,6 +38,14 @@ static void		free_o(t_open_q *o)
 	free(o->str);
 	o->str = NULL;
 	o->new_line = NULL;
+}
+
+char			*handle_token_content(t_open_q *o, size_t i)
+{
+	if (o->str[i] == '~' && !o->str[i + 1])
+		return (just_tilde(o, i));
+	else
+		return (open_quotes_str(o, i));
 }
 
 void			open_quotes(t_token *token)
@@ -59,7 +68,7 @@ void			open_quotes(t_token *token)
 		}
 		init_t_open_q(o, token->content);
 		tmp = token->content;
-		token->content = open_quotes_str(o, 0);
+		token->content = handle_token_content(o, 0);
 		free(tmp);
 		free_o(o);
 		token = token->next;

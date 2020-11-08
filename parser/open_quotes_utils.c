@@ -33,3 +33,17 @@ char			*just_tilde(t_open_q *o, int i)
 	free_and_null(&env_value);
 	return (o->new_line);
 }
+
+void			append_tilda(t_open_q *o, size_t i)
+{
+	char		*val;
+	char		*tmp;
+
+	val = get_envar("~");
+	tmp = o->new_line;
+	o->new_line = ft_strjoin_n_chk(tmp, val);
+	free(tmp);
+	free(val);
+	o->save = i + 1;
+	o->is_tilda = 1;
+}

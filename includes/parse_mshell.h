@@ -85,6 +85,7 @@ char			*open_quotes_str(t_open_q *o, size_t i);
 */
 char			*just_tilde(t_open_q *o, int i);
 _Bool			is_env_val_after_dollar(char c);
+void			append_tilda(t_open_q *o, size_t i);
 
 /*
 ** parse.c

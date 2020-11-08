@@ -86,8 +86,6 @@ char			*open_quotes_str(t_open_q *o, size_t i)
 			i = o->i;
 			continue ;
 		}
-		else if (i == 0 && o->str[i] == '~' && !o->str[i + 1])
-			return (just_tilde(o, i));
 		else
 			append_chr_and_save(o, i);
 		i++;
