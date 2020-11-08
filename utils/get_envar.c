@@ -41,7 +41,7 @@ char		*get_envar(char *var)
 	env = g_env;
 	flag = 0;
 	if (!ft_strcmp(var, "?"))
-		return (ft_itoa_and_chk((int)g_exit % 256));
+		return (ft_itoa_and_chk(g_exit == 258 ? 258 : (int)g_exit % 256));
 	if (!ft_strcmp(var, "~"))
 		flag = handle_if_tilda(&var);
 	while (env)

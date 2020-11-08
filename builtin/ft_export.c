@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+static void	free_kv(t_envar *kv)
+{
+	free(kv->value);
+	free(kv->key);
+	free(kv);
+}
+
 void		process_list(t_list *list, const char *arg)
 {
 	t_list *to_free;
@@ -38,12 +45,15 @@ void		process_list(t_list *list, const char *arg)
 	ft_lstclear(&to_free, free_nothing);
 }
 
-void		add_kv_to_env(t_envar *kv)
+void		add_kv_to_env(t_envar **kv)
 {
+	t_envar	*tmp;
+
+	tmp = *kv;
 	if (!g_env)
-		g_env = ft_lstnew_kv_n_chk((void *)kv);
-	else if (!find_key_replace_val(&g_env, kv->key, kv->value))
-		ft_lstadd_back(&g_env, ft_lstnew_kv_n_chk((void *)kv));
+		g_env = ft_lstnew_kv_n_chk((void *)tmp);
+	else if (!find_key_replace_val(&g_env, tmp->key, tmp->value))
+		ft_lstadd_back(&g_env, ft_lstnew_kv_n_chk((void *)tmp));
 }
 
 void		process_pair(char **pair, t_envar *kv, char *value)
@@ -69,7 +79,8 @@ void		process_pair(char **pair, t_envar *kv, char *value)
 			kv->key = malloc_n_chk(ft_strlen(*pair) - ft_strlen(kv->value));
 			ft_strlcpy(kv->key, *pair, ft_strlen(*pair) - ft_strlen(kv->value));
 		}
-		add_kv_to_env(kv);
+		add_kv_to_env(&kv);
+		free_kv(kv);
 		pair++;
 	}
 }

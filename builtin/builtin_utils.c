@@ -58,7 +58,7 @@ int			find_key_replace_val(t_list **lst, char *key, char *value)
 		if (!ft_strcmp(((t_envar *)tmp->content)->key, key))
 		{
 			free(((t_envar *)tmp->content)->value);
-			((t_envar *)tmp->content)->value = ft_strdup(value);
+			((t_envar *)tmp->content)->value = ft_strdup_and_check(value);
 			return (1);
 		}
 		tmp = tmp->next;

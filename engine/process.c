@@ -82,7 +82,7 @@ void		process_cmd(t_mshell *sv)
 	t_token *token;
 	t_norma	*n;
 
-	n = malloc(sizeof(t_norma));
+	n = malloc_n_chk(sizeof(t_norma));
 	init_vars(n);
 	while (sv->sh)
 	{
