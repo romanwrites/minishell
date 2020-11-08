@@ -6,7 +6,7 @@
 /*   By: lhelper <lhelper@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 18:21:57 by mkristie          #+#    #+#             */
-/*   Updated: 2020/11/06 14:09:16 by lhelper          ###   ########.fr       */
+/*   Updated: 2020/11/08 17:54:55 by lhelper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ static void	add_kv_to_env(t_envar *kv)
 		g_env = ft_lstnew_kv_n_chk((void *)tmp);
 	else if (!find_key_replace_val(&g_env, tmp->key, tmp->value))
 		ft_lstadd_back(&g_env, ft_lstnew_kv_n_chk((void *)tmp));
+	else
+		free_kv(kv);
 }
 
 void		process_pair(char **pair, t_envar *kv, char *value)
@@ -80,7 +82,6 @@ void		process_pair(char **pair, t_envar *kv, char *value)
 			ft_strlcpy(kv->key, *pair, ft_strlen(*pair) - ft_strlen(kv->value));
 		}
 		add_kv_to_env(kv);
-//		free_kv(kv);
 		pair++;
 	}
 }
