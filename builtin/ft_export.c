@@ -45,11 +45,11 @@ void		process_list(t_list *list, const char *arg)
 	ft_lstclear(&to_free, free_nothing);
 }
 
-void		add_kv_to_env(t_envar **kv)
+static void	add_kv_to_env(t_envar *kv)
 {
 	t_envar	*tmp;
 
-	tmp = *kv;
+	tmp = kv;
 	if (!g_env)
 		g_env = ft_lstnew_kv_n_chk((void *)tmp);
 	else if (!find_key_replace_val(&g_env, tmp->key, tmp->value))
@@ -79,8 +79,8 @@ void		process_pair(char **pair, t_envar *kv, char *value)
 			kv->key = malloc_n_chk(ft_strlen(*pair) - ft_strlen(kv->value));
 			ft_strlcpy(kv->key, *pair, ft_strlen(*pair) - ft_strlen(kv->value));
 		}
-		add_kv_to_env(&kv);
-		free_kv(kv);
+		add_kv_to_env(kv);
+//		free_kv(kv);
 		pair++;
 	}
 }
