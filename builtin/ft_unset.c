@@ -55,7 +55,8 @@ static	int		check_args(char **arg)
 	return (0);
 }
 
-static void		del_node(t_list **env_key_value, char **keys, int *first, t_list **prev)
+static void		del_node(t_list **env_key_value, char **keys, \
+									int *first, t_list **prev)
 {
 	t_list *temp;
 
@@ -77,10 +78,9 @@ static void		del_node(t_list **env_key_value, char **keys, int *first, t_list **
 		free(temp->content);
 		free(temp);
 	}
-	if (*first)
-		*first = 0;
-	else
+	if (!*first)
 		*prev = *env_key_value;
+	*first = 0;
 	if (*env_key_value)
 		*env_key_value = (*env_key_value)->next;
 }
@@ -89,7 +89,7 @@ void			ft_unset(char **arg)
 {
 	char		**keys;
 	t_list		*env_key_value;
-	t_list 		*prev;
+	t_list		*prev;
 	int			first;
 
 	keys = arg;
@@ -102,7 +102,7 @@ void			ft_unset(char **arg)
 		{
 			env_key_value = g_env;
 			prev = env_key_value;
-			first = 1; //
+			first = 1;
 			while (env_key_value)
 				del_node(&env_key_value, keys, &first, &prev);
 			keys++;
