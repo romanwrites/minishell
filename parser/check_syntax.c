@@ -75,6 +75,7 @@ _Bool			check_syntax_errors(const char *str)
 			j = i - 1;
 			while (ft_isspace(str[i]))
 				set_states(str[i++]);
+			set_states(str[i]);
 			if (str[i] && check_sequence_full(str[j], str[i]))
 				return (1);
 		}

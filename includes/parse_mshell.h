@@ -65,10 +65,10 @@ t_dlist_sh		*get_sh_list(char **semicolons2d, int i, t_mshell *sv);
 /*
 ** handle_dollar.c
 */
-void			handle_dollar(t_open_q *o, int i);
-void			get_env_val(t_open_q *o, int i, int j);
-void			append_dollar_after_backslash(t_open_q *o, int i, int j);
-void			get_several_dollars(t_open_q *o, int i);
+void			handle_dollar(t_open_q *o, size_t i);
+void			get_env_val(t_open_q *o, size_t i, size_t j);
+void			append_dollar_after_backslash(t_open_q *o, size_t i, size_t j);
+void			get_several_dollars(t_open_q *o, size_t i);
 
 /*
 ** open_quotes.c

@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-void			get_several_dollars(t_open_q *o, int i)
+void			get_several_dollars(t_open_q *o, size_t i)
 {
-	int			j;
+	size_t		j;
 
 	j = get_dollars_end(o->str + i);
 	if (i > o->save + 2 && is_bs_active())
@@ -34,7 +34,7 @@ void			get_several_dollars(t_open_q *o, int i)
 	o->i = i;
 }
 
-void			append_dollar_after_backslash(t_open_q *o, int i, int j)
+void			append_dollar_after_backslash(t_open_q *o, size_t i, size_t j)
 {
 	if (i > o->save + 2)
 	{
@@ -44,7 +44,7 @@ void			append_dollar_after_backslash(t_open_q *o, int i, int j)
 	o->append_this = ft_substr_and_chk(o->str, i, j);
 }
 
-void			get_env_val(t_open_q *o, int i, int j)
+void			get_env_val(t_open_q *o, size_t i, size_t j)
 {
 	char		*value_to_check;
 	char		*env_value;
@@ -72,9 +72,9 @@ void			get_env_val(t_open_q *o, int i, int j)
 	free_and_null(&value_to_check);
 }
 
-void			handle_dollar(t_open_q *o, int i)
+void			handle_dollar(t_open_q *o, size_t i)
 {
-	int			j;
+	size_t		j;
 	char		*str;
 
 	str = o->str;
