@@ -18,6 +18,8 @@ BOLDBLUE="\033[1m\033[34m"
 BOLDMAGENTA="\033[1m\033[35m"
 BOLDCYAN="\033[1m\033[36m"
 BOLDWHITE="\033[1m\033[37m"
+
+cp cmake-build-debug/minishell .
 chmod 755 minishell
 
 function exec_test()
@@ -43,7 +45,6 @@ function exec_test()
 }
 
 exec_test 'echo \"\|\;\"\| cat -e > \q\w\e\r\t\y ; cat qwerty'
-
 
 # SYNTAX ERROR
 printf "SYNTAX ERROR\n"
@@ -92,6 +93,8 @@ exec_test 'echo aa >>>'
 exec_test '>>>'
 exec_test 'echo ; ;'
 exec_test 'lol kek > ; kek'
+exec_test 'echo ";;"'
+exec_test 'echo ";"'
 
 # ESC sequences
 printf "\nESC sequences\n"
@@ -141,7 +144,6 @@ exec_test 'echo -n '
 # PIPE TESTS AND REDIRS
 exec_test 'cat tests/lorem.txt | grep arcu | cat -e'
 exec_test 'echo -n aa|cat -e'
-exec_test ''
 exec_test 'pwd >a1>a2>a3; echo s1 >q1 s2>q2 s3; cat a2; cat a3; cat q1; cat q2; '
 
 ## ENV EXPANSIONS + ESCAPE
@@ -198,7 +200,6 @@ exec_test 'ls -la'
 exec_test 'echo $PWD; echo $OLDPWD'
 exec_test 'unset OLDPWD; echo $OLDPWD'
 exec_test 'pwd; echo $PWD'
-exec_test ''
 
 ########################################################################################################
 printf "\n\nHANDLE THEM\n"
